@@ -1,0 +1,28 @@
+# ignore file and directory
+
+# 忽略所有编译文件
+*.pyc
+
+# 忽略编辑器的配置目录
+.idea/
+
+# 忽略所有log文件
+*.log
+
+# 忽略所有django的迁移文件
+migrations/*.py
+
+# 保留迁移文件存储目录及包文件
+!migrations/__init__.py
+
+# 忽略sqlite文件
+db.sqlite3
+
+# 忽略缓存目录
+__pycache__/
+
+# 忽略指定脚本
+
+# 忽略虚拟环境
+venv
+
