@@ -2,7 +2,7 @@
 """全局常量配置
 时间: 2020/11/23 11:10
 
-作者: fengchunyang@cyai.com
+作者: Fengchunyang
 
 更改记录:
     2020/11/23 新增文件。
@@ -52,4 +52,7 @@ STATE_CHOICE = (
     (STATE_DELETED, '已删除'),
 )
 
-
+# 日期格式相关
+DATE_STANDARD = '%Y-%m-%d'
+TIME_STANDARD = '%H:%M:%S'
+DATETIME_STANDARD = f'{DATE_STANDARD} {TIME_STANDARD}'

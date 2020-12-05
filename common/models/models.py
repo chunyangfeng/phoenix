@@ -11,7 +11,7 @@ Blog: www.fengchunyang.com
 """
 from django.db import models
 
-from common.models.basic import BasicModel
+from common.models.base import BasicModel
 from common.params import params
 
 
@@ -27,7 +27,7 @@ class Resource(models.Model):
     name = models.CharField(verbose_name="资源名称", max_length=128, unique=True)
     desc = models.CharField(verbose_name="资源描述", max_length=256, null=True, blank=True)
     allowed = models.CharField(verbose_name="允许访问范围", choices=params.PERMISSION_ALLOW_CHOICE,
-                               default=params.PERMISSION_ALLOW_ALL)
+                               default=params.PERMISSION_ALLOW_ALL, max_length=64)
 
     class Meta:
         db_table = 'common_resource'
@@ -52,7 +52,8 @@ class Role(models.Model):
     name = models.CharField(verbose_name="角色名称", max_length=64, unique=True)
     desc = models.CharField(verbose_name="角色描述", max_length=256, blank=True, null=True)
     resource = models.ManyToManyField('Resource', verbose_name='关联资源', related_name='role')
-    state = models.CharField(verbose_name="角色状态", choices=params.STATE_CHOICE, default=params.STATE_ENABLED)
+    state = models.CharField(verbose_name="角色状态", choices=params.STATE_CHOICE,
+                             default=params.STATE_ENABLED, max_length=32)
     is_default = models.BooleanField(verbose_name="是否为内置角色", default=False)
     is_test = models.BooleanField(verbose_name="是否为测试角色", default=False)
 
@@ -76,13 +77,33 @@ class Department(models.Model):
         verbose_name = '部门表'
 
 
+class UserGroup(CommonModel):
+    name = models.CharField(verbose_name="用户组名", max_length=32, unique=True)
+    users = models.ManyToManyField('User', verbose_name="用户")
+    role = models.ForeignKey('Role', verbose_name="角色", on_delete=models.SET_NULL, null=True, blank=True)
+
+    class Meta:
+        db_table = 'common_user_group'
+        verbose_name = '用户组表'
+
+
 class User(models.Model):
     """用户模型"""
     username = models.CharField(verbose_name="用户名", max_length=64, unique=True)
     real_name = models.CharField(verbose_name="真实姓名", max_length=64, blank=True, null=True)
+    email = models.CharField(verbose_name="邮箱", max_length=64)
+    phone = models.CharField(verbose_name="移动电话", max_length=11, blank=True, null=True)
+
+    class Meta:
+        db_table = 'common_user'
+        verbose_name = '用户表'
 
 
+class MigrationsHistory(CommonModel):
+    app_name = models.CharField(verbose_name="app名称", max_length=256)
+    file_name = models.CharField(verbose_name="文件名称", max_length=256)
+    file_content = models.TextField(verbose_name="文件内容")
 
-
-
-
+    class Meta:
+        db_table = 'common_migrations_history'
+        verbose_name = "迁移文件备份表"
