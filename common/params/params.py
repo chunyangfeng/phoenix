@@ -56,3 +56,6 @@ STATE_CHOICE = (
 DATE_STANDARD = '%Y-%m-%d'
 TIME_STANDARD = '%H:%M:%S'
 DATETIME_STANDARD = f'{DATE_STANDARD} {TIME_STANDARD}'
+
+# 前后端交互相关
+JSON_CONTENT_TYPE = 'application/json'

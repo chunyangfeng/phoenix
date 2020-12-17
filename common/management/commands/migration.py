@@ -74,17 +74,16 @@ class Command(SingleArgBaseCommand):
         for app, path in app_migrations_dir.items():
             file_list = self.get_app_migrations_file(path)
             for file in file_list:
-                content = open(file, "r")
-                _, status = MigrationsHistory.objects.get_or_create(
-                    app_name=app, file_name=file.split(".")[0],
-                    defaults={"file_content": json.dumps(content.readlines())}
-                )
-                if status:
-                    msg = f"app {app} 下的迁移文件 {file} 已保存，本次对其操作将忽略！"
-                else:
-                    msg = f"app {app} 下的迁移文件 {file} 成功保存至数据库中！"
-                output_formatter(msg)
-                content.close()
+                with open(file, "r", encoding='UTF-8') as f:
+                    _, status = MigrationsHistory.objects.get_or_create(
+                        app_name=app, file_name=file.split(".")[0],
+                        defaults={"file_content": json.dumps(f.readlines())}
+                    )
+                    if status:
+                        msg = f"app {app} 下的迁移文件 {file} 已保存，本次对其操作将忽略！"
+                    else:
+                        msg = f"app {app} 下的迁移文件 {file} 成功保存至数据库中！"
+                    print(output_formatter(msg))
 
     def load(self):
         """从后端数据库加载当前项目的migrations文件
@@ -108,7 +107,7 @@ class Command(SingleArgBaseCommand):
                 with open(os.path.join(path, f"{migrations.file_name}.py"), "w") as file:
                     for line in json.loads(migrations.file_content):
                         file.write(line)
-            output_formatter(f"app {app} 历史迁移文件加载完毕！")
+            print(output_formatter(f"app {app} 历史迁移文件加载完毕！"))
 
     def initial(self):
         """初始化migrate环境

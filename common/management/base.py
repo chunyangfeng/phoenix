@@ -25,9 +25,6 @@ class SingleArgBaseCommand(BaseCommand):
 
     def __new__(cls):
         """实现类创建时的方法校验
-
-        Args:
-
         Returns:
             cls(object): 类
         """
@@ -47,12 +44,8 @@ class SingleArgBaseCommand(BaseCommand):
 
     def add_arguments(self, parser):
         """参数管理
-
         Args:
             parser(parser.Parser): 参数管理器
-
-        Returns:
-            result(bool): None
         """
         parser.add_argument(
             dest=self.action,
@@ -63,13 +56,9 @@ class SingleArgBaseCommand(BaseCommand):
 
     def handle(self, *args, **options):
         """命令处理
-
         Args:
             *args(list): 可变参数
             **options: 可变关键字参数
-
-        Returns:
-            result(bool): None
         """
         action = options.get(self.action)
         run_func = getattr(self, action)

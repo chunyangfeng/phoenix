@@ -18,7 +18,7 @@ from common.params import params
 class CommonModel(BasicModel):
 
     class Meta:
-        ordering = ('-id', )
+        abstract = True
 
 
 class Resource(models.Model):
@@ -87,12 +87,15 @@ class UserGroup(CommonModel):
         verbose_name = '用户组表'
 
 
-class User(models.Model):
+class User(CommonModel):
     """用户模型"""
     username = models.CharField(verbose_name="用户名", max_length=64, unique=True)
     real_name = models.CharField(verbose_name="真实姓名", max_length=64, blank=True, null=True)
+    password = models.CharField(verbose_name="密码", max_length=32)
+    wechat = models.CharField(verbose_name="微信号", max_length=255, blank=True, null=True)
     email = models.CharField(verbose_name="邮箱", max_length=64)
     phone = models.CharField(verbose_name="移动电话", max_length=11, blank=True, null=True)
+    site = models.CharField(verbose_name="网站", max_length=256, blank=True, null=True)
 
     class Meta:
         db_table = 'common_user'
