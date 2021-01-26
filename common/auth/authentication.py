@@ -11,9 +11,9 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
-from django.contrib.auth.models import User
 from rest_framework import authentication
 from rest_framework import exceptions
+from common.models.models import User
 
 
 class UserAccessAuthentication(authentication.BasicAuthentication):
@@ -22,7 +22,7 @@ class UserAccessAuthentication(authentication.BasicAuthentication):
     """
 
     def authenticate(self, request):
-        """
+        """自定义用户认证
 
         Args:
             request:
@@ -30,18 +30,15 @@ class UserAccessAuthentication(authentication.BasicAuthentication):
         Returns:
 
         """
-        return 1, 2
+        auth = request.session.get('authentication')
+        perm = request.session.get('permission')
 
+        if auth is None or perm is None:
+            del request.session
+            return None
 
-# class ExampleAuthentication(authentication.BaseAuthentication):
-#     def authenticate(self, request):
-#         username = request.META.get('X_USERNAME')
-#         if not username:
-#             return None
-#
-#         try:
-#             user = User.objects.get(username=username)
-#         except User.DoesNotExist:
-#             raise exceptions.AuthenticationFailed('No such user')
-#
-#         return (user, None)
+        try:
+            user = User.objects.get(username=auth.get('username'))
+            return user, perm
+        except User.DoesNotExist:
+            return None

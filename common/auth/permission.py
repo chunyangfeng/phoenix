@@ -31,6 +31,19 @@ class UserAccessPermission(permissions.BasePermission):
         if request.user is None:
             return
 
+    def has_object_permission(self, request, view, obj):
+        """
+
+        Args:
+            request:
+            view:
+            obj:
+
+        Returns:
+
+        """
+        return True
+
 
 # class BlacklistPermission(permissions.BasePermission):
 #     """

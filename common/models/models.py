@@ -15,7 +15,10 @@ from common.models.base import BasicModel
 from common.params import params
 
 
-class CommonModel(BasicModel):
+class CommonDataModel(BasicModel):
+    """常用数据类抽象model"""
+    creator = models.CharField(verbose_name="创建者", max_length=64, default="admin")
+    owner = models.CharField(verbose_name="拥有者", max_length=64, default="admin")
 
     class Meta:
         abstract = True
@@ -77,7 +80,7 @@ class Department(models.Model):
         verbose_name = '部门表'
 
 
-class UserGroup(CommonModel):
+class UserGroup(CommonDataModel):
     name = models.CharField(verbose_name="用户组名", max_length=32, unique=True)
     users = models.ManyToManyField('User', verbose_name="用户")
     role = models.ForeignKey('Role', verbose_name="角色", on_delete=models.SET_NULL, null=True, blank=True)
@@ -87,22 +90,23 @@ class UserGroup(CommonModel):
         verbose_name = '用户组表'
 
 
-class User(CommonModel):
+class User(CommonDataModel):
     """用户模型"""
     username = models.CharField(verbose_name="用户名", max_length=64, unique=True)
     real_name = models.CharField(verbose_name="真实姓名", max_length=64, blank=True, null=True)
     password = models.CharField(verbose_name="密码", max_length=32)
     wechat = models.CharField(verbose_name="微信号", max_length=255, blank=True, null=True)
-    email = models.CharField(verbose_name="邮箱", max_length=64)
+    email = models.CharField(verbose_name="邮箱地址", max_length=64)
     phone = models.CharField(verbose_name="移动电话", max_length=11, blank=True, null=True)
-    site = models.CharField(verbose_name="网站", max_length=256, blank=True, null=True)
+    site = models.CharField(verbose_name="关联站点", max_length=256, blank=True, null=True)
+    is_login = models.BooleanField(verbose_name='是否允许登陆', default=False)
 
     class Meta:
         db_table = 'common_user'
         verbose_name = '用户表'
 
 
-class MigrationsHistory(CommonModel):
+class MigrationsHistory(CommonDataModel):
     app_name = models.CharField(verbose_name="app名称", max_length=256)
     file_name = models.CharField(verbose_name="文件名称", max_length=256)
     file_content = models.TextField(verbose_name="文件内容")
@@ -110,3 +114,15 @@ class MigrationsHistory(CommonModel):
     class Meta:
         db_table = 'common_migrations_history'
         verbose_name = "迁移文件备份表"
+
+
+class SystemParameter(BasicModel):
+    """系统参数"""
+    name = models.CharField(verbose_name='参数名称', max_length=64, unique=True)
+    value = models.CharField(verbose_name='参数值', max_length=128, unique=True)
+    code = models.CharField(verbose_name='参数编码', max_length=32, unique=True)
+    is_builtin = models.BooleanField(verbose_name='是否内置', default=False)
+
+    class Meta:
+        db_table = 'common_system_parameter'
+        verbose_name = '系统参数表'

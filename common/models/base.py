@@ -16,8 +16,6 @@ from django.db import models
 
 class BasicModel(models.Model):
     """抽象基类"""
-    creator = models.CharField(verbose_name="创建者", max_length=64, default="admin")
-    owner = models.CharField(verbose_name="拥有者", max_length=64, default="admin")
     is_delete = models.BooleanField(verbose_name='是否删除', default=False)
     desc = models.CharField(verbose_name="描述", max_length=256, blank=True, null=True)
     ctime = models.DateTimeField(verbose_name="创建时间", auto_now_add=datetime.datetime.now())
