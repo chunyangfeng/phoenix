@@ -506,6 +506,87 @@ class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
         return self.get_response('delete success', '删除成功', drf_status.HTTP_200_OK)
 
 
+class BasicRetrieveModelMixin(mixins.RetrieveModelMixin, BasicResponseMixin):
+    """单个model处理流程"""
+
+    def _pre_process_retrieve(self, request, *args, **kwargs):
+        """retrieve查询预处理
+
+        Args:
+            request(Request): DRF Request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有错误为None
+            reason(str): 错误原因，没有错误为''
+        """
+        return None, ''
+
+    def _perform_retrieve(self, request, *args, **kwargs):
+        """retrieve查询
+
+        Args:
+            request(Request): DRF Request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有错误为None
+            reason(str): 错误原因，没有错误为''
+        """
+        return None, ''
+
+    def _post_process_retrieve(self, request, instance, *args, **kwargs):
+        """retrieve查询后处理
+
+        Args:
+            request(Request): DRF Request
+            instance(object): 实例
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有错误为None
+            reason(str): 错误原因，没有错误为''
+            instance(object): 实例
+        """
+        return None, '', instance
+
+    @transaction.atomic()
+    def retrieve(self, request, *args, **kwargs):
+        """执行retrieve操作
+
+        Args:
+            request(Request): DRF Request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 对请求的响应
+        """
+        # 查询预处理
+        error, reason = self._pre_process_retrieve(request, *args, **kwargs)
+        if error:
+            transaction.set_rollback(True)
+            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+
+        # 查询
+        error, reason, response = self._perform_retrieve(request, *args, **kwargs)
+        if error:
+            transaction.set_rollback(True)
+            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+
+        # 查询后处理
+        error, reason = self._post_process_retrieve(request, *args, **kwargs)
+        if error:
+            transaction.set_rollback(True)
+            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+
+        return response
+
+
+
 
 
 
