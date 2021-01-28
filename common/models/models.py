@@ -99,11 +99,26 @@ class User(CommonDataModel):
     email = models.CharField(verbose_name="邮箱地址", max_length=64)
     phone = models.CharField(verbose_name="移动电话", max_length=11, blank=True, null=True)
     site = models.CharField(verbose_name="关联站点", max_length=256, blank=True, null=True)
-    is_login = models.BooleanField(verbose_name='是否允许登陆', default=False)
+    allow_login = models.BooleanField(verbose_name='是否允许登陆', default=False)
 
     class Meta:
         db_table = 'common_user'
         verbose_name = '用户表'
+
+
+class UserToken(CommonDataModel):
+    """用户认证token表"""
+    user = models.OneToOneField('User', verbose_name="关联用户", related_name='token', on_delete=models.CASCADE,
+                                help_text="token所属的用户，当用户登录成功后会创建或更新此数据")
+    token = models.CharField(verbose_name='token值', max_length=64,
+                             help_text="用户登录成功后生成的token值，用于发起http请求时，进行身份认证的标识")
+    is_expired = models.BooleanField(verbose_name="是否过期", default=True,
+                                     help_text="token是否过期的标识，过期的token会被认证系统认为是无效的")
+    login_time = models.DateTimeField(verbose_name="登录时间", help_text="用户登录的时间，用于判断当前token是否过期")
+
+    class Meta:
+        db_table = 'common_user_token'
+        verbose_name = '用户Token表'
 
 
 class MigrationsHistory(CommonDataModel):

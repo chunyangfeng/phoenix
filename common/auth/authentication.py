@@ -13,13 +13,11 @@ Blog: http://www.fengchunyang.com
 """
 from rest_framework import authentication
 from rest_framework import exceptions
-from common.models.models import User
+from common.models.models import UserToken
 
 
 class UserAccessAuthentication(authentication.BasicAuthentication):
-    """
-    用户认证
-    """
+    """用户认证"""
 
     def authenticate(self, request):
         """自定义用户认证
@@ -30,15 +28,15 @@ class UserAccessAuthentication(authentication.BasicAuthentication):
         Returns:
 
         """
-        auth = request.session.get('authentication')
-        perm = request.session.get('permission')
+        token = request.session.get('token')
 
-        if auth is None or perm is None:
+        if not token:
             del request.session
-            return None
+            raise exceptions.AuthenticationFailed('用户认证失败')
 
         try:
-            user = User.objects.get(username=auth.get('username'))
-            return user, perm
-        except User.DoesNotExist:
-            return None
+            token_obj = UserToken.objects.get(token=token, is_expired=False)
+        except UserToken.DoesNotExist:
+            raise exceptions.AuthenticationFailed('用户认证失败')
+
+        return token_obj.user.username, token_obj

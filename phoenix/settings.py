@@ -82,8 +82,8 @@ DATABASES = {
     # },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '192.168.1.103',
-        'USER': 'root',
+        'HOST': '127.0.0.1',
+        'USER': 'phoenix',
         'PASSWORD': 'nishengri',
         'NAME': 'phoenix',
     }
@@ -131,6 +131,6 @@ STATIC_URL = '/static/'
 # DRF settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'common.auth.authentication.UserAccessAuthentication',
+        'common.auth.authentication.UserAccessAuthentication',  # 全局认证配置
     )
 }
