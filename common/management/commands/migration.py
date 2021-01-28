@@ -95,7 +95,6 @@ class Command(SingleArgBaseCommand):
 
         for app, path in app_migrations_dir.items():
             # 创建migrations文件夹
-            print(path)
             if os.path.exists(path) is False:
                 os.mkdir(path)
 
