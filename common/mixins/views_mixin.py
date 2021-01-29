@@ -586,6 +586,111 @@ class BasicRetrieveModelMixin(mixins.RetrieveModelMixin, BasicResponseMixin):
         return response
 
 
+class BasicPatchModelMixin(BasicResponseMixin):
+    """patch请求的混合类"""
+
+    def _pre_process_patch(self, request, *args, **kwargs):
+        """patch请求预处理
+
+        Args:
+            request(Request): DRF Request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有错误为None
+            reason(str): 错误原因，没有错误为''
+        """
+        return None, ''
+
+    def _validate_patch(self, request, *args, **kwargs):
+        """patch请求校验
+
+        Args:
+            request(Request): DRF Request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有错误为None
+            reason(str): 错误原因，没有错误为''
+        """
+        return None, ''
+
+    def _perform_patch(self, request, *args, **kwargs):
+        """执行patch请求
+
+        Args:
+            request(Request): DRF Request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有错误为None
+            reason(str): 错误原因，没有错误为''
+            response(Response): 请求响应数据
+        """
+        response = self.get_response("patch success", "patch请求成功")
+        return None, '', response
+
+    def _post_process_patch(self, request, *args, **kwargs):
+        """patch请求后处理
+
+        Args:
+            request(Request): DRF Request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有错误为None
+            reason(str): 错误原因，没有错误为''
+        """
+        return None, ''
+
+    @transaction.atomic()
+    def extra(self, request, *args, **kwargs):
+        """
+
+        Args:
+            request(Request): DRF Request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有错误为None
+            reason(str): 错误原因，没有错误为''
+        """
+        # patch请求预处理
+        error, reason = self._pre_process_patch(request, *args, **kwargs)
+        if error:
+            transaction.set_rollback(True)
+            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+
+        # patch请求预校验
+        error, reason = self._validate_patch(request, *args, **kwargs)
+        if error:
+            transaction.set_rollback(True)
+            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+
+        # patch请求执行
+        try:
+            error, reason = self._perform_patch(request, *args, **kwargs)
+            if error:
+                transaction.set_rollback(True)
+                return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+        except Exception as error:
+            transaction.set_rollback(True)
+            return self.get_response('Failed to patch', f'patch请求处理失败,错误原因:{error}')
+
+        # patch请求后处理
+        error, reason = self._post_process_patch(request, *args, **kwargs)
+        if error:
+            transaction.set_rollback(True)
+            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+
+        return self.get_response('ok', '成功')
+
+
 
 
 
