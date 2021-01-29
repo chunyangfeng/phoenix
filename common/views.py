@@ -9,8 +9,11 @@ Record:
 
 Site: http://www.fengchunyang.com
 """
+from common.viewset.basic import BasicInfoViewSet
+from common.models.models import User, UserToken
 
 
-class UserLoginView:
-    pass
+class UserLoginView(BasicInfoViewSet):
+    queryset = UserToken.objects.all()
+    serializer_class = None
 
