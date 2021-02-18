@@ -45,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'phoenix.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'phoenix-web')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,13 +126,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_ROOT = '/phoenix-web/'
+STATIC_URL = '/phoenix-web/static/'
+
+MEDIA_ROOT = '/phoenix-web/assets/'
+MEDIA_URL = '/phoenix-web/assets/'
 
 # DRF settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'common.middleware.csrf_exempt.CsrfExemptSessionAuthentication',
         'common.auth.authentication.UserAccessAuthentication',  # 全局认证配置
     )
 }
 
-WEB_APP = 'phoenix-web/app/'
+WEB_APP = 'app/'

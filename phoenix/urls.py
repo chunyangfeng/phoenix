@@ -15,11 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.static import serve
+from django.conf import settings
 
 from common import urls as common_urls
 from blog import urls as blog_urls
 
 urlpatterns = [
+    # 处理静态资源
+    path('static/<path:path>', serve, {'document_root': settings.STATIC_URL}),
+
+    # 处理媒体资源
+    path('media/<path:path>', serve, {'document_root': settings.MEDIA_URL}),
+
+    # 各app的url主路由
     path('admin/', admin.site.urls),
     path('common/', include(common_urls)),
     path('blog/', include(blog_urls)),
