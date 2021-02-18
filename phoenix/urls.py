@@ -17,8 +17,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 from common import urls as common_urls
+from blog import urls as blog_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('common/', include(common_urls)),
+    path('blog/', include(blog_urls)),
 ]

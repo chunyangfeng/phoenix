@@ -14,6 +14,8 @@ from rest_framework.response import Response
 from rest_framework import status as drf_status
 from rest_framework import mixins
 
+from common.params.permissions import PER_BASE
+
 
 class BasicResponseMixin:
     """Http响应混合类"""
@@ -113,7 +115,7 @@ class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
 
         Returns:
             error(str): 错误信息，没有错误为None
-            reason(str): 错误原因，没有错误为‘’
+            reason(str): 错误原因，没有错误为''
         """
         return None, ''
 
@@ -128,7 +130,7 @@ class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
 
         Returns:
             error(str): 错误信息，没有错误为None
-            reason(str): 错误原因，没有错误为‘’
+            reason(str): 错误原因，没有错误为''
             response(Response): 响应数据
         """
         return None, '', response
@@ -689,6 +691,13 @@ class BasicPatchModelMixin(BasicResponseMixin):
             return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         return self.get_response('ok', '成功')
+
+
+class BasicPermissionViewMixin:
+    """权限校验混合类"""
+    permission_class = None  # 权限校验器
+    permission_module = 'phoenix'  # 权限模块
+    permission_name = PER_BASE  # 权限名称
 
 
 

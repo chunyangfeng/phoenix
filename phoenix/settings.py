@@ -82,8 +82,8 @@ DATABASES = {
     # },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
-        'USER': 'phoenix',
+        'HOST': '192.168.1.103',
+        'USER': 'root',
         'PASSWORD': 'nishengri',
         'NAME': 'phoenix',
     }
@@ -134,3 +134,5 @@ REST_FRAMEWORK = {
         'common.auth.authentication.UserAccessAuthentication',  # 全局认证配置
     )
 }
+
+WEB_APP = 'phoenix-web/app/'
