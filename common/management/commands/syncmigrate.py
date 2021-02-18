@@ -80,9 +80,9 @@ class Command(SingleArgBaseCommand):
                         defaults={"file_content": json.dumps(f.readlines())}
                     )
                     if status:
-                        msg = f"app {app} 下的迁移文件 {file} 已保存，本次对其操作将忽略！"
-                    else:
                         msg = f"app {app} 下的迁移文件 {file} 成功保存至数据库中！"
+                    else:
+                        msg = f"app {app} 下的迁移文件 {file} 已保存，本次对其操作将忽略！"
                     print(output_formatter(msg))
 
     def load(self):
@@ -103,7 +103,8 @@ class Command(SingleArgBaseCommand):
             f_init.close()
 
             for migrations in MigrationsHistory.objects.filter(app_name=app):
-                with open(os.path.join(path, f"{migrations.file_name}.py"), "w") as file:
+                with open(os.path.join(path, f"{migrations.file_name}.py"), "w", encoding='UTF-8') as file:
+                    file.write('# coding:utf-8\n')  # 防止乱码
                     for line in json.loads(migrations.file_content):
                         file.write(line)
             print(output_formatter(f"app {app} 历史迁移文件加载完毕！"))
