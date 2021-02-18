@@ -127,10 +127,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_ROOT = '/phoenix-web/'
-STATIC_URL = '/phoenix-web/static/'
+STATIC_URL = '/phoenix-web/'
+STATICFILES_DIRS = (
+    os.path.join(os.path.dirname(__file__), '../phoenix-web/').replace('\\', '/'),
+)
 
-MEDIA_ROOT = '/phoenix-web/assets/'
-MEDIA_URL = '/phoenix-web/assets/'
+# MEDIA_ROOT = '/phoenix-web/assets/'
+# MEDIA_URL = '/phoenix-web/assets/'
 
 # DRF settings
 REST_FRAMEWORK = {

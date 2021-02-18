@@ -25,8 +25,8 @@ urlpatterns = [
     # 处理静态资源
     path('static/<path:path>', serve, {'document_root': settings.STATIC_URL}),
 
-    # 处理媒体资源
-    path('media/<path:path>', serve, {'document_root': settings.MEDIA_URL}),
+    # # 处理媒体资源
+    # path('media/<path:path>', serve, {'document_root': settings.MEDIA_URL}),
 
     # 各app的url主路由
     path('admin/', admin.site.urls),
