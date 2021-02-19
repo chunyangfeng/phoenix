@@ -34,7 +34,7 @@ class Command(MakemigrationsCommand):
         # 执行migrations文件同步，从关联的数据库中将保存的migrations文件读取到本地项目中
         load = options['load']
         if load:
-            command = importlib.import_module('common.mgt.commands.syncmigrate')
+            command = importlib.import_module('common.management.commands.syncmigrate')
             self.stdout.write("开始读取迁移文件......")
             sync_cmd = getattr(command, 'Command')
             sync = sync_cmd()

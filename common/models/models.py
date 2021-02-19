@@ -16,7 +16,7 @@ from common.params import params
 
 
 class CommonDataModel(BasicModel):
-    """常用数据类抽象model"""
+    """通用数据类抽象model"""
     creator = models.CharField(verbose_name="创建者", max_length=64, default="admin")
     owner = models.CharField(verbose_name="拥有者", max_length=64, default="admin")
 
@@ -31,6 +31,8 @@ class Resource(models.Model):
     desc = models.CharField(verbose_name="资源描述", max_length=256, null=True, blank=True)
     allowed = models.CharField(verbose_name="允许访问范围", choices=params.PERMISSION_ALLOW_CHOICE,
                                default=params.PERMISSION_ALLOW_ALL, max_length=64)
+    url_name = models.CharField(verbose_name="url name", max_length=128, unique=True,
+                                help_text="资源访问的url名称，在urls.py中配置")
 
     class Meta:
         db_table = 'common_resource'

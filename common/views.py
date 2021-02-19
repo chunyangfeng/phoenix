@@ -9,8 +9,13 @@ Record:
 
 Site: http://www.fengchunyang.com
 """
-from common.viewset.basic import BasicInfoViewSet
+from common.viewset.basic import BasicInfoViewSet, BasePageView
 from common.models.models import User, UserToken
+
+
+class UserLoginPageView(BasePageView):
+    """用户登陆主页"""
+    page = "auth/login.html"
 
 
 class UserLoginView(BasicInfoViewSet):

@@ -238,13 +238,16 @@ class BasePageView(View):
         Returns:
             response(Response): 响应主体
         """
+
         error, reason = self._pre_get(request, *args, **kwargs)
         if error:
             # TODO 后续统一错误返回
             return error, reason
-        try:
-            response = self._perform_get(request, *args, **kwargs)
-        except Exception as error:
+
+        response = self._perform_get(request, *args, **kwargs)
+
+        error, reason = self._post_get(request, *args, **kwargs)
+        if error:
             # TODO 后续统一错误返回
-            return error, error
+            return error, reason
         return response

@@ -14,7 +14,7 @@ class Command(MigrateCommand):
         super(Command, self).handle(*args, **options)
 
         # 执行migrations文件同步，将本地生成的迁移文件保存到关联的数据库中
-        command = importlib.import_module('common.mgt.commands.syncmigrate')
+        command = importlib.import_module('common.management.commands.syncmigrate')
         self.stdout.write("开始同步迁移文件......")
         sync_cmd = getattr(command, 'Command')
         sync = sync_cmd()

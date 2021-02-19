@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/phoenix-web/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="/phoenix-web/app/auth/login.css">
+    <title>login</title>
+</head>
+
+<body>
+<div class="login-form">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="layui-icon layui-icon-user"></i></label>
+            <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="required" placeholder="请输入用户名" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label"><i class="layui-icon layui-icon-password"></i></label>
+            <div class="layui-input-block">
+                <input type="password" name="password" lay-verify="required" placeholder="请输入密码"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
+<script src="/phoenix-web/plugin/layui/layui.js"></script>
+<script>
+    layui.use(["form", "element", "jquery"], function () {
+        const element = layui.element,
+            form = layui.form,
+            $ = layui.jquery;
+
+        $("#login_submit").click(function () {
+            $("form").submit(function (event) {
+                event.preventDefault();
+            });
+
+            var username = $("#username").val(),
+                password = $("#password").val();
+            if (username === '' || password === '') {
+                layer.msg("请填写用户名和密码！")
+            } else {
+                var jsEncrypt = new JSEncrypt();
+                jsEncrypt.setPublicKey(publicKey);
+                password = jsEncrypt.encryptLong(password);
+                $.ajax({
+                    url: '{% url "login" %}',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        username: username,
+                        password: password,
+                    },
+                    success: function (data) {
+                        if (data.status === '1'){
+                            window.location.href=data.url;
+                        }
+                        else if (data.status === '1002') {
+                            layer.msg("该账号登陆已失效，请重新登录！")
+                        }
+                        else if (data.status === '1004') {
+                            layer.msg("账号密码不匹配，登陆失败！")
+                        }
+                        else {
+                            layer.msg("登录失败，状态未知，请联系管理员！")
+                        }
+                    }
+                })
+            }
+        })
+
+    });
+</script>
+</body>
+</html>
