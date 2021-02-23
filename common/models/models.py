@@ -13,6 +13,7 @@ from django.db import models
 
 from common.models.base import BasicModel
 from common.params import params
+from common.utils import sington
 
 
 class CommonDataModel(BasicModel):
@@ -96,12 +97,27 @@ class User(CommonDataModel):
     """用户模型"""
     username = models.CharField(verbose_name="用户名", max_length=64, unique=True)
     real_name = models.CharField(verbose_name="真实姓名", max_length=64, blank=True, null=True)
-    password = models.CharField(verbose_name="密码", max_length=32)
+    password = models.CharField(verbose_name="密码", max_length=64)
     wechat = models.CharField(verbose_name="微信号", max_length=255, blank=True, null=True)
     email = models.CharField(verbose_name="邮箱地址", max_length=64)
     phone = models.CharField(verbose_name="移动电话", max_length=11, blank=True, null=True)
     site = models.CharField(verbose_name="关联站点", max_length=256, blank=True, null=True)
     allow_login = models.BooleanField(verbose_name='是否允许登陆', default=False)
+    is_builtin = models.BooleanField(verbose_name="是否为内置用户", default=False)
+
+    def save(self, *args, **kwargs):
+        """重载父类的save方法，当用户被创建时，自动加密密码
+
+        Args:
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+        """
+        # 前端创建用户时，限制了密码长度最长为16位，AES加密后的密码长度为64位，以此判断密码是否已经被加密
+        # 防止密码重复加密
+        if len(self.password) != 64:
+            self.password = sington.aes.encrypt(self.password)
+        
+        super().save(*args, **kwargs)
 
     class Meta:
         db_table = 'common_user'

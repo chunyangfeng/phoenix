@@ -11,9 +11,13 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+from django.utils import timezone
+
 from rest_framework import authentication
 from rest_framework import exceptions
-from common.models.models import UserToken
+from common.models.models import UserToken, User
+from common.params import params
+from common.params.params import ANONYMOUS_TOKEN
 
 
 class UserAccessAuthentication(authentication.BasicAuthentication):
@@ -23,12 +27,13 @@ class UserAccessAuthentication(authentication.BasicAuthentication):
         """自定义用户认证
 
         Args:
-            request:
+            request(HttpRequest): request
 
         Returns:
-
+            username(str): 用户名
+            token(object): token对象
         """
-        token = request.session.get('token')
+        token = request.session.get(params.SESSION_TOKEN_KEY)
 
         if not token:
             del request.session
@@ -39,4 +44,25 @@ class UserAccessAuthentication(authentication.BasicAuthentication):
         except UserToken.DoesNotExist:
             raise exceptions.AuthenticationFailed('用户认证失败')
 
+        return token_obj.user.username, token_obj
+
+
+class NoAuthentication(authentication.BasicAuthentication):
+    """全局公共资源认证，当某个资源的访问不需要认证时，使用此类"""
+
+    def authenticate(self, request):
+        """自定义认证规则
+
+        Args:
+            request(HttpRequest): request
+
+        Returns:
+            username(str): 用户名
+            token(object): token对象
+        """
+        anonymous_user = User.objects.get(username='anonymous')
+        token_obj, _ = UserToken.objects.get_or_create(user=anonymous_user, defaults={
+            'token': ANONYMOUS_TOKEN,
+            'login_time': timezone.now()
+        })
         return token_obj.user.username, token_obj

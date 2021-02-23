@@ -59,3 +59,15 @@ DATETIME_STANDARD = f'{DATE_STANDARD} {TIME_STANDARD}'
 
 # 前后端交互相关
 JSON_CONTENT_TYPE = 'application/json'
+
+# 匿名用户访问的token
+ANONYMOUS_TOKEN = 'RK35hNaeqsB0nCTSptY4iMdQkou61b2IgfwxlHvzcX9AyrjmZPFLG7EWJ8UVDO'
+
+# AES Salt
+AES_SALT = "qBfLtQIbZfZgVJvTuTDMEq46tMinYpQX"
+
+# RSA setting
+RSA_SESSION_PRIVATE_KEY = 'RSA_PRIVATE_KEY'
+
+# Login setting
+SESSION_TOKEN_KEY = 'token'

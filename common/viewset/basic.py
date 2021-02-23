@@ -18,6 +18,7 @@ from rest_framework.generics import GenericAPIView
 
 
 class BasicListViewSet(GenericAPIView,
+                       views_mixin.BasicPermissionViewMixin,
                        views_mixin.BasicCreateModelMixin,
                        views_mixin.BasicListModelMixin,
                        views_mixin.BasicUpdateModelMixin,
@@ -99,6 +100,7 @@ class BasicListViewSet(GenericAPIView,
 
 
 class BasicInfoViewSet(GenericAPIView,
+                       views_mixin.BasicPermissionViewMixin,
                        views_mixin.BasicCreateModelMixin,
                        views_mixin.BasicRetrieveModelMixin,
                        views_mixin.BasicUpdateModelMixin,
@@ -179,7 +181,7 @@ class BasicInfoViewSet(GenericAPIView,
         return self.extra(request, *args, **kwargs)
 
 
-class BasePageView(View):
+class BasePageView(View, views_mixin.BasicPermissionViewMixin):
     """Html页面响应基类"""
     app = settings.WEB_APP  # 前端页面的根路径
     page = None  # html页面的相对路径，用于render函数渲染

@@ -10,7 +10,7 @@
 
 <body>
 <div class="login-form">
-    <form class="layui-form layui-form-pane">
+    <form class="layui-form layui-form-pane" lay-filter="login-form">
         <div class="layui-form-item">
             <label class="layui-form-label"><i class="layui-icon layui-icon-user"></i></label>
             <div class="layui-input-block">
@@ -25,55 +25,43 @@
                        autocomplete="off" class="layui-input">
             </div>
         </div>
+        <div class="layui-form-item">
+            <button type="button" class="layui-btn layui-btn-fluid" id="login-submit">登录</button>
+        </div>
     </form>
 </div>
-<script src="/phoenix-web/plugin/layui/layui.js"></script>
-<script>
-    layui.use(["form", "element", "jquery"], function () {
-        const element = layui.element,
-            form = layui.form,
-            $ = layui.jquery;
+<script src="/phoenix-web/plugin/jsencrypt.js"></script>
+<script src="/phoenix-web/plugin/layui/layui.all.js"></script>
+<script src="/phoenix-web/common/utils.js" type="module"></script>
+<script src="/phoenix-web/app/auth/login.js" type="module"></script>
+<script type="module">
+    import {getPublicKey, loginSubmit} from '/phoenix-web/app/auth/login.js'
+    import {blockFormSubmit} from '/phoenix-web/common/utils.js'
 
-        $("#login_submit").click(function () {
-            $("form").submit(function (event) {
-                event.preventDefault();
-            });
+    const $ = layui.jquery;
 
-            var username = $("#username").val(),
-                password = $("#password").val();
-            if (username === '' || password === '') {
-                layer.msg("请填写用户名和密码！")
-            } else {
-                var jsEncrypt = new JSEncrypt();
-                jsEncrypt.setPublicKey(publicKey);
-                password = jsEncrypt.encryptLong(password);
-                $.ajax({
-                    url: '{% url "login" %}',
-                    type: 'post',
-                    dataType: 'json',
-                    data: {
-                        username: username,
-                        password: password,
-                    },
-                    success: function (data) {
-                        if (data.status === '1'){
-                            window.location.href=data.url;
-                        }
-                        else if (data.status === '1002') {
-                            layer.msg("该账号登陆已失效，请重新登录！")
-                        }
-                        else if (data.status === '1004') {
-                            layer.msg("账号密码不匹配，登陆失败！")
-                        }
-                        else {
-                            layer.msg("登录失败，状态未知，请联系管理员！")
-                        }
-                    }
-                })
-            }
-        })
-
+    // 回车事件绑定提交按钮
+    $(document).keydown(function(event){
+        if(event.keyCode === 13){
+            $('#login-submit').click();
+        }
     });
+
+    // 登录按钮触发事件
+    $('#login-submit').click( function () {
+        blockFormSubmit();
+
+        const form_data = layui.form.val('login-form');
+
+        // 获取rsa公钥
+        const pubkey = getPublicKey();
+        let jsEncrypt = new JSEncrypt();
+        jsEncrypt.setPublicKey(pubkey);
+        // 获取加密后的密码串
+        form_data.password = jsEncrypt.encryptLong(form_data.password);
+
+        loginSubmit(form_data);
+    })
 </script>
 </body>
 </html>

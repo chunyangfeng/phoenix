@@ -34,62 +34,13 @@ class BasicResponseMixin:
             "data": "",
         }
 
-    # def set_error_response(self, error, reason, status=drf_status.HTTP_400_BAD_REQUEST):
-    #     """设置错误响应数据
-    #
-    #     Args:
-    #         error(str): 错误信息
-    #         reason(str): 错误原因
-    #         status(str): 状态码，默认为400
-    #
-    #     Returns:
-    #         response(Response): 响应数据
-    #     """
-    #     data = self.main_body
-    #     data["result"] = "Failed"
-    #     data["data"] = {
-    #         "error": error,
-    #         "reason": reason
-    #     }
-    #     return Response(data=data, status=status)
-    #
-    # def set_msg_response(self, msg, status=drf_status.HTTP_200_OK):
-    #     """设置响应数据
-    #
-    #     Args:
-    #         msg(str): 返回主体消息
-    #         status(str): 状态码，默认为200
-    #
-    #     Returns:
-    #         response(Response): 响应数据
-    #     """
-    #     data = self.main_body
-    #     data["result"] = "Success"
-    #     data["data"] = msg
-    #     return Response(data=data, status=status)
-    #
-    # def set_data_response(self, data, status=drf_status.HTTP_200_OK):
-    #     """设置响应数据
-    #
-    #     Args:
-    #         data(list): 返回主体消息
-    #         status(str): 状态码，默认为200
-    #
-    #     Returns:
-    #         response(Response): 响应数据
-    #     """
-    #     data = self.main_body
-    #     data["result"] = "ok"
-    #     data["data"] = data
-    #     data["total"] = len(data)
-    #     return Response(data=data, status=status)
-
-    def get_response(self, result, data, status=drf_status.HTTP_200_OK):
+    def get_response(self, result, data, extra=None, status=drf_status.HTTP_200_OK):
         """设置响应数据
 
         Args:
             result(str): 结果
             data(str|list): 数据主体
+            extra(dict): 额外的数据主体
             status(str): 状态码
 
         Returns:
@@ -98,6 +49,7 @@ class BasicResponseMixin:
         response = self.main_body
         response["result"] = result
         response["data"] = data
+        response["extra"] = extra or dict()
         response["total"] = len(data) if isinstance(data, list) else 0
         return Response(data=response, status=status)
 
@@ -216,10 +168,11 @@ class BasicCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
         """
         return None, ''
 
-    def _perform_create(self, serializer, *args, **kwargs):
+    def _perform_create(self, request, serializer, *args, **kwargs):
         """执行create处理流程
 
         Args:
+            request(Request): DRF Request
             serializer(serializer): DRF serializer
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
@@ -270,14 +223,15 @@ class BasicCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
             return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 获取serializer
-        serializer = self.get_serializer()
+        serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
             transaction.set_rollback(True)
-            return self.get_response('serializer is invalid', '序列化器校验失败', drf_status.HTTP_400_BAD_REQUEST)
+            return self.get_response('serializer is invalid', f'序列化器校验失败:{serializer.errors}',
+                                     drf_status.HTTP_400_BAD_REQUEST)
 
         # 执行创建
         try:
-            instances = self._perform_create(serializer, *args, **kwargs)
+            instances = self._perform_create(request, serializer, *args, **kwargs)
         except Exception as error:
             transaction.set_rollback(True)
             return self.get_response('Failed to create models', f'执行创建失败,错误信息为:{error}',
@@ -536,8 +490,9 @@ class BasicRetrieveModelMixin(mixins.RetrieveModelMixin, BasicResponseMixin):
         Returns:
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
+            response(Response): 响应数据
         """
-        return None, ''
+        return None, '', ''
 
     def _post_process_retrieve(self, request, instance, *args, **kwargs):
         """retrieve查询后处理
@@ -696,7 +651,6 @@ class BasicPatchModelMixin(BasicResponseMixin):
 class BasicPermissionViewMixin:
     """权限校验混合类"""
     permission_class = None  # 权限校验器
-    permission_module = 'phoenix'  # 权限模块
     permission_name = PER_BASE  # 权限名称
 
 

@@ -147,3 +147,10 @@ WEB_APP = 'app/'
 
 # 页面IFRAME嵌套
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+# 公钥
+PUBLIC_KEY = '-----BEGIN PUBLIC KEY-----' \
+             'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDFK8/0WUrI+n4aCaP4DQpF0lW5h28iNrGJwTkf/' \
+             'eJAYFhJ3lzWb7WlYJvz/3+kPq0/SHbTP0DtAvFQwb5PfrZqaJF5aBt8XGHbe7DNp6PRDrpTbcuKOg+xpZn9nBoNEB8MSL/' \
+             'eWprKPK3QXD1KjZzxeWB3VhmTWg8vKA4cMM+cVwIDAQAB' \
+             '-----END PUBLIC KEY-----'

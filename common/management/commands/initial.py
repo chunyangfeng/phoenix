@@ -16,6 +16,8 @@ from django.core.management import BaseCommand
 from common.models import models
 from common.utils.formatter import output_formatter
 
+from common.management.initial_data.users import BUILTIN_USER
+
 
 class InitialCommandMixin:
     """初始化命令混合类"""
@@ -35,9 +37,12 @@ class InitialCommandMixin:
         """初始化用户组"""
         print(output_formatter("用户组数据初始化完成"))
 
-    def create_super_user(self):
-        """初始化超级管理员"""
-        print(output_formatter("超级管理员数据初始化完成"))
+    def create_builtin_user(self):
+        """初始化内置用户"""
+        for username, data in BUILTIN_USER.items():
+            models.User.objects.get_or_create(username=username, defaults=data)
+
+        print(output_formatter("内置用户初始化完成"))
 
     def run(self):
         """执行函数入口
@@ -46,7 +51,7 @@ class InitialCommandMixin:
         self.create_permission()
         self.create_role()
         self.create_user_group()
-        self.create_super_user()
+        self.create_builtin_user()
 
 
 class Command(BaseCommand, InitialCommandMixin):
