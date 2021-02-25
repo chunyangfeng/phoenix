@@ -27,6 +27,8 @@ const loginSuccessCallback = (response, status) => {
     parent.layui.layer.msg(response.data);
     const index = parent.layer.getFrameIndex(window.name);
     parent.layui.layer.close(index);
+    // 登录成功后重定向至后台管理首页
+    parent.window.location.href = urls.dashboardPage;
 };
 
 // 登录提交

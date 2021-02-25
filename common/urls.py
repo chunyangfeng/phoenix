@@ -16,5 +16,6 @@ from common import views
 urlpatterns = [
     path('login/page', views.UserLoginPageView.as_view(), name='login_page'),  # 用户登录页面
     path('login', views.UserLoginView.as_view(), name='login'),  # 用户登录
-    path('public-key', views.AuthPublicKeyView.as_view(), name='pubkey'),  # 获取加密公钥
+    path('public-key', views.AuthPublicKeyView.as_view(), name='pubkey'),  # 获取RSA公钥
+    path('logout', views.LogoutView.as_view(), name='logout'),  # 退出登录
 ]

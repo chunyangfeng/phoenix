@@ -6,5 +6,6 @@
 
 export const permissions = {
     BASE: 'phoenix',
+    LOGOUT: 'ResLogout',
 };
 

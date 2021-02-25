@@ -12,8 +12,8 @@ Blog: http://www.fengchunyang.com
 重要说明:
 """
 from django.urls import path
-from .views import DashboardPageView
+# from .views import DashboardPageView
 
 urlpatterns = [
-    path('dashboard', DashboardPageView.as_view(), name='dashboard-page'),
+    # path('dashboard', DashboardPageView.as_view(), name='dashboard-page'),
 ]

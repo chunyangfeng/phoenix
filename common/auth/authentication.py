@@ -33,18 +33,30 @@ class UserAccessAuthentication(authentication.BasicAuthentication):
             username(str): 用户名
             token(object): token对象
         """
-        token = request.session.get(params.SESSION_TOKEN_KEY)
+        print(request.session)
+        token = request.session.get(params.SESSION_KEY, dict()).get(params.SESSION_TOKEN_KEY)
 
         if not token:
-            del request.session
             raise exceptions.AuthenticationFailed('用户认证失败')
 
         try:
             token_obj = UserToken.objects.get(token=token, is_expired=False)
         except UserToken.DoesNotExist:
+            del request.session
             raise exceptions.AuthenticationFailed('用户认证失败')
 
         return token_obj.user.username, token_obj
+
+    def authenticate_header(self, request):
+        """authenticate_header
+
+        Args:
+            request:
+
+        Returns:
+
+        """
+        return 'Unauthentication'
 
 
 class NoAuthentication(authentication.BasicAuthentication):

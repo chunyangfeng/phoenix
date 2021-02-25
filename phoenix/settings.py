@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'common.models',
     'common',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -139,8 +140,8 @@ STATICFILES_DIRS = (
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'common.middleware.csrf_exempt.CsrfExemptSessionAuthentication',
-        'common.auth.authentication.UserAccessAuthentication',  # 全局认证配置
-    )
+        # 'common.auth.authentication.UserAccessAuthentication',  # 全局认证配置
+    ),
 }
 
 WEB_APP = 'app/'

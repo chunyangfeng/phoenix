@@ -25,3 +25,8 @@ class SerializerDataCache:
         self._cache = data
 
 
+class DoNothingSerializer(serializers.ModelSerializer):
+    """什么都不做的序列化器，用于部分不需要序列化数据的接口"""
+    pass
+
+

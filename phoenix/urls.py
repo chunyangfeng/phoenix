@@ -19,7 +19,7 @@ from django.conf import settings
 
 from common import urls as common_urls
 from blog import urls as blog_urls
-from blog.index.views import IndexPageView
+from blog.index.views import IndexPageView, AuthForbiddenPageView, AuthNoPermissionPageView
 
 urlpatterns = [
     # 处理静态资源
@@ -30,6 +30,8 @@ urlpatterns = [
 
     # 各app的url主路由
     path('', IndexPageView.as_view(), name='index-page'),
+    path('/errors/401', AuthForbiddenPageView.as_view(), name='401'),
+    path('/errors/403', AuthNoPermissionPageView.as_view(), name='403'),
     path('common/', include(common_urls)),
     path('blog/', include(blog_urls)),
 ]

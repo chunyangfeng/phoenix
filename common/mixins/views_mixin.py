@@ -9,11 +9,19 @@ Record:
 
 Site: http://www.fengchunyang.com
 """
+import json
+
 from django.db import transaction
+from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework import status as drf_status
 from rest_framework import mixins
+from django.shortcuts import HttpResponseRedirect
+from rest_framework.settings import api_settings
 
+from common.exceptions.authentication import UnauthorizedException
+from common.models.models import UserToken
+from common.params import params
 from common.params.permissions import PER_BASE
 
 
@@ -34,7 +42,7 @@ class BasicResponseMixin:
             "data": "",
         }
 
-    def get_response(self, result, data, extra=None, status=drf_status.HTTP_200_OK):
+    def set_response(self, result, data, extra=None, status=drf_status.HTTP_200_OK):
         """设置响应数据
 
         Args:
@@ -119,21 +127,21 @@ class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
         error, reason = self._pre_process_list(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # list请求
         try:
             response = self._perform_list(request, *args, **kwargs)
         except Exception as error:
             transaction.set_rollback(True)
-            return self.get_response('Failed to get model list', f'获取资源数据列表失败,错误信息为{error}',
+            return self.set_response('Failed to get model list', f'获取资源数据列表失败,错误信息为{error}',
                                      drf_status.HTTP_400_BAD_REQUEST)
 
         # list请求后处理
         error, reason, response = self._post_process_list(request, response, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
         return response
 
 
@@ -214,19 +222,19 @@ class BasicCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
         error, reason = self._pre_process_create(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 创建请求预校验
         error, reason = self._pre_validate_create(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 获取serializer
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
             transaction.set_rollback(True)
-            return self.get_response('serializer is invalid', f'序列化器校验失败:{serializer.errors}',
+            return self.set_response('serializer is invalid', f'序列化器校验失败:{serializer.errors}',
                                      drf_status.HTTP_400_BAD_REQUEST)
 
         # 执行创建
@@ -234,15 +242,15 @@ class BasicCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
             instances = self._perform_create(request, serializer, *args, **kwargs)
         except Exception as error:
             transaction.set_rollback(True)
-            return self.get_response('Failed to create models', f'执行创建失败,错误信息为:{error}',
+            return self.set_response('Failed to create models', f'执行创建失败,错误信息为:{error}',
                                      drf_status.HTTP_400_BAD_REQUEST)
 
         # 创建后处理
         error, reason = self._post_process_create(request, instances, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
-        return self.get_response("create success", "创建成功", drf_status.HTTP_201_CREATED)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+        return self.set_response("create success", "创建成功", drf_status.HTTP_201_CREATED)
 
 
 class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
@@ -320,37 +328,37 @@ class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
         error, reason = self._pre_process_update(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 获取序列化器
         serializer = self.get_serializer()
         if not serializer.is_valid():
             transaction.set_rollback(True)
-            return self.get_response('Serializer validate failed', '序列化器校验失败', drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response('Serializer validate failed', '序列化器校验失败', drf_status.HTTP_400_BAD_REQUEST)
 
         # 更新前预校验
         error, reason = self._validate_update(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 执行更新操作
         try:
             error, reason = self._perform_update(serializer, *args, **kwargs)
         except Exception as error:
             transaction.set_rollback(True)
-            return self.get_response('Update failed', f'更新失败，错误信息为:{error}', drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response('Update failed', f'更新失败，错误信息为:{error}', drf_status.HTTP_400_BAD_REQUEST)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 更新后预处理
         error, reason = self._post_process_update(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.get_response('update success', '更新成功')
+        return self.set_response('update success', '更新成功')
 
 
 class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
@@ -430,36 +438,36 @@ class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
         error, reason = self._pre_process_delete(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 删除预校验
         error, reason = self._validate_delete(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 获取序列化器
         serializer = self.get_serializer()
         if not serializer.is_valid():
             transaction.set_rollback(True)
-            return self.get_response('Serializer validate failed', '序列化器校验失败', drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response('Serializer validate failed', '序列化器校验失败', drf_status.HTTP_400_BAD_REQUEST)
 
         # 执行删除
         try:
             error, reason, instances = self._perform_delete(self, serializer, *args, **kwargs)
         except Exception as error:
             transaction.set_rollback(True)
-            return self.get_response('Delete failed', f'删除失败，错误信息为:{error}', drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response('Delete failed', f'删除失败，错误信息为:{error}', drf_status.HTTP_400_BAD_REQUEST)
         if error:
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 删除后处理
         error, reason = self._post_process_delete(request, instances, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.get_response('delete success', '删除成功', drf_status.HTTP_200_OK)
+        return self.set_response('delete success', '删除成功', drf_status.HTTP_200_OK)
 
 
 class BasicRetrieveModelMixin(mixins.RetrieveModelMixin, BasicResponseMixin):
@@ -526,19 +534,19 @@ class BasicRetrieveModelMixin(mixins.RetrieveModelMixin, BasicResponseMixin):
         error, reason = self._pre_process_retrieve(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 查询
         error, reason, response = self._perform_retrieve(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # 查询后处理
         error, reason = self._post_process_retrieve(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         return response
 
@@ -587,7 +595,7 @@ class BasicPatchModelMixin(BasicResponseMixin):
             reason(str): 错误原因，没有错误为''
             response(Response): 请求响应数据
         """
-        response = self.get_response("patch success", "patch请求成功")
+        response = self.set_response("patch success", "patch请求成功")
         return None, '', response
 
     def _post_process_patch(self, request, *args, **kwargs):
@@ -621,37 +629,127 @@ class BasicPatchModelMixin(BasicResponseMixin):
         error, reason = self._pre_process_patch(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # patch请求预校验
         error, reason = self._validate_patch(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
         # patch请求执行
         try:
             error, reason = self._perform_patch(request, *args, **kwargs)
             if error:
                 transaction.set_rollback(True)
-                return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+                return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
         except Exception as error:
             transaction.set_rollback(True)
-            return self.get_response('Failed to patch', f'patch请求处理失败,错误原因:{error}')
+            return self.set_response('Failed to patch', f'patch请求处理失败,错误原因:{error}')
 
         # patch请求后处理
         error, reason = self._post_process_patch(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
-            return self.get_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response(error, reason, drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.get_response('ok', '成功')
+        return self.set_response('ok', '成功')
 
 
-class BasicPermissionViewMixin:
-    """权限校验混合类"""
-    permission_class = None  # 权限校验器
+class BasicAuthPermissionViewMixin(BasicResponseMixin):
+    """授权认证/权限校验混合类"""
     permission_name = PER_BASE  # 权限名称
+    authentication_enable = True  # 是否启用认证检查
+    permission_enable = True  # 是否启用权限检查
+
+    def dispatch(self, request, *args, **kwargs):
+        """路由分发
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        # 自定义认证校验
+        is_auth = self.check_authentication(request, *args, **kwargs)
+        if not is_auth:
+            return HttpResponseRedirect(reverse('401'))
+
+        # 自定义权限校验
+        has_perm = self.check_permission(request, *args, **kwargs)
+        if not has_perm:
+            return HttpResponseRedirect(reverse('403'))
+
+        response = super().dispatch(request, *args, **kwargs)
+        return response
+
+    @staticmethod
+    def render_unauthorized_page():
+        """未认证页面
+
+        Returns:
+            HttpResponse: response
+        """
+        return HttpResponseRedirect(reverse('401'))
+
+    @staticmethod
+    def render_no_permission_page():
+        """未授权页面
+
+        Returns:
+            HttpResponse: response
+        """
+        return HttpResponseRedirect(reverse('403'))
+
+    def check_authentication(self, request, *args, **kwargs):
+        """认证检查
+
+        Args:
+            request(Request): request
+            *args(list): args
+            **kwargs(dict): kwargs
+
+        Returns:
+            is_auth(bool): 是否认证
+
+        Raises:
+            UnauthorizedException: 未认证
+        """
+        is_auth = True
+        if self.authentication_enable:
+
+            token = request.session.get(params.SESSION_TOKEN_KEY)
+
+            if not token:
+                is_auth = False
+
+            try:
+                UserToken.objects.get(token=token, is_expired=False)
+            except UserToken.DoesNotExist:
+                del request.session
+                is_auth = False
+
+        return is_auth
+
+    def check_permission(self, request, *args, **kwargs):
+        """权限检查
+
+        Args:
+            request(Request): request
+            *args(list): args
+            **kwargs(dict): kwargs
+
+        Returns:
+
+        """
+        has_perm = True
+        if self.permission_enable:
+            pass
+        return has_perm
+
 
 
 

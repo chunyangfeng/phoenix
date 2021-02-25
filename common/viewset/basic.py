@@ -16,9 +16,11 @@ from django.views import View
 from common.mixins import views_mixin
 from rest_framework.generics import GenericAPIView
 
+from common.mixins.views_mixin import BasicResponseMixin
 
-class BasicListViewSet(GenericAPIView,
-                       views_mixin.BasicPermissionViewMixin,
+
+class BasicListViewSet(views_mixin.BasicAuthPermissionViewMixin,
+                       GenericAPIView,
                        views_mixin.BasicCreateModelMixin,
                        views_mixin.BasicListModelMixin,
                        views_mixin.BasicUpdateModelMixin,
@@ -99,8 +101,8 @@ class BasicListViewSet(GenericAPIView,
         return self.extra(request, *args, **kwargs)
 
 
-class BasicInfoViewSet(GenericAPIView,
-                       views_mixin.BasicPermissionViewMixin,
+class BasicInfoViewSet(views_mixin.BasicAuthPermissionViewMixin,
+                       GenericAPIView,
                        views_mixin.BasicCreateModelMixin,
                        views_mixin.BasicRetrieveModelMixin,
                        views_mixin.BasicUpdateModelMixin,
@@ -181,7 +183,7 @@ class BasicInfoViewSet(GenericAPIView,
         return self.extra(request, *args, **kwargs)
 
 
-class BasePageView(View, views_mixin.BasicPermissionViewMixin):
+class BasePageView(views_mixin.BasicAuthPermissionViewMixin, View):
     """Html页面响应基类"""
     app = settings.WEB_APP  # 前端页面的根路径
     page = None  # html页面的相对路径，用于render函数渲染

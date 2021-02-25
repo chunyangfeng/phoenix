@@ -6,10 +6,33 @@
 */
 import {permissions} from "../config/permission.js";
 import {globals} from "../config/params.js";
+import {urls} from "../config/urls.js";
+
+// 403未授权处理
+const authForbidden = () => {
+    layui.layer.msg("你没有权限访问这个页面")
+};
+
+// 401未认证处理
+const noPermission = () => {
+    localStorage.removeItem('token');
+    layui.layer.msg("你还没有登录系统，无法访问这个页面");
+};
+
+// 400错误处理
+const badRequest = (error, reason) => {
+    layui.layer.msg(error+": "+reason)
+};
 
 // 请求失败回调
 const error_callback = (request, status, error) => {
-    layer.msg(request)
+    if (request.status === 403) {
+        authForbidden();
+    } else if (request.status === 401) {
+        noPermission();
+    } else if (request.status === 400) {
+        badRequest();
+    }
 };
 
 export const apiConfig = {
@@ -28,13 +51,19 @@ export const api = (config,  perm = permissions.BASE) => {
     // ajax响应的数据
     let data = undefined;
 
+    // 获取当前登录的用户信息，获取失败则为空字符串
+    const token = localStorage.getItem('token') || '';
+
     // 执行ajax请求
+    const loadIndex = layui.layer.load(1);
+
     layui.jquery.ajax({
         url: globals.apiPrefix + config.url,
         type: config.method,
         async: config.async,
         headers: {
-            AuthPermission: perm
+            AUTH_PERMISSION: perm,
+            AUTH_TOKEN: token
         },
         dataType: config.dataType,
         data: config.data,
@@ -49,13 +78,17 @@ export const api = (config,  perm = permissions.BASE) => {
             if (config.s_callback) {
                 config.s_callback(response, status)
             }
-            data = response
+            data = response;
+
+            layui.layer.close(loadIndex);  // 无论执行是否成功，都会解开load
         },
         error: function (request, status, error) {
             // 请求失败后的回调处理
             if (config.e_callback) {
                 config.e_callback(request, status, error)
             }
+
+            layui.layer.close(loadIndex);  // 无论执行是否成功，都会解开load
         },
         complete: function (request, status) {
             // 请求完成后的回调处理，无论请求是否成功

@@ -5,7 +5,15 @@
 */
 
 export const urls = {
+    indexPage: "/",
+
     loginPage: "/common/login/page",
     publicKey: "/common/public-key",
     loginModule: "/common/login",
+    logoutModule: "/common/logout",
+
+    dashboardPage: "/blog/mgt/dashboard/page",
+
+    authForbidden: "/errors/401",
+    noPermission: "/errors/403",
 };
