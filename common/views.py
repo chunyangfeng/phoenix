@@ -72,7 +72,7 @@ class UserLoginView(BasicInfoViewSet):
         password = request.data.get('password')
         if not any([username, password]):
             return self.set_response('username or password is required', '用户名或密码不能为空',
-                                     drf_status.HTTP_400_BAD_REQUEST)
+                                     status=drf_status.HTTP_400_BAD_REQUEST)
 
         # 登录流程
         private_key = request.session.get(params.RSA_SESSION_PRIVATE_KEY)
@@ -82,7 +82,7 @@ class UserLoginView(BasicInfoViewSet):
         try:
             user = User.objects.get(username=username, password=encrypt_password, allow_login=True)
         except User.DoesNotExist:
-            return self.set_response('user login failed', '用户登录失败', drf_status.HTTP_400_BAD_REQUEST)
+            return self.set_response('user login failed', '用户登录失败', status=drf_status.HTTP_400_BAD_REQUEST)
         token = encryption.get_md5(f'{username}-{encrypt_password}-{now.strftime(params.DATETIME_STANDARD)}')
         UserToken.objects.update_or_create(user=user, defaults={
             'token': token,
@@ -92,7 +92,8 @@ class UserLoginView(BasicInfoViewSet):
         request.session[params.SESSION_TOKEN_KEY] = token
         extra = {
             'redirect': reverse('dashboard-page'),
-            'token': token
+            'token': token,
+            'username': f'{user.username}({user.real_name})',
         }
         return self.set_response(result='success', data='登录成功', extra=extra)
 

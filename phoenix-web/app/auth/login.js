@@ -20,9 +20,10 @@ const loginSuccessCallback = (response, status) => {
     // 缓存登录后的token
     const token = localStorage.getItem('token');
     if (token) {
-        localStorage.removeItem('token')
+        localStorage.clear();
     }
     localStorage.setItem('token', response.extra.token);
+    localStorage.setItem('username', response.extra.username);
 
     parent.layui.layer.msg(response.data);
     const index = parent.layer.getFrameIndex(window.name);

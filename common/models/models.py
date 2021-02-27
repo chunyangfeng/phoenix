@@ -159,3 +159,8 @@ class SystemParameter(BasicModel):
     class Meta:
         db_table = 'common_system_parameter'
         verbose_name = '系统参数表'
+
+
+class SystemLogRecord(BasicModel):
+    """系统日志记录"""
+    pass

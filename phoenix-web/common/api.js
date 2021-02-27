@@ -15,7 +15,7 @@ const authForbidden = () => {
 
 // 401未认证处理
 const noPermission = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
     layui.layer.msg("你还没有登录系统，无法访问这个页面");
 };
 
@@ -24,20 +24,26 @@ const badRequest = (error, reason) => {
     layui.layer.msg(error+": "+reason)
 };
 
-// 请求失败回调
+// 默认请求失败回调
 const error_callback = (request, status, error) => {
     if (request.status === 403) {
         authForbidden();
     } else if (request.status === 401) {
         noPermission();
     } else if (request.status === 400) {
-        badRequest();
+        const response = request.responseJSON;
+        badRequest(response.result, response.data);
     }
+};
+
+// 默认请求成功回调
+const success_callback = (response, status) => {
+    layui.layer.msg(`${response.result}: ${response.data}`)
 };
 
 export const apiConfig = {
     url: '/',
-    s_callback: undefined,
+    s_callback: success_callback,
     b_callback: undefined,
     c_callback: undefined,
     e_callback: error_callback,

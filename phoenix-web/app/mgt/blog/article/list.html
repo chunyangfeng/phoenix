@@ -1,0 +1,47 @@
+{% extends 'base/basic.html' %}
+
+{% block title %}文章列表{% endblock %}
+
+{% block content %}
+    <fieldset class="layui-elem-field">
+        <div class="layui-field-box">
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="title" placeholder="文章标题..."
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="content" placeholder="正文关键字..."
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="classify" lay-filter="classify" lay-search="">
+                                    <option value="">--选择分类--</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="tag" lay-filter="tag" lay-search="">
+                                    <option value="">--选择标签--</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button type="button" class="layui-btn layui-btn-sm">查询</button>
+                            <button type="reset" class="layui-btn layui-btn-sm layui-btn-normal">重置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-row">
+                <table id="article-list-table" lay-filter="articleListTableFilter"></table>
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}
+
+{% block footer-scripts %}
+    <script src="/phoenix-web/app/mgt/blog/article/list.js" type="module"></script>
+{% endblock %}

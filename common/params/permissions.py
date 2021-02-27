@@ -10,3 +10,5 @@
 重要说明:
 """
 PER_BASE = 'phoenix'  # 根权限，属于此权限的应用，直接略过权限校验
+
+PER_ARTICLE = 'Article'  # 文章列表接口权限
