@@ -23,3 +23,19 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Article
         fields = '__all__'
+
+
+class ArticleClassifySerializer(serializers.ModelSerializer):
+    """博客文章分类序列化器"""
+
+    class Meta:
+        model = models.ArticleClassify
+        fields = '__all__'
+
+
+class ArticleTagSerializer(serializers.ModelSerializer):
+    """博客文章标签序列化器"""
+
+    class Meta:
+        model = models.ArticleTag
+        fields = '__all__'

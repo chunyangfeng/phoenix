@@ -44,8 +44,8 @@ class Article(CommonDataModel):
     """博客文章表，存储markdown格式内容"""
     title = models.CharField(verbose_name="文章标题", max_length=100, unique=True)
     classify = models.ForeignKey("ArticleClassify", verbose_name="博客分类", on_delete=models.SET_NULL,
-                                 null=True, related_name='article')
-    tags = models.ManyToManyField("ArticleTag", verbose_name="博客标签", related_name='article')
+                                 null=True, related_name='list')
+    tags = models.ManyToManyField("ArticleTag", verbose_name="博客标签", related_name='list')
     desc = models.TextField(verbose_name="内容简介")
     content = models.TextField(verbose_name="文章正文")
     creator = models.CharField(verbose_name="作者", max_length=64)

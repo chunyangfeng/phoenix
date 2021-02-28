@@ -12,13 +12,21 @@ Blog: http://www.fengchunyang.com
 重要说明:
 """
 from django.urls import path
+
+from common.params import params
 from . import views
 
 urlpatterns = [
     path('dashboard/page', views.DashboardPageView.as_view(), name='dashboard-page'),
     path('article/list/page', views.ArticleListPageView.as_view(), name='article-list-page'),
-    path('article/audit/page', views.ArticleAuditPageView.as_view(), name='article-audit-page'),
+    path('article/data/page', views.ArticleDataPageView.as_view(), name='article-data-page'),
+    path('article/data/classify/page', views.ArticleDataClassifyPageView.as_view(), name='article-data-classify-page'),
+    path('article/data/tag/page', views.ArticleDataTagPageView.as_view(), name='article-data-tag-page'),
 
     path('article/list', views.ArticleListApiView.as_view(), name='article-list-api'),  # 文章列表接口
-    path('article/info/<int:pk>', views.ArticleInfoApiView.as_view(), name='article-info-api'),  # 文章详情接口
+    path(f'article/info/<int:{params.MODEL_UNIQUE_KEY}>', views.ArticleInfoApiView.as_view(),
+         name='article-info-api'),  # 文章详情接口
+    path('article/data/classify/list', views.ArticleClassifyListApiView.as_view(),
+         name='article-classify-api'),  # 文章分类列表接口
+    path('article/data/tag/list', views.ArticleTagListApiView.as_view(), name='article-tag-api'),  # 文章标签列表接口
 ]

@@ -15,3 +15,7 @@ Blog: http://www.fengchunyang.com
 
 class HttpContentTypeException(Exception):
     pass
+
+
+class ModelPrimaryKeyError(Exception):
+    pass

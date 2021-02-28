@@ -14,9 +14,14 @@ export const urls = {
 
     dashboardPage: "/blog/mgt/dashboard/page",
     articleListPage: "/blog/mgt/article/list/page",
-    articleAuditPage: "/blog/mgt/article/audit/page",
+    articleClassifyPage: "/blog/mgt/article/data/classify/page",
+    articleTagPage: "/blog/mgt/article/data/classify/page",
     articleListApi: "/blog/mgt/article/list",
     articleInfoApi: "/blog/mgt/article/info",
+    tagListApi: "/blog/mgt/article/data/tag/list",
+    tagInfoApi: "/blog/mgt/article/data/tag/info",
+    classifyListApi: "/blog/mgt/article/data/classify/list",
+    classifyInfoApi: "/blog/mgt/article/data/classify/info",
 
     authForbidden: "/errors/401",
     noPermission: "/errors/403",

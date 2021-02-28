@@ -4,7 +4,7 @@
 ** Blog: http://www.fengchunyang.com
 */
 import {urls} from "../../../../config/urls.js";
-import {generateLaySwitch} from "../../../../common/utils.js";
+import {generateLaySwitch, layTableReload} from "../../../../common/utils.js";
 import {apiConfig} from "../../../../common/api.js";
 import {api} from "../../../../common/api.js";
 import {permissions} from "../../../../config/permission.js";
@@ -16,6 +16,7 @@ const params = {
     tableElem: '#article-list-table',
     tableID: 'articleListTable',
     tableFilter: 'articleListTableFilter',
+    searchForm: 'articleSearchForm',
 };
 
 // 替换table中is_publish字段的显示样式
@@ -62,9 +63,17 @@ const initialArticleListTable = ()=> {
     })
 };
 
-// 监听表格事件
-const monitorTableEvent = () => {
+// 监听表格发表/置顶switch切换事件
+const monitorTableEvent = (filter, data) => {
+    let json_data = {};
+    json_data[filter] = data.elem.checked ? 1 : 0;  // 如果当前为关闭状态则赋值0，否则赋值1
 
+    let config = Object.assign({}, apiConfig);
+    config.url = `${urls.articleInfoApi}/${data.elem.getAttribute('pk')}`;
+    config.method = 'patch';
+    config.data = json_data;
+
+    api(config, permissions.ARTICLE);
 };
 
 // 页面加载后的动态操作
@@ -85,13 +94,18 @@ layui.jquery(document).ready(function () {
 
     // 监听table表格switch切换事件
     layui.form.on(`switch(${params.isPublish})`, function (data) {
-        let config = Object.assign({}, apiConfig);
-        config.url = `${urls.articleInfoApi}/${data.elem.getAttribute('pk')}`;
-        config.method = 'patch';
-        config.data = {
-            is_publish: data.value
-        };
-        api(config, permissions.ARTICLE);
+        monitorTableEvent(params.isPublish, data);
     });
+
+    // 监听table表格switch切换事件
+    layui.form.on(`switch(${params.isTop})`, function (data) {
+        monitorTableEvent(params.isTop, data);
+    });
+
+    // 监听搜索表单提交事件
+    layui.form.on(`submit(${params.searchForm})`, function (data) {
+        layTableReload(params.tableID, data.field);
+        return false
+    })
 });
 

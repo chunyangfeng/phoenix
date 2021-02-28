@@ -65,3 +65,29 @@ export const generateLaySwitch = (name, text, value, event, filter, pk) => {
         `lay-event=${event} lay-filter=${filter} ${is_check} pk=${pk}>`
 };
 
+// layui table重载
+export const layTableReload = (tableID, query=null) => {
+    if (tableID) {
+        layui.table.reload(tableID, {
+            where: query, //设定异步数据接口的额外参数
+            page: {curr: 1,}
+        });
+    } else {
+        layui.layer.msg('There is no table id')
+    }
+};
+
+// layui table自定义工具栏图标
+export const layTableToolBar = {
+    add: {
+        title: '新增', // 标题
+        layEvent: 'TABLE_ADD', // 事件名，用于 toolbar 事件中使用
+        icon: 'layui-icon-add-1', // 图标类名
+    },
+    delete: {
+        title: '删除',
+        layEvent: 'TABLE_DELETE',
+        icon: 'layui-icon-delete',
+    }
+};
+

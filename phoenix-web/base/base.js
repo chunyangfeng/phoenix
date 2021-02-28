@@ -6,7 +6,7 @@
 import {urls} from "../config/urls.js";
 import {api, apiConfig} from "../common/api.js";
 import {permissions} from "../config/permission.js";
-import {getRelativePath, dynamicClock} from "../common/utils.js";
+import {getRelativePath, dynamicClock, layTableReload} from "../common/utils.js";
 
 
 // 登出成功后的回调
@@ -72,5 +72,13 @@ layui.jquery(document).ready(function () {
     initialUserInfo();
 
     initialClock();
+
+    // 当reset按钮被点击时，如果是表格的搜索表单，则重载表格
+    layui.jquery(':reset').click(function () {
+        const tableID = this.getAttribute('tableID');
+        if (tableID) {
+            layTableReload(tableID);
+        }
+    });
 });
 

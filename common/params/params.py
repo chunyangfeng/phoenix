@@ -72,3 +72,10 @@ SESSION_KEY = 'authentication'
 SESSION_TOKEN_KEY = 'token'
 RSA_SESSION_PRIVATE_KEY = 'RSA_PRIVATE_KEY'
 
+# Model settings
+MODEL_UNIQUE_KEY = 'pk'
+
+# 前端分页查询字符串
+PAGINATE_PAGE = 'page'
+PAGINATE_LIMIT = 'limit'
+

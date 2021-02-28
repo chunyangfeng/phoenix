@@ -13,19 +13,21 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views import View
 
+from common.exceptions.http import ModelPrimaryKeyError
 from common.mixins import views_mixin
 from rest_framework.generics import GenericAPIView
 
 from common.mixins.views_mixin import BasicResponseMixin
+from common.params import params
 
 
 class BasicListViewSet(views_mixin.BasicAuthPermissionViewMixin,
                        GenericAPIView,
-                       views_mixin.BasicCreateModelMixin,
+                       views_mixin.BasicBulkCreateModelMixin,
                        views_mixin.BasicListModelMixin,
-                       views_mixin.BasicUpdateModelMixin,
-                       views_mixin.BasicDestroyModelMixin,
-                       views_mixin.BasicPatchModelMixin):
+                       views_mixin.BasicBulkUpdateModelMixin,
+                       views_mixin.BasicBulkDestroyModelMixin,
+                       views_mixin.BasicBulkPatchModelMixin):
     """
     批量进行资源的CRUD操作，支持以下操作：
     1.资源的批量创建
@@ -34,6 +36,70 @@ class BasicListViewSet(views_mixin.BasicAuthPermissionViewMixin,
     4.资源的批量删除
     5.资源的批量处理（通过patch方法进行额外的逻辑控制，比如字段查重等）
     """
+
+    @staticmethod
+    def _clear_query_params(value):
+        """清洗查询字符串中的异常字符
+        1.undefined/null: None
+        2.左右两侧空格: ''
+        3.'true'/'false': True/False
+
+        Args:
+            value(str): 待处理字符
+
+        Returns:
+            value(str): 清洗完毕后的值
+        """
+        if value in ('undefined', 'null'):
+            value = None
+        if value == 'true':
+            value = True
+        if value == 'false':
+            value = False
+        value = value.rstrip(' ')
+        value = value.lstrip(' ')
+        return value
+
+    def initial_query_params(self):
+        """初始化查询参数"""
+        self.request.query_params._mutable = True  # 将QueryDict修改为可变
+
+        _pop_key = list()
+
+        for key, value in self.request.query_params.items():
+            # 清洗value
+            value = self._clear_query_params(value)
+
+            if value is None or len(value) == 0:
+                _pop_key.append(key)
+
+        # 如果value没有传值，则从查询参数中删除
+        for pop_key in _pop_key:
+            self.request.query_params.pop(pop_key)
+
+        self.request.query_params._mutable = False
+
+    def filter_queryset(self, queryset):
+        """过滤QuerySet
+
+        Args:
+            queryset(QuerySet): QuerySet
+
+        Returns:
+            QuerySet: 过滤后的QuerySet
+        """
+        self.initial_query_params()
+
+        _query_params = dict()
+
+        # 处理查询条件
+        for key, value in self.request.query_params.items():
+            if key not in (params. PAGINATE_PAGE, params.PAGINATE_LIMIT):
+                value = self._clear_query_params(value)
+                _query_params[key] = value
+        queryset = queryset.filter(**_query_params)
+
+        return queryset
 
     def get(self, request, *args, **kwargs):
         """批量获取资源数据
@@ -114,8 +180,26 @@ class BasicInfoViewSet(views_mixin.BasicAuthPermissionViewMixin,
     2.资源查询
     3.资源更新
     4.资源删除
-    5.资源处理（通过patch方法进行额外的逻辑控制，比如字段查重等）
+    5.资源处理（通过patch方法进行额外的逻辑控制，比如字段查重、局部更新等）
     """
+
+    def get_object(self, *args, **kwargs):
+        """获取models.Model对象
+
+        Args:
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            instance(models.Model): 单个model实例对象
+        """
+        pk = kwargs.get(params.MODEL_UNIQUE_KEY)
+
+        if not pk:
+            raise ModelPrimaryKeyError('There is no primary key settled')
+
+        instance = self.get_queryset().get(**{params.MODEL_UNIQUE_KEY: pk})
+        return instance
 
     def get(self, request, *args, **kwargs):
         """获取资源数据

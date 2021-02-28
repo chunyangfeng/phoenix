@@ -16,7 +16,7 @@ layui.use('element', function () {
             layui.layer.open({
                 type: 2,
                 title: '登录',
-                id: 'login_iframe',
+                id: 'loginIframe',
                 skin: 'layui-layer-molv',
                 area: ['40rem', '30rem'],
                 content: urls.loginPage,

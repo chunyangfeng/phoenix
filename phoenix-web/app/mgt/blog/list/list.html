@@ -10,27 +10,27 @@
                     <form class="layui-form">
                         <div class="layui-form-item">
                             <div class="layui-input-inline">
-                                <input type="text" name="title" placeholder="文章标题..."
+                                <input type="text" name="title__icontains" placeholder="文章标题..."
                                        autocomplete="off" class="layui-input">
                             </div>
                             <div class="layui-input-inline">
-                                <input type="text" name="content" placeholder="正文关键字..."
+                                <input type="text" name="content__icontains" placeholder="正文关键字..."
                                        autocomplete="off" class="layui-input">
                             </div>
                             <div class="layui-input-inline">
-                                <select name="classify" lay-filter="classify" lay-search="">
+                                <select name="classify__name" lay-filter="classify" lay-search="">
                                     <option value="">--选择分类--</option>
                                 </select>
                             </div>
                             <div class="layui-input-inline">
-                                <select name="tag" lay-filter="tag" lay-search="">
+                                <select name="tag__name" lay-filter="tag" lay-search="">
                                     <option value="">--选择标签--</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <button type="button" class="layui-btn layui-btn-sm">查询</button>
-                            <button type="reset" class="layui-btn layui-btn-sm layui-btn-normal">重置</button>
+                            <div class="layui-input-inline search-form-btn">
+                                <button type="button" class="layui-btn" lay-submit lay-filter="articleSearchForm">查询</button>
+                                <button type="reset" tableID="articleListTable" class="layui-btn layui-btn-normal">重置</button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -43,5 +43,5 @@
 {% endblock %}
 
 {% block footer-scripts %}
-    <script src="/phoenix-web/app/mgt/blog/article/list.js" type="module"></script>
+    <script src="/phoenix-web/app/mgt/blog/list/list.js" type="module"></script>
 {% endblock %}
