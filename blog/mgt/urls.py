@@ -22,6 +22,7 @@ urlpatterns = [
     path('article/data/page', views.ArticleDataPageView.as_view(), name='article-data-page'),
     path('article/data/classify/page', views.ArticleDataClassifyPageView.as_view(), name='article-data-classify-page'),
     path('article/data/tag/page', views.ArticleDataTagPageView.as_view(), name='article-data-tag-page'),
+    path('article/info/page', views.ArticleInfoPageView.as_view(), name='article-info-page'),
 
     path('article/list', views.ArticleListApiView.as_view(), name='article-list-api'),  # 文章列表接口
     path(f'article/info/<int:{params.MODEL_UNIQUE_KEY}>', views.ArticleInfoApiView.as_view(),

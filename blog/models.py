@@ -55,8 +55,20 @@ class Article(CommonDataModel):
     is_top = models.BooleanField(verbose_name="是否置顶", default=False)
     etime = models.DateTimeField(verbose_name="编辑时间", blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        """重载父类的save方法，设置初始创建时的编辑时间
+
+        Args:
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+        """
+        if not self.etime:
+            self.etime = self.ctime
+
+        super().save(*args, **kwargs)
+
     class Meta:
         db_table = "blog_article"
         verbose_name = "博客文章表"
-        ordering = ['-ctime', ]
+        ordering = ('-id', )
 

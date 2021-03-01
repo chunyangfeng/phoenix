@@ -44,6 +44,11 @@ class ArticleDataTagPageView(BasePageView):
     page = 'mgt/blog/data/tag/add.html'
 
 
+class ArticleInfoPageView(BasePageView):
+    """博客文章增页面"""
+    page = 'mgt/blog/info/info.html'
+
+
 class ArticleListApiView(BasicListViewSet):
     """文章列表接口"""
     queryset = models.Article.objects.all()

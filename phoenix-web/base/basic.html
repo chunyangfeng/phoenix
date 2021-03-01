@@ -16,15 +16,9 @@
         <div class="layui-logo" id="management-logo"><img src="/phoenix-web/assets/img/logo-b.jpg"></div>
         <!-- 头部导航 -->
         <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a>写文章</a></li>
-{#            <li class="layui-nav-item">#}
-{#                <a href="javascript:;">其它系统</a>#}
-{#                <dl class="layui-nav-child">#}
-{#                    <dd><a href="">邮件管理</a></dd>#}
-{#                    <dd><a href="">消息管理</a></dd>#}
-{#                    <dd><a href="">授权管理</a></dd>#}
-{#                </dl>#}
-{#            </li>#}
+            <li class="layui-nav-item">
+                <a href="{% url 'article-info-page' %}">写文章</a>
+            </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
@@ -57,6 +51,12 @@
                         博客管理
                     </a>
                     <dl class="layui-nav-child">
+                        <dd>
+                            <a href="{% url 'article-info-page' %}">
+                                <i class="layui-icon layui-icon-form"></i>&nbsp;
+                                博客文章
+                            </a>
+                        </dd>
                         <dd>
                             <a href="{% url 'article-list-page' %}">
                                 <i class="layui-icon layui-icon-read"></i>&nbsp;
