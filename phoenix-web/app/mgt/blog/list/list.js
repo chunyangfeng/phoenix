@@ -4,20 +4,10 @@
 ** Blog: http://www.fengchunyang.com
 */
 import {urls} from "../../../../config/urls.js";
-import {generateLaySwitch, layTableReload} from "../../../../common/utils.js";
+import {generateLaySwitch, layTableReload, asyncApiResolve} from "../../../../common/utils.js";
 import {apiConfig} from "../../../../common/api.js";
-import {api} from "../../../../common/api.js";
 import {permissions} from "../../../../config/permission.js";
-
-// 局部变量设置
-const params = {
-    isPublish: 'isPublish',
-    isTop: 'isTop',
-    tableElem: '#article-list-table',
-    tableID: 'articleListTable',
-    tableFilter: 'articleListTableFilter',
-    searchForm: 'articleSearchForm',
-};
+import {params} from "../../../../config/params.js";
 
 // 替换table中is_publish字段的显示样式
 const isPublishResolve = (data) => {
@@ -32,9 +22,9 @@ const isTopResolve = (data) => {
 // 博客文章table表格
 const initialArticleListTable = ()=> {
     layui.table.render({
-        elem: params.tableElem,
+        elem: params.articleTableElem,
         url: urls.articleListApi,
-        id: params.tableID,
+        id: params.articleTableID,
         page: true,
         limit: 10,
         limits: [10, 20, 40, 80, 100],
@@ -68,12 +58,8 @@ const monitorTableEvent = (filter, data) => {
     let json_data = {};
     json_data[filter] = data.elem.checked ? 1 : 0;  // 如果当前为关闭状态则赋值0，否则赋值1
 
-    let config = Object.assign({}, apiConfig);
-    config.url = `${urls.articleInfoApi}/${data.elem.getAttribute('pk')}`;
-    config.method = 'patch';
-    config.data = json_data;
-
-    api(config, permissions.ARTICLE);
+    const url = `${urls.articleInfoApi}/${data.elem.getAttribute('pk')}`;
+    asyncApiResolve(url, json_data, 'patch');
 };
 
 // 页面加载后的动态操作
@@ -81,7 +67,7 @@ layui.jquery(document).ready(function () {
     initialArticleListTable();
 
     // 监听表格事件
-    layui.table.on(`tool(${params.tableFilter})`, function (obj) {
+    layui.table.on(`tool(${params.articleTableFilter})`, function (obj) {
         switch (obj.event) {
             case params.isPublish:
                 layui.layer.msg('is publish');
@@ -103,8 +89,8 @@ layui.jquery(document).ready(function () {
     });
 
     // 监听搜索表单提交事件
-    layui.form.on(`submit(${params.searchForm})`, function (data) {
-        layTableReload(params.tableID, data.field);
+    layui.form.on(`submit(${params.articleSearchForm})`, function (data) {
+        layTableReload(params.articleTableID, data.field);
         return false
     })
 });

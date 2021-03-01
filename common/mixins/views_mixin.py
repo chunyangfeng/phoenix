@@ -65,6 +65,7 @@ class BasicResponseMixin:
 class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
     """资源列表批量获取的混合类"""
     extra_data = dict()
+    _total_count = 0
 
     def set_extra(self, key, value):
         """设置响应数据的额外内容
@@ -89,7 +90,12 @@ class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
         page = request.query_params.get(params.PAGINATE_PAGE)
         limit = request.query_params.get(params.PAGINATE_LIMIT)
 
-        query_set = self.filter_queryset(self.get_queryset())
+        # 统计原始数据集总量
+        query_set = self.get_queryset()
+        total_count = len(query_set)
+        self._total_count = total_count
+
+        query_set = self.filter_queryset(query_set)
 
         if not any([page, limit]):
             return query_set
@@ -110,7 +116,7 @@ class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
         return {
             "code": 0,  # 状态码，暂无特殊含义，默认为0
             "msg": "Success" if len(data) else "暂无数据",  # 消息提示，当表格无数据时作为表格内容输出在页面上
-            "count": len(data),  # 表格行数
+            "count": self._total_count,  # 表格行数
             "data": data,  # 数据内容，列表元素为字典，字典形式为单一键值对表示的fields-value
             "extra": self.extra_data,
         }
@@ -1183,6 +1189,7 @@ class BasicAuthPermissionViewMixin(BasicResponseMixin):
     permission_name = PER_BASE  # 权限名称
     authentication_enable = True  # 是否启用认证检查
     permission_enable = True  # 是否启用权限检查
+    http_method_names = ('get', 'post', 'put', 'delete', 'patch')
 
     def dispatch(self, request, *args, **kwargs):
         """路由分发

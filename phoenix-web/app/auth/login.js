@@ -5,6 +5,7 @@
 */
 import {api, apiConfig} from '../../common/api.js'
 import {urls} from "../../config/urls.js"
+import {asyncApiResolve} from "../../common/utils.js";
 
 // 获取RSA公钥
 export const getPublicKey = () => {
@@ -34,10 +35,5 @@ const loginSuccessCallback = (response, status) => {
 
 // 登录提交
 export const loginSubmit = (data) => {
-    let config = Object.assign({}, apiConfig);
-    config.url = urls.loginModule;
-    config.data = data;
-    config.s_callback = loginSuccessCallback;
-    config.method = 'post';
-    api(config);
+    asyncApiResolve(urls.loginModule, data, 'post', loginSuccessCallback);
 };

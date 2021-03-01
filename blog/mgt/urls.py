@@ -27,6 +27,9 @@ urlpatterns = [
     path(f'article/info/<int:{params.MODEL_UNIQUE_KEY}>', views.ArticleInfoApiView.as_view(),
          name='article-info-api'),  # 文章详情接口
     path('article/data/classify/list', views.ArticleClassifyListApiView.as_view(),
-         name='article-classify-api'),  # 文章分类列表接口
-    path('article/data/tag/list', views.ArticleTagListApiView.as_view(), name='article-tag-api'),  # 文章标签列表接口
+         name='article-classify-list-api'),  # 文章分类列表接口
+    path('article/data/classify/info', views.ArticleClassifyInfoApiView.as_view(),
+         name='article-classify-info-api'),  # 文章分类详情接口
+    path('article/data/tag/list', views.ArticleTagListApiView.as_view(), name='article-tag-list-api'),  # 文章标签列表接口
+    path('article/data/tag/info', views.ArticleTagInfoApiView.as_view(), name='article-tag-info-api'),  # 文章标详情表接口
 ]

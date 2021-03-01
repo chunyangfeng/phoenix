@@ -5,8 +5,7 @@
 ** Desc: 全局api接口调用
 */
 import {permissions} from "../config/permission.js";
-import {globals} from "../config/params.js";
-import {urls} from "../config/urls.js";
+import {params} from "../config/params.js";
 
 // 403未授权处理
 const authForbidden = () => {
@@ -64,7 +63,7 @@ export const api = (config,  perm = permissions.BASE) => {
     const loadIndex = layui.layer.load(1);
 
     layui.jquery.ajax({
-        url: globals.apiPrefix + config.url,
+        url: params.apiPrefix + config.url,
         type: config.method,
         async: config.async,
         headers: {

@@ -5,22 +5,8 @@
 */
 
 import {urls} from "../../../../config/urls.js";
-import {api, apiConfig} from "../../../../common/api.js";
-import {layTableReload, layTableToolBar} from "../../../../common/utils.js";
-
-
-// 局部变量设置
-const params = {
-    classifyTableElem: '#article-classify-table',
-    tagTableElem: '#article-tag-table',
-    classifyTableID: 'articleClassifyTable',
-    tagTableID: 'articleTagTable',
-    tagSearchForm: 'articleTagSearchForm',
-    classifySearchForm: 'articleClassifySearchForm',
-    classifyTableFilter: 'articleClassifyTableFilter',
-    tagTableFilter: 'articleTagTableFilter',
-    dataAddForm: '#dataAddForm',
-};
+import {layTableReload, layTableToolBar, tableRowEventHandle, tableToolbarEventHandle} from "../../../../common/utils.js";
+import {params} from "../../../../config/params.js";
 
 // 博客分类table表格
 const initialArticleClassifyTable = ()=> {
@@ -45,7 +31,7 @@ const initialArticleClassifyTable = ()=> {
             {field: 'desc', title: '描述', align: "center"},
             {field: 'ctime', title: '创建时间', align: "center"},
             {field: 'mtime', title: '修改时间', align: "center"},
-            {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
+            {fixed: 'right', title: '操作', align: 'center', toolbar: `${params.rowActionElem}`}
         ]]
     })
 };
@@ -63,7 +49,7 @@ const initialArticleTagTable = ()=> {
             none: "暂无相关数据",
         },
         toolbar: true,
-        defaultToolbar: ['filter',],
+        defaultToolbar: ['filter', layTableToolBar.add],
         width: layui.jquery(window).width() - 290,  // 获取屏幕宽度，减去左侧导航条的宽度
         cellMinWidth: 100,
         cols: [[
@@ -73,7 +59,7 @@ const initialArticleTagTable = ()=> {
             {field: 'desc', title: '描述', align: "center"},
             {field: 'ctime', title: '创建时间', align: "center"},
             {field: 'mtime', title: '修改时间', align: "center"},
-            {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
+            {fixed: 'right', title: '操作', align: 'center', toolbar: `${params.rowActionElem}`}
         ]]
     })
 };
@@ -85,10 +71,28 @@ const classifyAddEvent = () => {
         title: '新增博客分类',
         id: 'classifyIframe',
         skin: 'layui-layer-lan',
-        area: ['30rem', '20rem'],
+        area: ['30rem', '17rem'],
         content: urls.articleClassifyPage,
         width: 1000,
     })
+};
+
+// 博客标签新增事件
+const tagAddEvent = () => {
+    layui.layer.open({
+        type: 2,
+        title: '新增博客标签',
+        id: 'tagIframe',
+        skin: 'layui-layer-lan',
+        area: ['30rem', '17rem'],
+        content: urls.articleTagPage,
+        width: 1000,
+    })
+};
+
+// 博客分类行删除事件
+const classifyRowDeleteEvent = () => {
+
 };
 
 // 页面加载后的动态操作
@@ -108,13 +112,24 @@ layui.jquery(document).ready(function () {
         return false
     });
 
-    // 监听表格事件
+    // 监听表格头部工具事件
     layui.table.on(`toolbar(${params.classifyTableFilter})`, function (obj) {
-        switch (obj.event) {
-            case layTableToolBar.add.layEvent:
-                classifyAddEvent();
-                break;
-        }
+        tableToolbarEventHandle(obj, classifyAddEvent);
+    });
+
+    // 监听表格行工具事件
+    layui.table.on(`tool(${params.classifyTableFilter})`, function (obj) {
+        tableRowEventHandle(obj);
+    });
+
+    // 监听表格头部工具事件
+    layui.table.on(`toolbar(${params.tagTableFilter})`, function (obj) {
+        tableToolbarEventHandle(obj, tagAddEvent);
+    });
+
+    // 监听表格行工具事件
+    layui.table.on(`tool(${params.tagTableFilter})`, function (obj) {
+        tableRowEventHandle(obj);
     });
 });
 

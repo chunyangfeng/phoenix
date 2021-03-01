@@ -19,10 +19,14 @@
             </div>
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="formDemo">创建</button>
+                    <button class="layui-btn" lay-submit lay-filter="classifyAddSubmit">创建</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
         </form>
     </div>
+{% endblock %}
+
+{% block footer-js %}
+    <script src="/phoenix-web/app/mgt/blog/data/add.js" type="module"></script>
 {% endblock %}

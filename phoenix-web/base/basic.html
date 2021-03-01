@@ -94,10 +94,13 @@
 </div>
 <script type="text/html" id="actionBar" class="layui-hide">
     <div class="layui-btn-container">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">
+        <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="rowDetail">
+            <i class="layui-icon layui-icon-search" title="详情"></i>
+        </a>
+        <a class="layui-btn layui-btn-xs" lay-event="rowEdit">
             <i class="layui-icon layui-icon-edit" title="编辑"></i>
         </a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="rowDelete">
             <i class="layui-icon layui-icon-delete" title="删除"></i>
         </a>
     </div>

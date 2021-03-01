@@ -57,7 +57,6 @@ class ArticleInfoApiView(BasicInfoViewSet):
     queryset = models.Article.objects.all()
     serializer_class = serializers.ArticleSerializer
     permission_name = permissions.PER_ARTICLE
-    http_method_names = ('get', 'post', 'put', 'delete', 'patch')
 
 
 class ArticleClassifyListApiView(BasicListViewSet):
@@ -65,7 +64,13 @@ class ArticleClassifyListApiView(BasicListViewSet):
     queryset = models.ArticleClassify.objects.all()
     serializer_class = serializers.ArticleClassifySerializer
     permission_name = permissions.PER_ARTICLE_CLASSIFY
-    http_method_names = ('get', 'post', 'put', 'delete', 'patch')
+
+
+class ArticleClassifyInfoApiView(BasicInfoViewSet):
+    """文章分类详情接口"""
+    queryset = models.ArticleClassify.objects.all()
+    serializer_class = serializers.ArticleClassifySerializer
+    permission_name = permissions.PER_ARTICLE_CLASSIFY
 
 
 class ArticleTagListApiView(BasicListViewSet):
@@ -73,4 +78,10 @@ class ArticleTagListApiView(BasicListViewSet):
     queryset = models.ArticleTag.objects.all()
     serializer_class = serializers.ArticleTagSerializer
     permission_name = permissions.PER_ARTICLE_TAG
-    http_method_names = ('get', 'post', 'put', 'delete', 'patch')
+
+
+class ArticleTagInfoApiView(BasicInfoViewSet):
+    """文章标签详情接口"""
+    queryset = models.ArticleTag.objects.all()
+    serializer_class = serializers.ArticleTagSerializer
+    permission_name = permissions.PER_ARTICLE_TAG

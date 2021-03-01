@@ -6,7 +6,7 @@
 import {urls} from "../config/urls.js";
 import {api, apiConfig} from "../common/api.js";
 import {permissions} from "../config/permission.js";
-import {getRelativePath, dynamicClock, layTableReload} from "../common/utils.js";
+import {getRelativePath, dynamicClock, layTableReload, asyncApiResolve} from "../common/utils.js";
 
 
 // 登出成功后的回调
@@ -17,18 +17,9 @@ const logoutSuccessCallback = (response, status) => {
     window.location.href = urls.indexPage;
 };
 
-// 请求登出接口
-const logoutSubmit = () => {
-    let config = Object.assign({}, apiConfig);
-
-    config.url = urls.logoutModule;
-    config.s_callback = logoutSuccessCallback;
-    api(config, permissions.LOGOUT);
-};
-
 // 退出登录按钮绑定事件
 layui.jquery('#logout').click(function () {
-    logoutSubmit();
+    asyncApiResolve(urls.logoutModule, null, 'get', logoutSuccessCallback)
 });
 
 // logo点击跳转
@@ -39,12 +30,12 @@ layui.jquery('#management-logo').click(function () {
 // 初始化导航选中状态与展开状态
 const initialNavStatus = () => {
     const url = getRelativePath();
-    let patt1 = new RegExp(url);
+    let pattern = new RegExp(url);
     layui.jquery(document.body).find('a').each(function (i, obj) {
         let str = layui.jquery(obj).attr('href');
-        if (patt1.test(str)) {
-            layui.jquery(obj).parent().addClass("layui-this");
-            layui.jquery(obj).parent().parents().addClass("layui-nav-itemed");
+        if (pattern.test(str)) {
+            layui.jquery(obj).parent().addClass("layui-this");  // 高亮显示当前选中导航
+            layui.jquery(obj).parent().parents().addClass("layui-nav-itemed");  // 展开上层导航
         }
     });
 };

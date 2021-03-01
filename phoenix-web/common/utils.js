@@ -5,6 +5,9 @@
 */
 
 // 全局变量
+import {params} from "../config/params.js";
+import {api, apiConfig} from "./api.js";
+
 export const $ = layui.jquery;
 
 // 阻止表单自动提交
@@ -89,5 +92,83 @@ export const layTableToolBar = {
         layEvent: 'TABLE_DELETE',
         icon: 'layui-icon-delete',
     }
+};
+
+// 关闭当前层弹出的模态框
+export const closeIframe = () => {
+    const index = parent.layui.layer.getFrameIndex(window.name);
+    parent.layui.layer.close(index);
+};
+
+// 表格行工具事件处理
+export const tableRowEventHandle = (obj, detail_callback=null, edit_callback=null, delete_callback=null) => {
+    switch (obj.event) {
+        case params.rowDetailEvent:
+            if (detail_callback) {
+                detail_callback(obj);
+            } else {
+                layer.msg('触发详情事件...');
+            }
+            break;
+        case params.rowEditEvent:
+            if (edit_callback) {
+                edit_callback(obj);
+            } else {
+                layer.msg('触发编辑事件...');
+            }
+            break;
+        case params.rowDeleteEvent:
+            if (delete_callback) {
+                delete_callback(obj);
+            } else {
+                layer.msg('触发删除事件...');
+            }
+            break;
+    }
+};
+
+// 表格头部工具事件处理
+export const tableToolbarEventHandle = (obj, add_callback=null, delete_callback=null) => {
+    switch (obj.event) {
+        case layTableToolBar.add.layEvent:
+            if (add_callback) {
+                add_callback(obj);
+            } else {
+                layer.msg('触发新增事件...');
+            }
+            break;
+        case layTableToolBar.delete.layEvent:
+            if (delete_callback) {
+                delete_callback(obj);
+            } else {
+                layer.msg('触发删除事件...');
+            }
+            break;
+    }
+};
+
+// 异步api接口调用封装(暂时不考虑权限问题)
+export const asyncApiResolve = (url, data=null, method='get', s_callback=null, c_callback=null, e_callback=null) => {
+    let config = Object.assign({}, apiConfig);
+    config.url = url;
+    config.method = method;
+
+    if (data) {
+        config.data = data;
+    }
+
+    if (s_callback) {
+        config.s_callback = s_callback;
+    }
+
+    if (e_callback) {
+        config.e_callback = e_callback;
+    }
+
+    if (c_callback) {
+        config.c_callback = c_callback;
+    }
+
+    api(config);
 };
 
