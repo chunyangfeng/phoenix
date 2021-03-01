@@ -127,6 +127,32 @@ export const tableRowEventHandle = (obj, url=null, detail_callback=null, edit_ca
     }
 };
 
+// 表格头部工具栏事件-批量删除
+export const tableBulkDelete = (obj, url) => {
+    const tableID = obj.config.id;
+
+    // 获取批量选中的数据
+    const checkData = layui.table.checkStatus(tableID);
+    if (checkData.data.length) {
+        let checkIDs = checkData.data.map((d) => {
+            return d.id
+        });
+
+        const deleteData = {
+            deleted: checkIDs.join(',')
+        };
+
+        // 执行批量删除
+        layer.confirm('确定删除?', {icon: 2, title: '删除确认'}, function (index) {
+            const response = syncApiResolve(url, deleteData, 'delete');
+            if (response.result === params.resSuccessTip) {
+                parent.layui.table.reload(tableID);  // 重载表格
+                parent.layui.layer.close(index);
+            }
+        });
+    }
+};
+
 // 表格头部工具事件处理
 export const tableToolbarEventHandle = (obj, add_callback=null, delete_callback=null) => {
     switch (obj.event) {

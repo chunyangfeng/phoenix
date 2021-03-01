@@ -79,3 +79,12 @@ MODEL_UNIQUE_KEY = 'pk'
 PAGINATE_PAGE = 'page'
 PAGINATE_LIMIT = 'limit'
 
+# 系统分隔符
+SPLIT_COMMA = ','
+SPLIT_DOT = '.'
+SPLIT_DASH = '-'
+
+# http常用响应数据
+HTTP_SUCCESS = 'Success'
+HTTP_Failed = 'Failed'
+

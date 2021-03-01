@@ -402,7 +402,7 @@ class BasicBulkCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
         if error:
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
-        return self.set_response("create success", "创建成功", status=drf_status.HTTP_201_CREATED)
+        return self.set_response(params.HTTP_SUCCESS, "创建成功", status=drf_status.HTTP_201_CREATED)
 
 
 class BasicCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
@@ -510,7 +510,7 @@ class BasicCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
         if error:
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
-        return self.set_response("create success", "创建成功", status=drf_status.HTTP_201_CREATED)
+        return self.set_response(params.HTTP_SUCCESS, "创建成功", status=drf_status.HTTP_201_CREATED)
 
 
 class BasicBulkUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
@@ -620,7 +620,7 @@ class BasicBulkUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.set_response('update success', '更新成功')
+        return self.set_response(params.HTTP_SUCCESS, '更新成功')
 
 
 class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
@@ -730,7 +730,7 @@ class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.set_response('update success', '更新成功')
+        return self.set_response(params.HTTP_SUCCESS, '更新成功')
 
 
 class BasicBulkDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
@@ -764,11 +764,11 @@ class BasicBulkDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
         """
         return None, ''
 
-    def _perform_delete(self, serializer, *args, **kwargs):
+    def _perform_delete(self, instances, *args, **kwargs):
         """执行删除
 
         Args:
-            serializer(Serializer): 序列化器
+            instances(QuerySet): 数据实例集
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
@@ -777,6 +777,14 @@ class BasicBulkDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
             reason(str): 错误原因，没有错误为''
             instances(object): 已逻辑删除的实例(物理删除的实例则为None)
         """
+        # 逻辑删除
+        logic_delete = kwargs.get('logic_delete', False)
+        if logic_delete:
+            instances.update(is_delete=True)
+            return None, '', instances
+
+        # 物理删除
+        instances.delete()
         return None, '', None
 
     def _post_process_delete(self, request, instances=None, *args, **kwargs):
@@ -793,6 +801,22 @@ class BasicBulkDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
             reason(str): 错误原因，没有错误为''
         """
         return None, ''
+
+    def get_delete_instances(self, request, *args, **kwargs):
+        """获取待删除的实例集
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            instances(QuerySet): 实例集
+        """
+        delete_data = request.data.get('deleted', '')
+        query_set = self.get_queryset(*args, **kwargs)
+        instances = query_set.filter(id__in=delete_data.split(params.SPLIT_COMMA))
+        return instances
 
     @transaction.atomic()
     def destroy(self, request, *args, **kwargs):
@@ -818,16 +842,12 @@ class BasicBulkDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        # 获取序列化器
-        serializer = self.get_serializer()
-        if not serializer.is_valid():
-            transaction.set_rollback(True)
-            return self.set_response('Serializer validate failed', '序列化器校验失败',
-                                     status=drf_status.HTTP_400_BAD_REQUEST)
+        # 获取待删除的实例集
+        insts = self.get_delete_instances(request, *args, **kwargs)
 
         # 执行删除
         try:
-            error, reason, instances = self._perform_delete(self, serializer, *args, **kwargs)
+            error, reason, instances = self._perform_delete(insts, *args, **kwargs)
         except Exception as error:
             transaction.set_rollback(True)
             return self.set_response('Delete failed', f'删除失败，错误信息为:{error}',
@@ -841,7 +861,7 @@ class BasicBulkDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.set_response('delete success', '删除成功', status=drf_status.HTTP_200_OK)
+        return self.set_response(params.HTTP_SUCCESS, '删除成功', status=drf_status.HTTP_200_OK)
 
 
 class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
@@ -957,7 +977,7 @@ class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.set_response('Success', '删除成功', status=drf_status.HTTP_200_OK)
+        return self.set_response(params.HTTP_SUCCESS, '删除成功', status=drf_status.HTTP_200_OK)
 
 
 class BasicBulkPatchModelMixin(BasicResponseMixin):
@@ -1008,7 +1028,7 @@ class BasicBulkPatchModelMixin(BasicResponseMixin):
         # 执行部分更新
         instances.update(**request.data)
 
-        response = self.set_response(result="Success", data="批量部分更新成功")
+        response = self.set_response(params.HTTP_SUCCESS, data="批量部分更新成功")
         return None, '', response
 
     def _post_process_patch(self, request, instances, *args, **kwargs):
@@ -1057,7 +1077,7 @@ class BasicBulkPatchModelMixin(BasicResponseMixin):
 
         # patch请求执行
         try:
-            error, reason = self._perform_patch(request, instances, *args, **kwargs)
+            error, reason, response = self._perform_patch(request, instances, *args, **kwargs)
             if error:
                 transaction.set_rollback(True)
                 return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
@@ -1071,7 +1091,7 @@ class BasicBulkPatchModelMixin(BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.set_response('ok', '成功')
+        return response
 
 
 class BasicPatchModelMixin(BasicResponseMixin):
@@ -1125,7 +1145,7 @@ class BasicPatchModelMixin(BasicResponseMixin):
 
         instance.save()
 
-        response = self.set_response(result="Success", data="部分更新成功")
+        response = self.set_response(result=params.HTTP_SUCCESS, data="部分更新成功")
         return None, '', response
 
     def _post_process_patch(self, request, *args, **kwargs):

@@ -7,7 +7,7 @@
 import {urls} from "../../../../config/urls.js";
 import {
     layTableReload, layTableToolBar, tableRowEventHandle, tableToolbarEventHandle, layerIframe,
-    assigmentAttribute
+    assigmentAttribute, tableBulkDelete
 } from "../../../../common/utils.js";
 import {params} from "../../../../config/params.js";
 
@@ -68,13 +68,23 @@ const initialArticleTagTable = ()=> {
 };
 
 // 博客分类新增/编辑事件
-const classifyAddEvent = (type='新增') => {
+const classifyAddEvent = (obj, type='新增') => {
     layerIframe(urls.articleClassifyPage, `${type}博客分类`, 'classifyIframe', ['30rem', '17rem']);
 };
 
+// 博客分类批量删除事件
+const classifyBulkDeleteEvent = (obj) => {
+    tableBulkDelete(obj, urls.classifyListApi);
+};
+
 // 博客标签新增/编辑事件
-const tagAddEvent = (type='新增') => {
+const tagAddEvent = (obj, type='新增') => {
     layerIframe(urls.articleTagPage, `${type}博客标签`, 'tagIframe', ['30rem', '17rem']);
+};
+
+// 博客标签批量删除事件
+const tagBulkDeleteEvent = (obj) => {
+    tableBulkDelete(obj, urls.tagListApi);
 };
 
 // 博客分类编辑事件
@@ -108,7 +118,7 @@ layui.jquery(document).ready(function () {
 
     // 监听表格头部工具事件
     layui.table.on(`toolbar(${params.classifyTableFilter})`, function (obj) {
-        tableToolbarEventHandle(obj, classifyAddEvent);
+        tableToolbarEventHandle(obj, classifyAddEvent, classifyBulkDeleteEvent);
     });
 
     // 监听表格行工具事件
@@ -118,7 +128,7 @@ layui.jquery(document).ready(function () {
 
     // 监听表格头部工具事件
     layui.table.on(`toolbar(${params.tagTableFilter})`, function (obj) {
-        tableToolbarEventHandle(obj, tagAddEvent);
+        tableToolbarEventHandle(obj, tagAddEvent, tagBulkDeleteEvent);
     });
 
     // 监听表格行工具事件
