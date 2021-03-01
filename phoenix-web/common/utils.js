@@ -33,11 +33,11 @@ export const getRelativePath = ()=> {
 
 // 获取动态时钟
 export const dynamicClock = (elem_id) => {
-    let time = new Date();  //获得当前时间
-    let year = time.getFullYear();  //获得年月日
-    let month = time.getMonth();  //获得年月日
-    let date = time.getDate();  //获得年月日
-    let hour = time.getHours();  //获得小时、分钟、秒
+    let time = new Date();  // 获得当前时间
+    let year = time.getFullYear();  // 获得年月日
+    let month = time.getMonth() + 1;  // 获得年月日,time的month默认为0-11，即0为1月，11为12月
+    let date = time.getDate();  // 获得年月日
+    let hour = time.getHours();  // 获得小时、分钟、秒
     let minute = time.getMinutes();
     let second = time.getSeconds();
 
@@ -276,6 +276,24 @@ export const formAssignment = (formFilter, data=null) => {
             formAssignment(formFilter, parent_data)
         }
     }
+};
+
+// 动态获取select的值
+export const getLaySelectItem = (url, elem, pk, key) => {
+    // lay select success callback
+    const laySelectSuccessCallback = (response) => {
+        layui.jquery.each(response.data, (index, value) => {
+            const pkValue = assigmentAttribute(value, pk);  // 获取响应数据的主键值，提交数据时使用
+            const textValue = assigmentAttribute(value, key);  // 获取响应数据中的展示字段值
+            layui.jquery(elem).append(`<option value=${pkValue}>${textValue}</option>`)
+        });
+
+        // 手动渲染form表单中的select组件
+        layui.jquery(elem).trigger('change');
+        layui.form.render('select');
+    };
+
+    asyncApiResolve(url, null, 'get', laySelectSuccessCallback);
 };
 
 

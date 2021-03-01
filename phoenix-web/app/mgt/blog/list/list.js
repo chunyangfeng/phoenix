@@ -4,9 +4,9 @@
 ** Blog: http://www.fengchunyang.com
 */
 import {urls} from "../../../../config/urls.js";
-import {generateLaySwitch, layTableReload, asyncApiResolve} from "../../../../common/utils.js";
-import {apiConfig} from "../../../../common/api.js";
-import {permissions} from "../../../../config/permission.js";
+import {
+    generateLaySwitch, layTableReload, asyncApiResolve, getLaySelectItem, syncApiResolve
+} from "../../../../common/utils.js";
 import {params} from "../../../../config/params.js";
 
 // 替换table中is_publish字段的显示样式
@@ -46,8 +46,8 @@ const initialArticleListTable = ()=> {
             {field: 'ctime', title: '创建时间', align: "center"},
             {field: 'mtime', title: '修改时间', align: "center"},
             {field: 'etime', title: '编辑时间', align: "center"},
-            {field: 'is_publish', title: '发布', align: "center", templet: function (d) {return isPublishResolve(d)}},
-            {field: 'is_top', title: '置顶', align: "center", templet: function (d) {return isTopResolve(d)}},
+            {field: 'is_publish', title: '发布', align: "center", templet: (d) => {return isPublishResolve(d)}},
+            {field: 'is_top', title: '置顶', align: "center", templet: (d) => {return isTopResolve(d)}},
             {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
         ]]
     })
@@ -55,16 +55,34 @@ const initialArticleListTable = ()=> {
 
 // 监听表格发表/置顶switch切换事件
 const monitorTableEvent = (filter, data) => {
-    let json_data = {};
-    json_data[filter] = data.elem.checked ? 1 : 0;  // 如果当前为关闭状态则赋值0，否则赋值1
+    layer.confirm('确定?', {icon: 1, title: '操作确认'}, function (index) {
+        let json_data = {};
+        json_data[filter] = data.elem.checked ? 1 : 0;  // 如果当前为关闭状态则赋值0，否则赋值1
 
-    const url = `${urls.articleInfoApi}/${data.elem.getAttribute('pk')}`;
-    asyncApiResolve(url, json_data, 'patch');
+        const url = `${urls.articleInfoApi}/${data.elem.getAttribute('pk')}`;
+        const response = syncApiResolve(url, json_data, 'patch');
+
+        if (response.result === params.resSuccessTip) {
+            // 关闭当前提示框
+            layTableReload(params.articleTableID);
+            parent.layui.layer.close(index);
+        }
+    }, function () {
+        data.elem.checked = !data.elem.checked;  // 取消操作后，重置switch状态
+        layui.form.render();
+    });
 };
 
 // 页面加载后的动态操作
 layui.jquery(document).ready(function () {
+    // 渲染文章列表表格
     initialArticleListTable();
+
+    // 动态加载博客分类数据
+    getLaySelectItem(urls.classifyListApi, params.classifySelectElem, 'id', 'name');
+
+    // 动态加载博客标签数据
+    getLaySelectItem(urls.tagListApi, params.tagSelectElem, 'id', 'name');
 
     // 监听表格事件
     layui.table.on(`tool(${params.articleTableFilter})`, function (obj) {

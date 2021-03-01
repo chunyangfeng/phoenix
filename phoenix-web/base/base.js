@@ -43,7 +43,8 @@ const initialNavStatus = () => {
 // 初始化登陆用户的信息
 const initialUserInfo = () => {
     const username = localStorage.getItem('username');
-    layui.jquery('#login-username').empty().append('<i class="layui-icon layui-icon-username"></i> '+username);
+    layui.jquery('#login-username').empty().append(`<i class="layui-icon layui-icon-username"></i> ${username}`);
+    layui.element.init();  // 修改了初始元素之后，手动渲染
 };
 
 // 初始化动态时钟

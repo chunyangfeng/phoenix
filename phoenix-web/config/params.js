@@ -19,9 +19,11 @@ export const params = {
     tagTableFilter: 'articleTagTableFilter',
     classifyFormFilter: 'classifyFormFilter',
     tagFormFilter: 'tagFormFilter',
+    classifySelectElem: '#classifySelectElem',
+    tagSelectElem: '#tagSelectElem',
 
-    isPublish: 'isPublish',
-    isTop: 'isTop',
+    isPublish: 'is_publish',
+    isTop: 'is_top',
     articleTableElem: '#article-list-table',
     articleTableID: 'articleListTable',
     articleTableFilter: 'articleListTableFilter',
