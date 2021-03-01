@@ -875,11 +875,11 @@ class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
         """
         return None, ''
 
-    def _perform_delete(self, serializer, *args, **kwargs):
+    def _perform_delete(self, instance, *args, **kwargs):
         """执行删除
 
         Args:
-            serializer(Serializer): 序列化器
+            instance(models.Model): 数据实例
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
@@ -888,14 +888,23 @@ class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
             reason(str): 错误原因，没有错误为''
             instances(object): 已逻辑删除的实例(物理删除的实例则为None)
         """
+        # 执行逻辑删除
+        logic_delete = kwargs.get('logic_delete', False)
+        if logic_delete:
+            setattr(instance, 'is_delete', True)
+            instance.save()
+            return None, '', instance
+
+        # 执行物理删除
+        instance.delete()
         return None, '', None
 
-    def _post_process_delete(self, request, instances=None, *args, **kwargs):
+    def _post_process_delete(self, request, instance, *args, **kwargs):
         """删除后处理
 
         Args:
             request(Request): DRF Request
-            instances(object): 已逻辑删除的实例(物理删除的实例无需传递)
+            instances(object): 已逻辑删除的实例(物理删除的实例为None)
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
@@ -929,16 +938,12 @@ class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        # 获取序列化器
-        serializer = self.get_serializer()
-        if not serializer.is_valid():
-            transaction.set_rollback(True)
-            return self.set_response('Serializer validate failed', '序列化器校验失败',
-                                     status=drf_status.HTTP_400_BAD_REQUEST)
+        # 获取数据对象
+        inst = self.get_object(*args, **kwargs)
 
         # 执行删除
         try:
-            error, reason, instances = self._perform_delete(self, serializer, *args, **kwargs)
+            error, reason, instance = self._perform_delete(inst, *args, **kwargs)
         except Exception as error:
             transaction.set_rollback(True)
             return self.set_response('Delete failed', f'删除失败，错误信息为:{error}',
@@ -947,12 +952,12 @@ class BasicDestroyModelMixin(mixins.DestroyModelMixin, BasicResponseMixin):
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
         # 删除后处理
-        error, reason = self._post_process_delete(request, instances, *args, **kwargs)
+        error, reason = self._post_process_delete(request, instance, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.set_response('delete success', '删除成功', status=drf_status.HTTP_200_OK)
+        return self.set_response('Success', '删除成功', status=drf_status.HTTP_200_OK)
 
 
 class BasicBulkPatchModelMixin(BasicResponseMixin):

@@ -6,6 +6,8 @@
 
 export const params = {
     apiPrefix: '',
+    tableWidth: layui.jquery(window).width() - 290,
+    resSuccessTip: 'Success',
 
     classifyTableElem: '#article-classify-table',
     tagTableElem: '#article-tag-table',
@@ -15,7 +17,8 @@ export const params = {
     classifySearchForm: 'articleClassifySearchForm',
     classifyTableFilter: 'articleClassifyTableFilter',
     tagTableFilter: 'articleTagTableFilter',
-    dataAddForm: '#dataAddForm',
+    classifyFormFilter: 'classifyFormFilter',
+    tagFormFilter: 'tagFormFilter',
 
     isPublish: 'isPublish',
     isTop: 'isTop',

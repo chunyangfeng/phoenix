@@ -33,7 +33,7 @@ const initialArticleListTable = ()=> {
         },
         toolbar: true,
         defaultToolbar: ['filter',],
-        width: layui.jquery(window).width() - 290,  // 获取屏幕宽度，减去左侧导航条的宽度
+        width: params.tableWidth,
         cellMinWidth: 100,
         cols: [[
             { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},

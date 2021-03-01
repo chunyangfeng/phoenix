@@ -5,7 +5,10 @@
 */
 
 import {urls} from "../../../../config/urls.js";
-import {layTableReload, layTableToolBar, tableRowEventHandle, tableToolbarEventHandle} from "../../../../common/utils.js";
+import {
+    layTableReload, layTableToolBar, tableRowEventHandle, tableToolbarEventHandle, layerIframe,
+    assigmentAttribute
+} from "../../../../common/utils.js";
 import {params} from "../../../../config/params.js";
 
 // 博客分类table表格
@@ -21,8 +24,8 @@ const initialArticleClassifyTable = ()=> {
             none: "暂无相关数据",
         },
         toolbar: true,
-        defaultToolbar: ['filter', layTableToolBar.add],
-        width: layui.jquery(window).width() - 290,  // 获取屏幕宽度，减去左侧导航条的宽度
+        defaultToolbar: ['filter', layTableToolBar.add, layTableToolBar.delete],
+        width: params.tableWidth,
         cellMinWidth: 100,
         cols: [[
             { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
@@ -49,8 +52,8 @@ const initialArticleTagTable = ()=> {
             none: "暂无相关数据",
         },
         toolbar: true,
-        defaultToolbar: ['filter', layTableToolBar.add],
-        width: layui.jquery(window).width() - 290,  // 获取屏幕宽度，减去左侧导航条的宽度
+        defaultToolbar: ['filter', layTableToolBar.add, layTableToolBar.delete],
+        width: params.tableWidth,
         cellMinWidth: 100,
         cols: [[
             { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
@@ -64,35 +67,26 @@ const initialArticleTagTable = ()=> {
     })
 };
 
-// 博客分类新增事件
-const classifyAddEvent = () => {
-    layui.layer.open({
-        type: 2,
-        title: '新增博客分类',
-        id: 'classifyIframe',
-        skin: 'layui-layer-lan',
-        area: ['30rem', '17rem'],
-        content: urls.articleClassifyPage,
-        width: 1000,
-    })
+// 博客分类新增/编辑事件
+const classifyAddEvent = (type='新增') => {
+    layerIframe(urls.articleClassifyPage, `${type}博客分类`, 'classifyIframe', ['30rem', '17rem']);
 };
 
-// 博客标签新增事件
-const tagAddEvent = () => {
-    layui.layer.open({
-        type: 2,
-        title: '新增博客标签',
-        id: 'tagIframe',
-        skin: 'layui-layer-lan',
-        area: ['30rem', '17rem'],
-        content: urls.articleTagPage,
-        width: 1000,
-    })
+// 博客标签新增/编辑事件
+const tagAddEvent = (type='新增') => {
+    layerIframe(urls.articleTagPage, `${type}博客标签`, 'tagIframe', ['30rem', '17rem']);
 };
 
-// 博客分类行删除事件
-const classifyRowDeleteEvent = () => {
+// 博客分类编辑事件
+const classifyEditEvent = (obj) => {
+    assigmentAttribute(window, params.classifyFormFilter, obj.data);
+    classifyAddEvent('编辑');
+};
 
+// 博客标签编辑事件
+const tagEditEvent = (obj) => {
+    assigmentAttribute(window, params.tagFormFilter, obj.data);
+    tagAddEvent('编辑');
 };
 
 // 页面加载后的动态操作
@@ -119,7 +113,7 @@ layui.jquery(document).ready(function () {
 
     // 监听表格行工具事件
     layui.table.on(`tool(${params.classifyTableFilter})`, function (obj) {
-        tableRowEventHandle(obj);
+        tableRowEventHandle(obj, urls.classifyInfoApi, null, classifyEditEvent);
     });
 
     // 监听表格头部工具事件
@@ -129,7 +123,7 @@ layui.jquery(document).ready(function () {
 
     // 监听表格行工具事件
     layui.table.on(`tool(${params.tagTableFilter})`, function (obj) {
-        tableRowEventHandle(obj);
+        tableRowEventHandle(obj, urls.tagInfoApi, null, tagEditEvent);
     });
 });
 

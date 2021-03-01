@@ -101,7 +101,7 @@ export const closeIframe = () => {
 };
 
 // 表格行工具事件处理
-export const tableRowEventHandle = (obj, detail_callback=null, edit_callback=null, delete_callback=null) => {
+export const tableRowEventHandle = (obj, url=null, detail_callback=null, edit_callback=null, delete_callback=tableRowDeleteEvent) => {
     switch (obj.event) {
         case params.rowDetailEvent:
             if (detail_callback) {
@@ -119,7 +119,7 @@ export const tableRowEventHandle = (obj, detail_callback=null, edit_callback=nul
             break;
         case params.rowDeleteEvent:
             if (delete_callback) {
-                delete_callback(obj);
+                delete_callback(obj, url);
             } else {
                 layer.msg('触发删除事件...');
             }
@@ -171,4 +171,85 @@ export const asyncApiResolve = (url, data=null, method='get', s_callback=null, c
 
     api(config);
 };
+
+// 同步api接口调用封装(暂时不考虑权限问题)
+export const syncApiResolve = (url, data=null, method='get', s_callback=null, c_callback=null, e_callback=null) => {
+    let config = Object.assign({}, apiConfig);
+    config.url = url;
+    config.method = method;
+    config.async = false;
+
+    if (data) {
+        config.data = data;
+    }
+
+    if (s_callback) {
+        config.s_callback = s_callback;
+    }
+
+    if (e_callback) {
+        config.e_callback = e_callback;
+    }
+
+    if (c_callback) {
+        config.c_callback = c_callback;
+    }
+
+    return api(config);
+};
+
+// 表格行删除事件
+const tableRowDeleteEvent = (obj, url) => {
+    layer.confirm('确定删除?', {icon: 2, title: '删除确认'}, function (index) {
+        //向服务端发送删除指令
+        const delete_url = `${url}/${obj.data.id}`;
+        const response = syncApiResolve(delete_url, null, 'delete');
+
+        if (response.result === params.resSuccessTip) {
+            // 删除表格当前行并更新缓存
+            obj.del();
+
+            // 关闭当前提示框
+            parent.layui.layer.close(index);
+        }
+    });
+};
+
+
+// 模态框-iframe
+export const layerIframe = (url, title, iframeID, area, skin='layui-layer-lan') => {
+    layui.layer.open({
+        type: 2,
+        title: title,
+        id: iframeID,
+        skin: skin,
+        area: area,
+        content: url,
+        width: 1000,
+    })
+};
+
+// 设置/获取指定对象的指定属性的值
+export const assigmentAttribute = (obj, attribute, value=null) => {
+    // 当value没有传值时，默认行为为获取属性值，传值了则为属性赋值
+    if (value) {
+        eval(`obj.${attribute} = value`);
+    }
+
+    return eval(`obj.${attribute}`)
+};
+
+
+// 表单赋值
+export const formAssignment = (formFilter, data=null) => {
+    if (data) {  // 传递了data时，直接怼指定表单进行赋值
+        layui.form.val(formFilter, JSON.parse(JSON.stringify(data)));
+    } else {  // 如果没传data，则从父页面的获取指定的data
+        const parent_data = assigmentAttribute(parent.window, formFilter);
+        if (parent_data) {  // 如果从父页面也没有获取到data，则终止程序
+            formAssignment(formFilter, parent_data)
+        }
+    }
+};
+
 
