@@ -30,6 +30,7 @@ export const params = {
     articleTableID: 'articleListTable',
     articleTableFilter: 'articleListTableFilter',
     articleSearchForm: 'articleSearchForm',
+    articleFormFilter: 'articleFormFilter',
 
     classifyAddSubmit: 'classifyAddSubmit',
     tagAddSubmit: 'tagAddSubmit',

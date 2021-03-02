@@ -257,9 +257,8 @@ class BasicRetrieveModelMixin(mixins.RetrieveModelMixin, BasicResponseMixin):
         Returns:
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
-            instance(object): 实例
         """
-        return None, '', instance
+        return None, ''
 
     @transaction.atomic()
     def retrieve(self, request, *args, **kwargs):
@@ -312,13 +311,7 @@ class BasicBulkCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
         """
-        # 设置默认参数
-        request.data._mutable = True
-        login_user = request.session.get(params.SESSION_USER_KEY).get('username')
-        request.data['creator'] = login_user
-        request.data['owner'] = login_user
-        request.data._mutable = False
-        print(request.data)
+        self.set_default_data(request, *args, **kwargs)
         return None, ''
 
     def _pre_validate_create(self, request, *args, **kwargs):
@@ -645,6 +638,7 @@ class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
         """
+        self.set_default_data(request, *args, **kwargs)
         return None, ''
 
     def _validate_update(self, request, *args, **kwargs):
@@ -665,7 +659,7 @@ class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
         """执行更新操作
 
         Args:
-            serializer (Serializer): 序列化器
+            serializer (serializer.Serializer): 序列化器
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
@@ -673,13 +667,15 @@ class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
         """
+        serializer.save()
         return None, ''
 
-    def _post_process_update(self, request, *args, **kwargs):
+    def _post_process_update(self, request, instance, *args, **kwargs):
         """更新能完成后处理流程
 
         Args:
             request(Request): DRF Request
+            instance (models.Models): 数据实例
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
@@ -707,18 +703,21 @@ class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        # 获取序列化器
-        serializer = self.get_serializer()
-        if not serializer.is_valid():
-            transaction.set_rollback(True)
-            return self.set_response('Serializer validate failed', '序列化器校验失败',
-                                     status=drf_status.HTTP_400_BAD_REQUEST)
-
         # 更新前预校验
         error, reason = self._validate_update(request, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
+
+        # 获取model instance
+        instance = self.get_object(*args, **kwargs)
+
+        # 获取序列化器
+        serializer = self.get_serializer(instance, data=request.data, partial=kwargs.get('partial', False))
+        if not serializer.is_valid():
+            transaction.set_rollback(True)
+            return self.set_response('Serializer validate failed', f'序列化器校验失败，错误信息为:{serializer.errors}',
+                                     status=drf_status.HTTP_400_BAD_REQUEST)
 
         # 执行更新操作
         try:
@@ -732,7 +731,7 @@ class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
         # 更新后预处理
-        error, reason = self._post_process_update(request, *args, **kwargs)
+        error, reason = self._post_process_update(request, instance, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
@@ -1304,7 +1303,7 @@ class BasicAuthPermissionViewMixin(BasicResponseMixin):
             **kwargs(dict): kwargs
 
         Returns:
-
+            has_perm(bool): 是否拥有权限
         """
         has_perm = True
         if self.permission_enable:
@@ -1357,6 +1356,22 @@ class BasicCommonViewMixin:
             self.request.query_params.pop(pop_key)
 
         self.request.query_params._mutable = False
+
+    @staticmethod
+    def set_default_data(request, *args, **kwargs):
+        """设置系统级别的内置数据
+
+        Args:
+            request(Request): request
+            *args(list): args
+            **kwargs(dict): kwargs
+        """
+        # 设置默认参数
+        request.data._mutable = True
+        login_user = request.session.get(params.SESSION_USER_KEY).get('username')
+        request.data['creator'] = login_user
+        request.data['owner'] = login_user
+        request.data._mutable = False
 
 
 

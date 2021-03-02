@@ -4,7 +4,10 @@
 ** Blog: http://www.fengchunyang.com
 */
 
-import {getLaySelectItem, getLayCheckboxItem, getCheckboxCheckedData, asyncApiResolve} from "../../../../common/utils.js";
+import {
+    getLaySelectItem, getLayCheckboxItem, getCheckboxCheckedData, asyncApiResolve, formAssignment, getQueryString,
+    syncApiResolve
+} from "../../../../common/utils.js";
 import {urls} from "../../../../config/urls.js";
 import {params} from "../../../../config/params.js";
 
@@ -55,30 +58,62 @@ $(function () {
     });
 });
 
+// 编辑行为时，为表单赋初值
+const editActionInitial = () => {
+    let formData = {};
+    let articleID = getQueryString('articleID');
+    if (articleID) {
+        const response = syncApiResolve(`${urls.articleInfoApi}/${articleID}`,);
+        formData = response.data;
+        formAssignment(params.articleFormFilter, formData);
+
+        formData.tags_id = formData.tags.map(item => item.id);
+    }
+    return formData
+};
+
+// 文章提交事件
+const articleCommitEvent = (postData, edit_data) => {
+    // editor.md自动生成的html格式的文章内容，字段为editor-html-code，转换为后端使用的字段
+    postData.html_content = postData['editor-html-code'];
+    delete postData['editor-html-code'];
+
+    // 手动获取复选框选中的数据
+    delete postData.tags;
+    postData.tags_id = getCheckboxCheckedData();
+
+    const commitSuccessCallback = (response) => {
+        if (response.result === params.resSuccessTip) {
+            window.location.href = urls.articleListPage;  // 创建成功后跳转至列表页
+        }
+    };
+
+    // 如果formData不为{}，则当前为编辑页面，调用put接口进行更新，否则为新增
+    if (edit_data) {
+        asyncApiResolve(`${urls.articleInfoApi}/${edit_data.id}`, postData, 'put', commitSuccessCallback);
+    } else {
+        asyncApiResolve(urls.articleListApi, postData, 'post', commitSuccessCallback);
+    }
+};
+
 // 页面加载后的动态操作
 layui.jquery(document).ready(function () {
+    // 如果为编辑行为，则为表单赋初值
+    const formData = editActionInitial();
+
     // 动态加载博客系列数据
-    getLaySelectItem(urls.serialListApi, params.serialSelectElem, 'id', 'name');
+    getLaySelectItem(urls.serialListApi, params.serialSelectElem, 'id', 'name', formData.serial_id);
 
     // 动态加载博客分类数据
-    getLaySelectItem(urls.classifyListApi, params.classifySelectElem, 'id', 'name');
+    getLaySelectItem(urls.classifyListApi, params.classifySelectElem, 'id', 'name', formData.classify_id);
 
     // 动态加载博客标签数据
-    getLayCheckboxItem(urls.tagListApi, params.tagCheckboxElem, 'id', 'name', 'tags');
+    getLayCheckboxItem(urls.tagListApi, params.tagCheckboxElem, 'id', 'name', 'tags', formData.tags_id);
 
     // 监听文章提交事件
     layui.form.on(`submit(${params.articleFormSubmit})`, function (data) {
-        const postData = data.field;
-        // editor.md自动生成的html格式的文章内容，字段为editor-html-code，转换为后端使用的字段
-        postData.html_content = postData['editor-html-code'];
-        delete postData['editor-html-code'];
-
-        // 手动获取复选框选中的数据
-        delete postData.tags;
-        postData.tags_id = getCheckboxCheckedData();
-
-        asyncApiResolve(urls.articleListApi, postData, 'post');
+        articleCommitEvent(data.field, formData);
         return false
-    })
+    });
 });
 

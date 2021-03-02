@@ -45,10 +45,24 @@ class ArticleSerialSerializer(serializers.ModelSerializer):
 class ArticleSerializer(serializers.ModelSerializer):
     """博客文章序列化器"""
     classify = serializers.CharField(source='classify.name', read_only=True)
+    serial = serializers.SerializerMethodField(read_only=True)
     tags = ArticleTagSerializer(many=True, read_only=True)
+
     tags_id = serializers.ListField(write_only=True, required=False)
-    classify_id = serializers.CharField(write_only=True, required=False)
-    serial_id = serializers.CharField(write_only=True, required=False)
+    classify_id = serializers.CharField(required=False)
+    serial_id = serializers.CharField(required=False)
+
+    @staticmethod
+    def get_serial(obj):
+        """获取serial name
+
+        Args:
+            obj(models.Article): 数据实例
+
+        Returns:
+            name(str): serial name
+        """
+        return obj.serial or ''
 
     def create(self, validated_data):
         """重载create，处理多对多关系
@@ -64,6 +78,23 @@ class ArticleSerializer(serializers.ModelSerializer):
         instance.tags.set(tags_id)
         return instance
 
+    def update(self, instance, validated_data):
+        """重载update，处理多对多关系
+
+        Args:
+            instance(models.Article): 数据实例
+            validated_data(dict): 有效数据
+
+        Returns:
+            instance(models.Article): 数据实例
+        """
+        tags_id = validated_data.pop('tags_id')
+        instance = super().update(instance, validated_data)
+
+        # 清空多对多关系，并重新赋值
+        instance.tags.clear()
+        instance.tags.set(tags_id)
+        return instance
 
     class Meta:
         model = models.Article

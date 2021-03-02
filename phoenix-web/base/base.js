@@ -17,16 +17,6 @@ const logoutSuccessCallback = (response, status) => {
     window.location.href = urls.indexPage;
 };
 
-// 退出登录按钮绑定事件
-layui.jquery('#logout').click(function () {
-    asyncApiResolve(urls.logoutModule, null, 'get', logoutSuccessCallback)
-});
-
-// logo点击跳转
-layui.jquery('#management-logo').click(function () {
-    window.location.href = urls.indexPage;
-});
-
 // 初始化导航选中状态与展开状态
 const initialNavStatus = () => {
     const url = getRelativePath();
@@ -71,6 +61,16 @@ layui.jquery(document).ready(function () {
         if (tableID) {
             layTableReload(tableID);
         }
+    });
+
+    // 退出登录绑定事件
+    layui.jquery('#logout').click(function () {
+        asyncApiResolve(urls.logoutModule, null, 'get', logoutSuccessCallback)
+    });
+
+    // logo点击跳转
+    layui.jquery('#management-logo').click(function () {
+        window.location.href = urls.indexPage;
     });
 });
 

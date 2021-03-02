@@ -9,8 +9,9 @@ import {closeIframe, asyncApiResolve, formAssignment} from "../../../../common/u
 
 
 // 博客分类 post成功后回调
-const classify_c_callback = (request, status) => {
-    if (status === 'success') {
+const classify_c_callback = (response) => {
+    const status = response.responseJSON.result;
+    if (status === params.resSuccessTip) {
         // 如果执行成功，则关闭当前iframe，同时刷新table
         closeIframe();
         parent.layui.table.reload(params.classifyTableID);
@@ -18,8 +19,9 @@ const classify_c_callback = (request, status) => {
 };
 
 // 博客标签 post成功后回调
-const tag_c_callback = (request, status) => {
-    if (status === 'success') {
+const tag_c_callback = (response) => {
+    const status = response.responseJSON.result;
+    if (status === params.resSuccessTip) {
         // 如果执行成功，则关闭当前iframe，同时刷新table
         closeIframe();
         parent.layui.table.reload(params.tagTableID);
@@ -30,20 +32,30 @@ const tag_c_callback = (request, status) => {
 // 页面加载后的动态操作
 layui.jquery(document).ready(function () {
     // 编辑时表单赋值
-    formAssignment(params.classifyFormFilter);
+    const classifyData = formAssignment(params.classifyFormFilter);
 
     // 编辑时表单赋值
-    formAssignment(params.tagFormFilter);
+    const tagData = formAssignment(params.tagFormFilter);
 
     // 监听博客分类提交事件
     layui.form.on(`submit(${params.classifyAddSubmit})`, function (data) {
-        asyncApiResolve(urls.classifyListApi, data.field, 'post', null, classify_c_callback);
+        if (classifyData) {
+            asyncApiResolve(`${urls.classifyInfoApi}/${classifyData.id}`, data.field, 'put', null, classify_c_callback);
+        } else {
+            asyncApiResolve(urls.classifyListApi, data.field, 'post', null, classify_c_callback);
+        }
+
         return false
     });
 
     // 监听博客分类提交事件
     layui.form.on(`submit(${params.tagAddSubmit})`, function (data) {
-        asyncApiResolve(urls.tagListApi, data.field, 'post', null, tag_c_callback);
+        if (tagData) {
+            asyncApiResolve(`${urls.tagInfoApi}/${tagData.id}`, data.field, 'put', null, tag_c_callback);
+        } else {
+            asyncApiResolve(urls.tagListApi, data.field, 'post', null, tag_c_callback);
+        }
+
         return false
     });
 });

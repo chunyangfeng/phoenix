@@ -11,11 +11,13 @@ export const urls = {
     publicKey: "/common/public-key",
     loginModule: "/common/login",
     logoutModule: "/common/logout",
+    userInfoApi: "/common/user/info",
 
     dashboardPage: "/blog/mgt/dashboard/page",
     articleListPage: "/blog/mgt/article/list/page",
     articleClassifyPage: "/blog/mgt/article/data/classify/page",
     articleTagPage: "/blog/mgt/article/data/tag/page",
+    articleInfoPage: "/blog/mgt/article/info/page",
     articleListApi: "/blog/mgt/article/list",
     articleInfoApi: "/blog/mgt/article/info",
     tagListApi: "/blog/mgt/article/data/tag/list",

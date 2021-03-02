@@ -5,7 +5,7 @@
 */
 import {urls} from "../../../../config/urls.js";
 import {
-    generateLaySwitch, layTableReload, asyncApiResolve, getLaySelectItem, syncApiResolve
+    generateLaySwitch, layTableReload, asyncApiResolve, getLaySelectItem, syncApiResolve, tableRowEventHandle
 } from "../../../../common/utils.js";
 import {params} from "../../../../config/params.js";
 
@@ -17,6 +17,12 @@ const isPublishResolve = (data) => {
 // 替换table中is_top字段的显示样式
 const isTopResolve = (data) => {
     return generateLaySwitch(params.isTop, '是|否', data.is_top, params.isTop, params.isTop, data.id)
+};
+
+// 替换table中的tags字段
+const tagsResolve = (data) => {
+    const tagName = data.tags.map(item=>item.name);
+    return tagName.join(',')
 };
 
 // 博客文章table表格
@@ -39,6 +45,7 @@ const initialArticleListTable = ()=> {
             { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
             {field: 'id', title: 'ID', align: "center", sort: true, hide: true},
             {field: 'classify', title: '分类', align: "center"},
+            {field: 'tags', title: '标签', align: "center", templet: (d) => {return tagsResolve(d)}},
             {field: 'title', title: '标题', align: "center"},
             {field: 'desc', title: '简介', align: "center"},
             {field: 'content', title: '正文', align: "center"},
@@ -110,6 +117,16 @@ layui.jquery(document).ready(function () {
     layui.form.on(`submit(${params.articleSearchForm})`, function (data) {
         layTableReload(params.articleTableID, data.field);
         return false
-    })
+    });
+
+    // 监听表格行工具事件
+    layui.table.on(`tool(${params.articleTableFilter})`, function (obj) {
+        const articleEditEvent = (obj) => {
+            // 将被编辑的文章ID传入到博客文章页面，进行表单的初始赋值
+            window.location.href = `${urls.articleInfoPage}?articleID=${obj.data.id}`
+        };
+
+        tableRowEventHandle(obj, urls.articleInfoApi, null, articleEditEvent);
+    });
 });
 

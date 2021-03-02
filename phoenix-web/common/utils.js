@@ -268,24 +268,32 @@ export const assigmentAttribute = (obj, attribute, value=null) => {
 
 // 表单赋值
 export const formAssignment = (formFilter, data=null) => {
-    if (data) {  // 传递了data时，直接怼指定表单进行赋值
+    const parent_data = assigmentAttribute(parent.window, formFilter);
+
+    if (data) {  // 传递了data时，直接对指定表单进行赋值
         layui.form.val(formFilter, JSON.parse(JSON.stringify(data)));
     } else {  // 如果没传data，则从父页面的获取指定的data
-        const parent_data = assigmentAttribute(parent.window, formFilter);
         if (parent_data) {  // 如果从父页面也没有获取到data，则终止程序
             formAssignment(formFilter, parent_data)
         }
     }
+    //  刷新表格渲染
+    layui.form.render();
+    return parent_data
 };
 
 // 动态获取表单下拉框select的值
-export const getLaySelectItem = (url, elem, pk, key) => {
+export const getLaySelectItem = (url, elem, pk, key, defaults=null) => {
     // lay select success callback
     const laySelectSuccessCallback = (response) => {
         layui.jquery.each(response.data, (index, value) => {
             const pkValue = assigmentAttribute(value, pk);  // 获取响应数据的主键值，提交数据时使用
             const textValue = assigmentAttribute(value, key);  // 获取响应数据中的展示字段值
-            layui.jquery(elem).append(`<option value=${pkValue}>${textValue}</option>`)
+            if (pkValue === Number(defaults)) {
+                layui.jquery(elem).append(`<option value=${pkValue} selected>${textValue}</option>`)
+            } else {
+                layui.jquery(elem).append(`<option value=${pkValue}>${textValue}</option>`)
+            }
         });
 
         // 手动渲染form表单中的select组件
@@ -297,12 +305,16 @@ export const getLaySelectItem = (url, elem, pk, key) => {
 };
 
 // 动态获取表单复选框的值
-export const getLayCheckboxItem = (url, elem, pk, key, name) => {
+export const getLayCheckboxItem = (url, elem, pk, key, name, defaults=null) => {
     const layCheckboxSuccessCallback = (response) => {
         layui.jquery.each(response.data, (index, value) => {
             const pkValue = assigmentAttribute(value, pk);  // 获取响应数据的主键值，提交数据时使用
             const textValue = assigmentAttribute(value, key);  // 获取响应数据中的展示字段值
-            layui.jquery(elem).append(`<input type="checkbox" name=${name} value=${pkValue} title=${textValue}>`)
+            if (defaults && defaults.indexOf(pkValue) !== -1) {
+                layui.jquery(elem).append(`<input type="checkbox" name=${name} value=${pkValue} title=${textValue} checked>`)
+            } else {
+                layui.jquery(elem).append(`<input type="checkbox" name=${name} value=${pkValue} title=${textValue}>`)
+            }
         });
 
         // 手动渲染form表单中的checkbox组件
@@ -320,6 +332,16 @@ export const getCheckboxCheckedData = () => {
         checkedArray.push(layui.jquery(this).val());
     });
     return checkedArray
+};
+
+// 获取当前页面的query-string,name是query-string中的参数名称
+export const getQueryString = (name) => {
+    const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`, 'i');
+    const result = window.location.search.substr(1).match(reg);
+    if (result !== null) {
+        return unescape(result[2]);
+    }
+    return null;
 };
 
 
