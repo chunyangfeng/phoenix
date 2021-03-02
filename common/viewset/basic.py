@@ -22,6 +22,7 @@ from common.params import params
 
 
 class BasicListViewSet(views_mixin.BasicAuthPermissionViewMixin,
+                       views_mixin.BasicCommonViewMixin,
                        GenericAPIView,
                        views_mixin.BasicBulkCreateModelMixin,
                        views_mixin.BasicListModelMixin,
@@ -36,48 +37,6 @@ class BasicListViewSet(views_mixin.BasicAuthPermissionViewMixin,
     4.资源的批量删除
     5.资源的批量处理（通过patch方法进行额外的逻辑控制，比如字段查重等）
     """
-
-    @staticmethod
-    def _clear_query_params(value):
-        """清洗查询字符串中的异常字符
-        1.undefined/null: None
-        2.左右两侧空格: ''
-        3.'true'/'false': True/False
-
-        Args:
-            value(str): 待处理字符
-
-        Returns:
-            value(str): 清洗完毕后的值
-        """
-        if value in ('undefined', 'null'):
-            value = None
-        if value == 'true':
-            value = True
-        if value == 'false':
-            value = False
-        value = value.rstrip(' ')
-        value = value.lstrip(' ')
-        return value
-
-    def initial_query_params(self):
-        """初始化查询参数"""
-        self.request.query_params._mutable = True  # 将QueryDict修改为可变
-
-        _pop_key = list()
-
-        for key, value in self.request.query_params.items():
-            # 清洗value
-            value = self._clear_query_params(value)
-
-            if value is None or len(value) == 0:
-                _pop_key.append(key)
-
-        # 如果value没有传值，则从查询参数中删除
-        for pop_key in _pop_key:
-            self.request.query_params.pop(pop_key)
-
-        self.request.query_params._mutable = False
 
     def filter_queryset(self, queryset):
         """过滤QuerySet
@@ -168,6 +127,7 @@ class BasicListViewSet(views_mixin.BasicAuthPermissionViewMixin,
 
 
 class BasicInfoViewSet(views_mixin.BasicAuthPermissionViewMixin,
+                       views_mixin.BasicCommonViewMixin,
                        GenericAPIView,
                        views_mixin.BasicCreateModelMixin,
                        views_mixin.BasicRetrieveModelMixin,

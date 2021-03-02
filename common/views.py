@@ -90,6 +90,9 @@ class UserLoginView(BasicInfoViewSet):
             'login_time': now,
         })
         request.session[params.SESSION_TOKEN_KEY] = token
+        request.session[params.SESSION_USER_KEY] = {
+            'username': user.username
+        }
         extra = {
             'redirect': reverse('dashboard-page'),
             'token': token,
@@ -143,6 +146,7 @@ class LogoutView(BasicInfoViewSet):
         token_obj.update(is_expired=True)  # 更新token实例，使其过期
 
         del request.session[params.SESSION_TOKEN_KEY]
+        del request.session[params.SESSION_USER_KEY]
         return self.set_response('Success', '退出成功')
 
 

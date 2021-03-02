@@ -70,6 +70,7 @@ AES_SALT = "qBfLtQIbZfZgVJvTuTDMEq46tMinYpQX"
 # Session setting
 SESSION_KEY = 'authentication'
 SESSION_TOKEN_KEY = 'token'
+SESSION_USER_KEY = 'user'
 RSA_SESSION_PRIVATE_KEY = 'RSA_PRIVATE_KEY'
 
 # Model settings
@@ -87,4 +88,7 @@ SPLIT_DASH = '-'
 # http常用响应数据
 HTTP_SUCCESS = 'Success'
 HTTP_Failed = 'Failed'
+
+# 数据类型
+DATA_TYPE_COMMON = 'common'
 

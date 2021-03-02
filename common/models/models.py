@@ -18,8 +18,8 @@ from common.utils import sington
 
 class CommonDataModel(BasicModel):
     """通用数据类抽象model"""
-    creator = models.CharField(verbose_name="创建者", max_length=64)
-    owner = models.CharField(verbose_name="拥有者", max_length=64)
+    creator = models.CharField(verbose_name="创建者", max_length=64, blank=True, null=True)
+    owner = models.CharField(verbose_name="拥有者", max_length=64, blank=True, null=True)
 
     class Meta:
         abstract = True

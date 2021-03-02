@@ -75,7 +75,7 @@ layui.jquery(document).ready(function () {
 
         // 手动获取复选框选中的数据
         delete postData.tags;
-        postData.tags = getCheckboxCheckedData();
+        postData.tags_id = getCheckboxCheckedData();
 
         asyncApiResolve(urls.articleListApi, postData, 'post');
         return false

@@ -72,6 +72,7 @@ export const api = (config,  perm = permissions.BASE) => {
         },
         dataType: config.dataType,
         data: config.data,
+        traditional: true,  // 传递数组
         beforeSend: function (request) {
             // 请求发送前的回调处理
             if (config.b_callback) {

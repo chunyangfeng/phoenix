@@ -27,6 +27,17 @@ from common.params.permissions import PER_BASE
 
 class BasicResponseMixin:
     """Http响应混合类"""
+    extra_data = dict()
+    _total_count = 0
+
+    def set_extra(self, key, value):
+        """设置响应数据的额外内容
+
+        Args:
+            key(str): key
+            value(any): value
+        """
+        self.extra_data[key] = value
 
     @property
     def main_body(self):
@@ -61,20 +72,26 @@ class BasicResponseMixin:
         response["total"] = len(data) if isinstance(data, list) else 0
         return Response(data=response, status=status)
 
+    def set_json(self, data):
+        """设置前端响应json数据，契合layui的动态表格结构
+
+        Args:
+            data(list): 数据主体
+
+        Returns:
+            response(dict): 符合规范的响应数据字典
+        """
+        return {
+            "code": 0,  # 状态码，暂无特殊含义，默认为0
+            "msg": "Success" if len(data) else "暂无数据",  # 消息提示，当表格无数据时作为表格内容输出在页面上
+            "count": self._total_count,  # 表格行数
+            "data": data,  # 数据内容，列表元素为字典，字典形式为单一键值对表示的fields-value
+            "extra": self.extra_data,
+        }
+
 
 class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
     """资源列表批量获取的混合类"""
-    extra_data = dict()
-    _total_count = 0
-
-    def set_extra(self, key, value):
-        """设置响应数据的额外内容
-
-        Args:
-            key(str): key
-            value(any): value
-        """
-        self.extra_data[key] = value
 
     def paginate(self, request, *args, **kwargs):
         """分页
@@ -103,23 +120,6 @@ class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
         start = (int(page) - 1) * int(limit)
         end = int(page) * int(limit)
         return query_set[start:end]
-
-    def set_json(self, data):
-        """设置前端响应json数据，契合layui的动态表格结构
-
-        Args:
-            data(list): 数据主体
-
-        Returns:
-            response(dict): 符合规范的响应数据字典
-        """
-        return {
-            "code": 0,  # 状态码，暂无特殊含义，默认为0
-            "msg": "Success" if len(data) else "暂无数据",  # 消息提示，当表格无数据时作为表格内容输出在页面上
-            "count": self._total_count,  # 表格行数
-            "data": data,  # 数据内容，列表元素为字典，字典形式为单一键值对表示的fields-value
-            "extra": self.extra_data,
-        }
 
     def _pre_process_list(self, request, *args, **kwargs):
         """list请求预处理
@@ -312,6 +312,13 @@ class BasicBulkCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
         """
+        # 设置默认参数
+        request.data._mutable = True
+        login_user = request.session.get(params.SESSION_USER_KEY).get('username')
+        request.data['creator'] = login_user
+        request.data['owner'] = login_user
+        request.data._mutable = False
+        print(request.data)
         return None, ''
 
     def _pre_validate_create(self, request, *args, **kwargs):
@@ -1303,6 +1310,53 @@ class BasicAuthPermissionViewMixin(BasicResponseMixin):
         if self.permission_enable:
             pass
         return has_perm
+
+
+class BasicCommonViewMixin:
+    """视图集的通用混合类，提供通用的处理方法"""
+    data_type = params.DATA_TYPE_COMMON  # 数据类型
+
+    @staticmethod
+    def _clear_query_params(value):
+        """清洗查询字符串中的异常字符
+        1.undefined/null: None
+        2.左右两侧空格: ''
+        3.'true'/'false': True/False
+
+        Args:
+            value(str): 待处理字符
+
+        Returns:
+            value(str): 清洗完毕后的值
+        """
+        if value in ('undefined', 'null'):
+            value = None
+        if value == 'true':
+            value = True
+        if value == 'false':
+            value = False
+        value = value.rstrip(' ')
+        value = value.lstrip(' ')
+        return value
+
+    def initial_query_params(self):
+        """初始化查询参数"""
+        self.request.query_params._mutable = True  # 将QueryDict修改为可变
+
+        _pop_key = list()
+
+        for key, value in self.request.query_params.items():
+            # 清洗value
+            value = self._clear_query_params(value)
+
+            if value is None or len(value) == 0:
+                _pop_key.append(key)
+
+        # 如果value没有传值，则从查询参数中删除
+        for pop_key in _pop_key:
+            self.request.query_params.pop(pop_key)
+
+        self.request.query_params._mutable = False
 
 
 
