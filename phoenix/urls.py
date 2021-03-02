@@ -19,6 +19,8 @@ from django.conf import settings
 
 from common import urls as common_urls
 from blog import urls as blog_urls
+from fapd import urls as fapd_urls
+
 from blog.index.views import IndexPageView, AuthForbiddenPageView, AuthNoPermissionPageView
 
 urlpatterns = [
@@ -34,4 +36,5 @@ urlpatterns = [
     path('errors/403', AuthNoPermissionPageView.as_view(), name='403'),
     path('common/', include(common_urls)),
     path('blog/', include(blog_urls)),
+    path('fapd/', include(fapd_urls)),
 ]

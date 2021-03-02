@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'common.models',
     'common',
     'blog',
+    'fapd',
 ]
 
 MIDDLEWARE = [
