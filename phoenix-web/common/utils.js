@@ -278,7 +278,7 @@ export const formAssignment = (formFilter, data=null) => {
     }
 };
 
-// 动态获取select的值
+// 动态获取表单下拉框select的值
 export const getLaySelectItem = (url, elem, pk, key) => {
     // lay select success callback
     const laySelectSuccessCallback = (response) => {
@@ -294,6 +294,32 @@ export const getLaySelectItem = (url, elem, pk, key) => {
     };
 
     asyncApiResolve(url, null, 'get', laySelectSuccessCallback);
+};
+
+// 动态获取表单复选框的值
+export const getLayCheckboxItem = (url, elem, pk, key, name) => {
+    const layCheckboxSuccessCallback = (response) => {
+        layui.jquery.each(response.data, (index, value) => {
+            const pkValue = assigmentAttribute(value, pk);  // 获取响应数据的主键值，提交数据时使用
+            const textValue = assigmentAttribute(value, key);  // 获取响应数据中的展示字段值
+            layui.jquery(elem).append(`<input type="checkbox" name=${name} value=${pkValue} title=${textValue}>`)
+        });
+
+        // 手动渲染form表单中的checkbox组件
+        layui.jquery(elem).trigger('change');
+        layui.form.render('checkbox');
+    };
+
+    asyncApiResolve(url, null, 'get', layCheckboxSuccessCallback);
+};
+
+// 获取复选框选中的数据
+export const getCheckboxCheckedData = () => {
+    const checkedArray = [];
+    layui.jquery('input[type=checkbox]:checked').each(function () {
+        checkedArray.push(layui.jquery(this).val());
+    });
+    return checkedArray
 };
 
 

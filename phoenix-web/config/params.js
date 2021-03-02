@@ -21,6 +21,8 @@ export const params = {
     tagFormFilter: 'tagFormFilter',
     classifySelectElem: '#classifySelectElem',
     tagSelectElem: '#tagSelectElem',
+    serialSelectElem: '#serialSelectElem',
+    tagCheckboxElem: '#tagCheckboxElem',
 
     isPublish: 'is_publish',
     isTop: 'is_top',
@@ -31,6 +33,7 @@ export const params = {
 
     classifyAddSubmit: 'classifyAddSubmit',
     tagAddSubmit: 'tagAddSubmit',
+    articleFormSubmit: 'articleFormSubmit',
 
     rowActionElem: '#actionBar',
     rowDeleteEvent: 'rowDelete',

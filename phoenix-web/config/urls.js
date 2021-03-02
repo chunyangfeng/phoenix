@@ -22,6 +22,7 @@ export const urls = {
     tagInfoApi: "/blog/mgt/article/data/tag/info",
     classifyListApi: "/blog/mgt/article/data/classify/list",
     classifyInfoApi: "/blog/mgt/article/data/classify/info",
+    serialListApi: "/blog/mgt/article/data/serial/list",
 
     authForbidden: "/errors/401",
     noPermission: "/errors/403",

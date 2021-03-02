@@ -54,7 +54,6 @@ class ArticleListApiView(BasicListViewSet):
     queryset = models.Article.objects.all()
     serializer_class = serializers.ArticleSerializer
     permission_name = permissions.PER_ARTICLE
-    http_method_names = ('get', )
 
 
 class ArticleInfoApiView(BasicInfoViewSet):
@@ -90,3 +89,10 @@ class ArticleTagInfoApiView(BasicInfoViewSet):
     queryset = models.ArticleTag.objects.all()
     serializer_class = serializers.ArticleTagSerializer
     permission_name = permissions.PER_ARTICLE_TAG
+
+
+class ArticleSerialListApiView(BasicListViewSet):
+    """文章系列列表接口"""
+    queryset = models.ArticleSerial.objects.all()
+    serializer_class = serializers.ArticleSerialSerializer
+    permission_name = permissions.PER_ARTICLE_SERIAL

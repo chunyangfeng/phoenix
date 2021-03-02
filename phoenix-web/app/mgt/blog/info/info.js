@@ -4,14 +4,19 @@
 ** Blog: http://www.fengchunyang.com
 */
 
+import {getLaySelectItem, getLayCheckboxItem, getCheckboxCheckedData, asyncApiResolve} from "../../../../common/utils.js";
+import {urls} from "../../../../config/urls.js";
+import {params} from "../../../../config/params.js";
+
+
 $(function () {
     const editor = editormd("editor", {
         width: "100%",
         height: 740,
-        path: "/phoenix-web/plugin/editormd/lib/",  // Autoload modules mode, codemirror, marked... dependents libs path
-        theme: "dark",
-        previewTheme: "dark",
-        editorTheme: "pastel-on-dark",
+        path: "/phoenix-web/plugin/editormd/lib/",
+        theme: "default",  // 主题设置
+        previewTheme: "default",  // 主题设置
+        editorTheme: "default",  // 主题设置
         markdown: "",
         codeFold: true,
         // autoHeight : true,  // 自动高度，通过正文内容自动撑开高度
@@ -48,5 +53,32 @@ $(function () {
             //this.resize("100%", 640);
         }
     });
+});
+
+// 页面加载后的动态操作
+layui.jquery(document).ready(function () {
+    // 动态加载博客系列数据
+    getLaySelectItem(urls.serialListApi, params.serialSelectElem, 'id', 'name');
+
+    // 动态加载博客分类数据
+    getLaySelectItem(urls.classifyListApi, params.classifySelectElem, 'id', 'name');
+
+    // 动态加载博客标签数据
+    getLayCheckboxItem(urls.tagListApi, params.tagCheckboxElem, 'id', 'name', 'tags');
+
+    // 监听文章提交事件
+    layui.form.on(`submit(${params.articleFormSubmit})`, function (data) {
+        const postData = data.field;
+        // editor.md自动生成的html格式的文章内容，字段为editor-html-code，转换为后端使用的字段
+        postData.html_content = postData['editor-html-code'];
+        delete postData['editor-html-code'];
+
+        // 手动获取复选框选中的数据
+        delete postData.tags;
+        postData.tags = getCheckboxCheckedData();
+
+        asyncApiResolve(urls.articleListApi, postData, 'post');
+        return false
+    })
 });
 

@@ -15,29 +15,49 @@ from django.core.management import BaseCommand
 
 from common.models import models
 from common.utils.formatter import output_formatter
+from common.params import permissions, params
 
 from common.management.initial_data.users import BUILTIN_USER
 
 
 class InitialCommandMixin:
     """初始化命令混合类"""
+
     def create_resource(self):
         """初始化资源数据"""
+        for key, value in permissions.RES_PERM.items():
+            resource, _ = models.Resource.objects.update_or_create(code=key, defaults={
+                "name": value,
+                "desc": value,
+            })
+            self.create_permission(resource)
         print(output_formatter("资源数据初始化完成"))
 
-    def create_permission(self):
-        """初始化权限"""
+    @staticmethod
+    def create_permission(resource):
+        """初始化权限
+
+        Args:
+            resource(models.Resource): 资源实例
+        """
+        for key, value in params.PERMISSION_CHOICE:
+            models.Permission.objects.update_or_create(resource=resource, classification=key, defaults={
+                "desc": f'{resource.name}-{value}'
+            })
         print(output_formatter("权限数据初始化完成"))
 
-    def create_role(self):
+    @staticmethod
+    def create_role():
         """初始化角色"""
         print(output_formatter("角色数据初始化完成"))
 
-    def create_user_group(self):
+    @staticmethod
+    def create_user_group():
         """初始化用户组"""
         print(output_formatter("用户组数据初始化完成"))
 
-    def create_builtin_user(self):
+    @staticmethod
+    def create_builtin_user():
         """初始化内置用户"""
         for username, data in BUILTIN_USER.items():
             models.User.objects.get_or_create(username=username, defaults=data)
@@ -48,7 +68,6 @@ class InitialCommandMixin:
         """执行函数入口
         """
         self.create_resource()
-        self.create_permission()
         self.create_role()
         self.create_user_group()
         self.create_builtin_user()

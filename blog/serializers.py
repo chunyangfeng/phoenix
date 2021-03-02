@@ -39,3 +39,13 @@ class ArticleTagSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ArticleTag
         fields = '__all__'
+
+
+class ArticleSerialSerializer(serializers.ModelSerializer):
+    """博客文章系列序列化器"""
+    classify = serializers.CharField(source='classify.name', read_only=True)
+    tags = ArticleTagSerializer(many=True)
+
+    class Meta:
+        model = models.ArticleSerial
+        fields = '__all__'

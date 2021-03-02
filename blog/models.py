@@ -40,20 +40,36 @@ class ArticleTag(CommonDataModel):
         return self.name
 
 
+class ArticleSerial(CommonDataModel):
+    """博客文章系列集合"""
+    name = models.CharField(verbose_name="系列名称", max_length=255, unique=True)
+    classify = models.ForeignKey("ArticleClassify", verbose_name="系列分类", on_delete=models.SET_NULL,
+                                 null=True, related_name='serial')
+    tags = models.ManyToManyField("ArticleTag", verbose_name="系列标签", related_name='serial')
+
+    class Meta:
+        db_table = "blog_article_serial"
+        verbose_name = "博客文章系列表"
+
+
 class Article(CommonDataModel):
     """博客文章表，存储markdown格式内容"""
     title = models.CharField(verbose_name="文章标题", max_length=100, unique=True)
     classify = models.ForeignKey("ArticleClassify", verbose_name="博客分类", on_delete=models.SET_NULL,
-                                 null=True, related_name='list')
-    tags = models.ManyToManyField("ArticleTag", verbose_name="博客标签", related_name='list')
+                                 null=True, related_name='article')
+    tags = models.ManyToManyField("ArticleTag", verbose_name="博客标签", related_name='article')
+    serial = models.ForeignKey("ArticleSerial", verbose_name="所属系列", blank=True, null=True,
+                               on_delete=models.SET_NULL, related_name="article")
     desc = models.TextField(verbose_name="内容简介")
-    content = models.TextField(verbose_name="文章正文")
+    content = models.TextField(verbose_name="文章正文", help_text="markdown格式的正文内容")
     creator = models.CharField(verbose_name="作者", max_length=64)
     is_publish = models.BooleanField(verbose_name="是否发表", default=False)
     read_count = models.IntegerField(verbose_name="阅读量", default=0)
     like_count = models.IntegerField(verbose_name="点赞数", default=0)
     is_top = models.BooleanField(verbose_name="是否置顶", default=False)
     etime = models.DateTimeField(verbose_name="编辑时间", blank=True, null=True)
+    html_content = models.TextField(verbose_name="html正文", blank=True, null=True,
+                                    help_text="由content转化为html格式的正文内容")
 
     def save(self, *args, **kwargs):
         """重载父类的save方法，设置初始创建时的编辑时间

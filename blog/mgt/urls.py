@@ -34,4 +34,6 @@ urlpatterns = [
     path('article/data/tag/list', views.ArticleTagListApiView.as_view(), name='article-tag-list-api'),  # 文章标签列表接口
     path(f'article/data/tag/info/<int:{params.MODEL_UNIQUE_KEY}>', views.ArticleTagInfoApiView.as_view(),
          name='article-tag-info-api'),  # 文章标详情表接口
+    path('article/data/serial/list', views.ArticleSerialListApiView.as_view(),
+         name='article-serial-list-api'),  # 文章系列列表接口
 ]

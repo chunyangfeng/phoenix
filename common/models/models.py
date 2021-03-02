@@ -18,21 +18,21 @@ from common.utils import sington
 
 class CommonDataModel(BasicModel):
     """通用数据类抽象model"""
-    creator = models.CharField(verbose_name="创建者", max_length=64, default="admin")
-    owner = models.CharField(verbose_name="拥有者", max_length=64, default="admin")
+    creator = models.CharField(verbose_name="创建者", max_length=64)
+    owner = models.CharField(verbose_name="拥有者", max_length=64)
 
     class Meta:
         abstract = True
 
 
-class Resource(models.Model):
+class Resource(BasicModel):
     """资源模型"""
     code = models.CharField(verbose_name="资源编码", max_length=64, unique=True)
     name = models.CharField(verbose_name="资源名称", max_length=128, unique=True)
     desc = models.CharField(verbose_name="资源描述", max_length=256, null=True, blank=True)
     allowed = models.CharField(verbose_name="允许访问范围", choices=params.PERMISSION_ALLOW_CHOICE,
                                default=params.PERMISSION_ALLOW_ALL, max_length=64)
-    url_name = models.CharField(verbose_name="url name", max_length=128, unique=True,
+    url_name = models.CharField(verbose_name="url name", max_length=128, unique=True, blank=True, null=True,
                                 help_text="资源访问的url名称，在urls.py中配置")
 
     class Meta:
@@ -41,9 +41,9 @@ class Resource(models.Model):
         ordering = ('-id', )
 
 
-class Permission(models.Model):
+class Permission(BasicModel):
     """权限模型"""
-    permission = models.ForeignKey('Resource', verbose_name="所属资源", on_delete=models.CASCADE)
+    resource = models.ForeignKey('Resource', verbose_name="所属资源", on_delete=models.CASCADE)
     classification = models.CharField(verbose_name="权限类型", choices=params.PERMISSION_CHOICE, max_length=32)
     desc = models.CharField(verbose_name="权限描述", max_length=256, null=True, blank=True)
 
@@ -53,7 +53,7 @@ class Permission(models.Model):
         ordering = ('-id', )
 
 
-class Role(models.Model):
+class Role(CommonDataModel):
     """角色模型"""
     name = models.CharField(verbose_name="角色名称", max_length=64, unique=True)
     desc = models.CharField(verbose_name="角色描述", max_length=256, blank=True, null=True)
@@ -69,7 +69,7 @@ class Role(models.Model):
         ordering = ('-id', )
 
 
-class Department(models.Model):
+class Department(BasicModel):
     """部门模型"""
     parent = models.ForeignKey('Department', verbose_name="父级部门", blank=True, null=True, on_delete=models.CASCADE)
     name = models.CharField(verbose_name="部门名称", max_length=128)
@@ -113,7 +113,6 @@ class User(CommonDataModel):
             **kwargs(dict): 可变关键字参数
         """
         # 前端创建用户时，限制了密码长度最长为16位，AES加密后的密码长度为64位，以此判断密码是否已经被加密
-        # 防止密码重复加密
         if len(self.password) != 64:
             self.password = sington.aes.encrypt(self.password)
         
@@ -124,7 +123,7 @@ class User(CommonDataModel):
         verbose_name = '用户表'
 
 
-class UserToken(CommonDataModel):
+class UserToken(BasicModel):
     """用户认证token表"""
     user = models.OneToOneField('User', verbose_name="关联用户", related_name='token', on_delete=models.CASCADE,
                                 help_text="token所属的用户，当用户登录成功后会创建或更新此数据")
@@ -139,7 +138,7 @@ class UserToken(CommonDataModel):
         verbose_name = '用户Token表'
 
 
-class MigrationsHistory(CommonDataModel):
+class MigrationsHistory(BasicModel):
     app_name = models.CharField(verbose_name="app名称", max_length=256)
     file_name = models.CharField(verbose_name="文件名称", max_length=256)
     file_content = models.TextField(verbose_name="文件内容")

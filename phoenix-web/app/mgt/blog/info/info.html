@@ -7,36 +7,41 @@
 {% endblock %}
 
 {% block content %}
-    <fieldset class="layui-elem-field">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>博客文章</legend>
         <div class="layui-field-box">
-            <form class="layui-form layui-form-pane" style="margin: 20px 100px;padding: 10px">
+            <form class="layui-form layui-form-pane" style="margin: 20px 60px;padding: 10px">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">文章标题</label>
+                    <label class="layui-form-label">所属系列</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" required lay-verify="required" placeholder="文章标题..."
-                               autocomplete="off" class="layui-input">
+                        <select name="serial" id="serialSelectElem" lay-filter="serial" lay-search="">
+                            <option value="">--选择系列--</option>
+                        </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">文章分类</label>
                     <div class="layui-input-block">
-                        <select name="classify__id" id="classifySelectElem" lay-filter="classify" lay-search="">
+                        <select name="classify" id="classifySelectElem" lay-filter="classify" lay-search="" lay-verify="required">
                             <option value="">--选择分类--</option>
                         </select>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">文章标签</label>
+                    <div class="layui-input-block" id="tagCheckboxElem"></div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">文章标题</label>
                     <div class="layui-input-block">
-                        <input type="checkbox" name="like[write]" title="MySQL">
-                        <input type="checkbox" name="like[read]" title="Oracle" checked>
-                        <input type="checkbox" name="like[dai]" title="SQLServer">
+                        <input type="text" name="title" lay-verify="required" placeholder="文章标题..."
+                               autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label">文章简介</label>
                     <div class="layui-input-block">
-                        <textarea name="desc" placeholder="文章简介..." class="layui-textarea"></textarea>
+                        <textarea name="desc" placeholder="文章简介..." class="layui-textarea" lay-verify="required"></textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -56,15 +61,13 @@
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label">文章正文</label>
                     <div class="layui-input-block" id="editor">
-                        <textarea name="content" placeholder="文章正文..." class="layui-textarea"></textarea>
+                        <textarea name="content" placeholder="文章正文..." class="layui-textarea" lay-verify="required"></textarea>
                     </div>
                 </div>
+                <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="articleFormSubmit">提交</button>
             </form>
         </div>
     </fieldset>
-{#    <div id="editor">#}
-{#        <textarea style="display:none;">### Hello Editor.md !</textarea>#}
-{#    </div>#}
 {% endblock %}
 
 {% block footer-scripts %}
