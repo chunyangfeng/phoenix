@@ -56,12 +56,31 @@ class ArticleDetailPageView(BasePageView):
             error(str): 错误信息，None为没有错误
             reason(str): 错误原因，为''则没有错误
         """
-        pk = kwargs.get(params.MODEL_UNIQUE_KEY)
-        if not pk:
-            return self.set_response(result=params.HTTP_Failed, data='无效的文章ID',
-                                     status=drf_status.HTTP_400_BAD_REQUEST)
-        # 获取实例数据
-        model = self.get_model_class()
-        instance = model.objects.get(pk=pk)
+        error, reason, instance = self.get_object(*args, **kwargs)
+        if error:
+            return self.set_response(result=error, data=reason, status=drf_status.HTTP_400_BAD_REQUEST)
+
         self.data['article'] = self.serializer_class(instance, many=False).data
+
+        # 传递instance对象至_post_get中，进行数据操作
+        setattr(self, 'instance', instance)
+        return None, ''
+
+    def _post_get(self, request, *args, **kwargs):
+        """响应页面之后的操作，增加文章的阅读数
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，None为没有错误
+            reason(str): 错误原因，为''则没有错误
+        """
+        instance = self.instance
+
+        # 当访问成功时，将文章的阅读数量加一
+        instance.read_count += 1
+        instance.save()
         return None, ''

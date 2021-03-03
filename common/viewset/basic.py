@@ -12,6 +12,7 @@
 from django.conf import settings
 from django.shortcuts import render
 from django.views import View
+from rest_framework import status as drf_status
 
 from common.exceptions.http import ModelPrimaryKeyError, ModelClassError
 from common.mixins import views_mixin
@@ -245,6 +246,27 @@ class BasePageView(views_mixin.BasicAuthPermissionViewMixin, View):
         if not self.model_class:
             raise ModelClassError('没有配置model class，获取失败')
         return self.model_class
+
+    def get_object(self, *args, **kwargs):
+        """获取配置的实例
+
+        Args:
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，没有则为None
+            reason(str): 错误原因，没有则为''
+            instance(models.Model): 数据实例
+        """
+        pk = kwargs.get(params.MODEL_UNIQUE_KEY)
+        if not pk:
+            return 'No id', '无效的文章ID', None
+
+        # 获取实例数据
+        model = self.get_model_class()
+        instance = model.objects.get(pk=pk)
+        return None, '', instance
 
     def _pre_get(self, request, *args, **kwargs):
         """响应页面之前的操作，由子类自定义
