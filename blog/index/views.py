@@ -14,7 +14,7 @@ Blog: http://www.fengchunyang.com
 from rest_framework import status as drf_status
 
 from blog.models import Article
-from blog.serializers import ArticleDetailSerializer
+from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer
 from common.viewset.basic import BasePageView
 from common.params import params
 
@@ -44,8 +44,8 @@ class ArticleDetailPageView(BasePageView):
     authentication_enable = False
     page = 'index/detail/detail.html'
 
-    def _pre_get(self, request, *args, **kwargs):
-        """响应页面之前的操作，由子类自定义
+    def _post_get(self, request, *args, **kwargs):
+        """响应页面之后的操作，设置文章数据，增加文章的阅读数
 
         Args:
             request(Request): http request
@@ -60,14 +60,24 @@ class ArticleDetailPageView(BasePageView):
         if error:
             return self.set_response(result=error, data=reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
+        # 添加文章数据至模板对象中
         self.data['article'] = self.serializer_class(instance, many=False).data
 
-        # 传递instance对象至_post_get中，进行数据操作
-        setattr(self, 'instance', instance)
+        # 当访问成功时，将文章的阅读数量加一
+        instance.read_count += 1
+        instance.save()
         return None, ''
 
+
+class IndexSiteMapPageView(BasePageView):
+    """网站地图"""
+    model_class = Article
+    serializer_class = ArticleSiteMapSerializer
+    authentication_enable = False
+    page = 'index/map/map.html'
+
     def _post_get(self, request, *args, **kwargs):
-        """响应页面之后的操作，增加文章的阅读数
+        """响应页面之后的操作，设置文章链接数据
 
         Args:
             request(Request): http request
@@ -78,9 +88,8 @@ class ArticleDetailPageView(BasePageView):
             error(str): 错误信息，None为没有错误
             reason(str): 错误原因，为''则没有错误
         """
-        instance = self.instance
+        instances = self.model_class.objects.filter(is_publish=True)
 
-        # 当访问成功时，将文章的阅读数量加一
-        instance.read_count += 1
-        instance.save()
+        # 添加文章链接数据至模板对象中
+        self.data['articles'] = self.serializer_class(instances, many=True).data
         return None, ''

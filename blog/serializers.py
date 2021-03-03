@@ -244,3 +244,41 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Article
         fields = '__all__'
+
+
+class ArticleSiteMapSerializer(serializers.ModelSerializer):
+    """网站地图序列化器"""
+    title = serializers.CharField(read_only=True)
+    classify_name = serializers.CharField(source='classify.name', read_only=True)
+    tags = serializers.SerializerMethodField(read_only=True)
+    link = serializers.SerializerMethodField(read_only=True)
+
+    @staticmethod
+    def get_tags(obj):
+        """获取标签集字符串
+
+        Args:
+            obj(models.Article): 数据实例
+
+        Returns:
+            tags(str): 标签集
+        """
+        tag_list = obj.tags.values_list('name', flat=True)
+        return ','.join(tag_list) or None
+
+    @staticmethod
+    def get_link(obj):
+        """获取文章的url链接
+
+        Args:
+            obj(models.Article): 数据实例
+
+        Returns:
+            link(str): url链接
+        """
+        url = reverse('article-detail-page', kwargs={params.MODEL_UNIQUE_KEY: obj.id})
+        return f'{params.SYSTEM_DOMAIN}{url}'
+
+    class Meta:
+        model = models.Article
+        fields = ('title', 'classify_name', 'tags', 'link')

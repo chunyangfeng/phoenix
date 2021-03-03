@@ -107,12 +107,10 @@ class BasicListModelMixin(mixins.ListModelMixin, BasicResponseMixin):
         page = request.query_params.get(params.PAGINATE_PAGE)
         limit = request.query_params.get(params.PAGINATE_LIMIT)
 
+        query_set = self.filter_queryset(self.get_queryset())
         # 统计原始数据集总量
-        query_set = self.get_queryset()
         total_count = len(query_set)
         self._total_count = total_count
-
-        query_set = self.filter_queryset(query_set)
 
         if not any([page, limit]):
             return query_set

@@ -19,4 +19,5 @@ from . import views
 
 urlpatterns = [
     path(f'article/<int:{params.MODEL_UNIQUE_KEY}>', views.ArticleDetailPageView.as_view(), name='article-detail-page'),
+    path('map', views.IndexSiteMapPageView.as_view(), name='site-map-page'),
 ]
