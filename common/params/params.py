@@ -92,3 +92,6 @@ HTTP_Failed = 'Failed'
 # 数据类型
 DATA_TYPE_COMMON = 'common'
 
+# 系统设置
+SYSTEM_DOMAIN = 'http://www.fengchunyang.com'
+

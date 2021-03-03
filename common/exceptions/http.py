@@ -19,3 +19,7 @@ class HttpContentTypeException(Exception):
 
 class ModelPrimaryKeyError(Exception):
     pass
+
+
+class ModelClassError(Exception):
+    pass

@@ -14,7 +14,9 @@ Blog: http://www.fengchunyang.com
 from django.urls import path, include
 
 from .mgt import urls as mgt_urls
+from .index import urls as index_urls
 
 urlpatterns = [
     path('mgt/', include(mgt_urls)),
+    path('index/', include(index_urls)),
 ]

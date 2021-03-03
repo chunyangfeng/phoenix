@@ -1,44 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>却邪水心泮</title>
-    <link rel="stylesheet" href="/phoenix-web/plugin/layui/css/layui.css">
+{% extends 'base/index/index_base.html' %}
+
+{% block header-css %}
     <link rel="stylesheet" href="/phoenix-web/app/index/index.css">
-</head>
-<body>
-<div class="index-layout">
-    <div class="index-nav">
-        <div class="index-logo">
-            <img src="/phoenix-web/assets/img/logo.png" alt="却邪水心泮">
-        </div>
-        <div class="index-search">
-            <input type="text" name="search-content" placeholder="请输入关键字" class="layui-input">
-        </div>
-        <div class="index-nav-items">
-            <a href="">首页</a>
-            <a href="">分类</a>
-            <a href="">归档</a>
-            <a href="">留言板</a>
-            <a href="">友链</a>
-            <a href="">关于</a>
-            <a href="#" id="management">管理</a>
-        </div>
-    </div>
-    <div class="index-body">
-        <div class="index-lside">左侧</div>
-        <div class="index-content">
-            <p>1111111</p>
-        </div>
-        <div class="index-rside">右侧</div>
-    </div>
-    <div class="index-footer">
-        <p>&copy;Copyright 却邪水心 2020-2030 <a href="http://www.beian.miit.gov.cn" target="_blank">京ICP备20028569号</a></p>
-        <p>Powered by Django 3.1 and Layui 2.5</p>
-    </div>
-</div>
-<script src="/phoenix-web/plugin/layui/layui.all.js"></script>
-<script src="/phoenix-web/app/index/index.js" type="module"></script>
-</body>
-</html>
+{% endblock %}
+
+{% block body-middle %}
+    <div id="articleCardElem"></div>
+    <div id="articlePageElem"></div>
+{% endblock %}
+
+
+{% block footer-js %}
+    <script src="/phoenix-web/app/index/index.js" type="module"></script>
+{% endblock %}

@@ -7,6 +7,7 @@
 // 全局变量
 import {params} from "../config/params.js";
 import {api, apiConfig} from "./api.js";
+import {urls} from "../config/urls.js";
 
 export const $ = layui.jquery;
 
@@ -268,18 +269,18 @@ export const assigmentAttribute = (obj, attribute, value=null) => {
 
 // 表单赋值
 export const formAssignment = (formFilter, data=null) => {
-    const parent_data = assigmentAttribute(parent.window, formFilter);
-
     if (data) {  // 传递了data时，直接对指定表单进行赋值
         layui.form.val(formFilter, JSON.parse(JSON.stringify(data)));
     } else {  // 如果没传data，则从父页面的获取指定的data
+        const parent_data = assigmentAttribute(parent.window, formFilter);
+        data = parent_data;
         if (parent_data) {  // 如果从父页面也没有获取到data，则终止程序
-            formAssignment(formFilter, parent_data)
+            formAssignment(formFilter, data)
         }
     }
     //  刷新表格渲染
     layui.form.render();
-    return parent_data
+    return data
 };
 
 // 动态获取表单下拉框select的值
@@ -342,6 +343,38 @@ export const getQueryString = (name) => {
         return unescape(result[2]);
     }
     return null;
+};
+
+// 动态生成文章卡片html
+export const generateArticleCard = (data) => {
+    let tags = '';
+    layui.jquery.each(data.tags, (index, value) => {
+        tags += `<span class="layui-badge layui-bg-green">${value.name}</span>`;
+    });
+
+    let card = `<div class="article-card">
+                    <a class="article-card-pane" href="${urls.articleDetailPage}/${data.id}">
+                        <div class="article-card-pane-item"><h2 class="article-card-title">${data.title}</h2></div>
+                        <hr class="layui-bg-gray">
+                        <div class="article-card-pane-item">
+                            <h6 class="article-card-sub-title">
+                              <span><i class="layui-icon layui-icon-user"></i> 作者 ${data.creator}</span>
+                              <span><i class="layui-icon layui-icon-release"></i> 发表于 ${data.ctime}</span>
+                              <span><i class="layui-icon layui-icon-app"></i> 分类 ${data.classify}</span>
+                              <span><i class="layui-icon layui-icon-read"></i> 阅读量 ${data.read_count}</span>
+                              <span><i class="layui-icon layui-icon-chat"></i> 评论数 ${data.comment_count}</span>
+                            </h6>
+                        </div>
+                        <div class="article-card-pane-item">
+                            <p class="article-card-desc">${data.desc}</p>
+                        </div>
+                        <div class="article-card-pane-item">
+                            ${tags}
+                        </div>
+                    </a>
+                </div>`;
+
+    return card
 };
 
 

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>却邪水心泮-{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/phoenix-web/plugin/layui/css/layui.css">
+    <link rel="stylesheet" href="/phoenix-web/base/index/index_base.css">
+    <link rel="icon" href="/phoenix-web/assets/img/favicon.ico" type="image/x-icon"/>
+    {% block header-css %}{% endblock %}
+    {% block header-js %}{% endblock %}
+</head>
+<body>
+<div class="index-layout">
+    <div class="index-nav">
+        <div class="index-logo">
+            <a href="{% url 'index-page' %}">
+                <img src="/phoenix-web/assets/img/logo.png" alt="却邪水心泮">
+            </a>
+        </div>
+        <div class="index-search">
+            <input type="text" name="search-content" placeholder="请输入关键字" class="layui-input">
+        </div>
+        <div class="index-nav-items">
+            <a href="{% url 'index-page' %}">首页</a>
+            <a href="">分类</a>
+            <a href="">归档</a>
+            <a href="">留言板</a>
+            <a href="">友链</a>
+            <a href="">关于</a>
+            <a href="#" id="management">管理</a>
+        </div>
+    </div>
+    {% block main-body %}
+        <div class="index-body layui-row">
+            <div class="index-lside layui-col-md2">{% block body-left %}&nbsp;{% endblock %}</div>
+            <div class="index-content layui-col-md6">
+                {% block body-middle %}中间主体{% endblock %}
+            </div>
+            <div class="index-rside layui-col-md4">{% block body-right %}&nbsp;{% endblock %}</div>
+        </div>
+    {% endblock %}
+    <div class="index-footer">
+        {% block footer %}
+            <p>
+                &copy;Copyright 却邪水心 2020-2030
+                <a href="http://beian.miit.gov.cn" target="_blank">京ICP备20028569号</a>
+            </p>
+            <p>
+                Powered by
+                <a href="https://www.djangoproject.com/" target="_blank">Django 3.1</a>
+                AND
+                <a href="https://www.layui.com/" target="_blank">Layui 2.5.5</a>
+            </p>
+        {% endblock %}
+    </div>
+</div>
+<script src="/phoenix-web/plugin/layui/layui.all.js"></script>
+<script src="/phoenix-web/base/index/index_base.js" type="module"></script>
+{% block footer-js %}{% endblock %}
+</body>
+</html>

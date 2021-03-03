@@ -12,8 +12,11 @@ Blog: http://www.fengchunyang.com
 重要说明:
 """
 from django.urls import path
-# from .views import DashboardPageView
+
+from common.params import params
+
+from . import views
 
 urlpatterns = [
-    # path('dashboard', DashboardPageView.as_view(), name='dashboard-page'),
+    path(f'article/<int:{params.MODEL_UNIQUE_KEY}>', views.ArticleDetailPageView.as_view(), name='article-detail-page'),
 ]

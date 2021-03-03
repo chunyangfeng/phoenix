@@ -23,6 +23,8 @@ export const params = {
     tagSelectElem: '#tagSelectElem',
     serialSelectElem: '#serialSelectElem',
     tagCheckboxElem: '#tagCheckboxElem',
+    articleCardElem: '#articleCardElem',
+    articlePageElem: 'articlePageElem',
 
     isPublish: 'is_publish',
     isTop: 'is_top',

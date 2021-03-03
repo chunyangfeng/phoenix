@@ -3,10 +3,10 @@
 ** Date: 2021/2/23 18:04
 ** Blog: http://www.fengchunyang.com
 */
-import {urls} from "../config/urls.js";
-import {api, apiConfig} from "../common/api.js";
-import {permissions} from "../config/permission.js";
-import {getRelativePath, dynamicClock, layTableReload, asyncApiResolve} from "../common/utils.js";
+import {urls} from "../../config/urls.js";
+import {api, apiConfig} from "../../common/api.js";
+import {permissions} from "../../config/permission.js";
+import {getRelativePath, dynamicClock, layTableReload, asyncApiResolve} from "../../common/utils.js";
 
 
 // 登出成功后的回调

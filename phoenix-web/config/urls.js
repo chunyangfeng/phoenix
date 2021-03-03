@@ -25,6 +25,7 @@ export const urls = {
     classifyListApi: "/blog/mgt/article/data/classify/list",
     classifyInfoApi: "/blog/mgt/article/data/classify/info",
     serialListApi: "/blog/mgt/article/data/serial/list",
+    articleDetailPage: "/blog/index/article",
 
     authForbidden: "/errors/401",
     noPermission: "/errors/403",

@@ -89,7 +89,7 @@ const articleCommitEvent = (postData, edit_data) => {
     };
 
     // 如果formData不为{}，则当前为编辑页面，调用put接口进行更新，否则为新增
-    if (edit_data) {
+    if (Object.keys(edit_data).length > 0) {
         asyncApiResolve(`${urls.articleInfoApi}/${edit_data.id}`, postData, 'put', commitSuccessCallback);
     } else {
         asyncApiResolve(urls.articleListApi, postData, 'post', commitSuccessCallback);

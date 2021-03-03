@@ -19,7 +19,6 @@ BUILTIN_USER = {
         'password': '123456',
         'email': 'admin@fengchunyang.com',
         'site': 'http://www.fengchunyang.com',
-        'allow_login': True,
         'is_builtin': True
     },
     "anonymous": {

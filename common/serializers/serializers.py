@@ -21,3 +21,12 @@ class UserTokenSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserToken
         fields = "__all__"
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    """用户信息序列化器"""
+
+    class Meta:
+        model = User
+        fields = "__all__"
+

@@ -1,0 +1,62 @@
+{% extends 'base/index/index_base.html' %}
+
+{% block title %}
+    {{ article.title }} - {{ article.classify_name }}
+{% endblock %}
+
+{% block header-css %}
+    <link rel="stylesheet" href="/phoenix-web/plugin/editormd/css/editormd.min.css"/>
+    <link rel="stylesheet" href="/phoenix-web/app/index/detail/detail.css"/>
+{% endblock %}
+
+{% block main-body %}
+    <div class="article-body">
+        <h2 class="article-body-title">{{ article.title }}</h2>
+        <h6 class="article-body-sub-title">
+            <span><i class="layui-icon layui-icon-user"></i> 作者 {{ article.creator }}</span>
+            <span><i class="layui-icon layui-icon-release"></i> 发表于 {{ article.ctime }}</span>
+            {% if article.etime %}
+                <span><i class="layui-icon layui-icon-edit"></i> 更新于 {{ article.etime }}</span>
+            {% endif %}
+            <span><i class="layui-icon layui-icon-app"></i> 分类 {{ article.classify_name }}</span>
+            <span><i class="layui-icon layui-icon-read"></i> 阅读量 {{ article.read_count }}</span>
+            <span><i class="layui-icon layui-icon-form"></i> 字数≈{{ article.word_count }}</span>
+        </h6>
+        <p class="article-body-desc">{{ article.desc }}</p>
+        <div class="article-body-content" id="editorDetail">
+            <textarea name="content">{{ article.content }}</textarea>
+        </div>
+        <div class="article-body-nav">
+            <div class="article-body-nav-left">
+                <a href="{{ article.relate.previous.link }}">上一篇：{{ article.relate.previous.title }}</a>
+            </div>
+            <div class="article-body-nav-right">
+                <a href="{{ article.relate.latest.link }}">下一篇：{{ article.relate.latest.title }}</a>
+            </div>
+        </div>
+        <div class="article-body-statement">
+            <p><span>本文作者：</span>{{ article.creator }}</p>
+            <p><span>本文链接：</span><a href="{{ article.link }}" target="_blank">：{{ article.link }}</a></p>
+            <p><span>版权申明：</span>本站的所有内容,除特别申明外,均遵循
+                <a href="http://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GPLv3</a>
+                许可协议。转载请注明出处！
+            </p>
+        </div>
+{#        <div class="article-body-comment">#}
+{#            评论区#}
+{#        </div>#}
+    </div>
+{% endblock %}
+
+{% block footer-js %}
+    <script src="/phoenix-web/plugin/others/jquery.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/lib/marked.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/lib/prettify.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/lib/raphael.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/lib/underscore.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/lib/sequence-diagram.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/lib/flowchart.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/lib/jquery.flowchart.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/editormd.js"></script>
+    <script src="/phoenix-web/app/index/detail/detail.js" type="module"></script>
+{% endblock %}

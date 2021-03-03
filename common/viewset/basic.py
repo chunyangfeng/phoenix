@@ -13,7 +13,7 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views import View
 
-from common.exceptions.http import ModelPrimaryKeyError
+from common.exceptions.http import ModelPrimaryKeyError, ModelClassError
 from common.mixins import views_mixin
 from rest_framework.generics import GenericAPIView
 
@@ -229,10 +229,22 @@ class BasicInfoViewSet(views_mixin.BasicAuthPermissionViewMixin,
 
 class BasePageView(views_mixin.BasicAuthPermissionViewMixin, View):
     """Html页面响应基类"""
+    model_class = None  # 资源视图类
+    serializer_class = None  # 资源序列化器
     app = settings.WEB_APP  # 前端页面的根路径
     page = None  # html页面的相对路径，用于render函数渲染
     data = dict()  # 页面渲染时传递的数据
     http_method_names = ['get', ]  # 仅允许get方式
+
+    def get_model_class(self):
+        """获取model_class
+
+        Returns:
+            model(models.Model): model class
+        """
+        if not self.model_class:
+            raise ModelClassError('没有配置model class，获取失败')
+        return self.model_class
 
     def _pre_get(self, request, *args, **kwargs):
         """响应页面之前的操作，由子类自定义

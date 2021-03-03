@@ -1,75 +1,48 @@
-.index-layout {
+.article-card-pane {
     display: block;
+    text-decoration: none;
+    border: 1px solid #eee;
+    margin: 30px auto;
+    padding: 0 15px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
 }
 
-.index-nav {
-    display: block;
-    border: 1px solid #f2f2f2;
-    box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, .3);
+.article-card-pane-item {
+    margin: 15px 15px;
+}
+
+.article-card-title {
+    color: #606266;
+    font-size: 26px;
     width: 100%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-.index-nav .index-logo {
+.article-card-sub-title {
+    margin: 10px 0;
+    color: #999;
+}
+
+.article-card-pane-item span {
     display: inline-block;
-    margin-left: 15%;
+    /*border: 1px solid #000;*/
+    margin: 3px 10px 3px 0 !important;
 }
 
-.index-nav .index-search {
-    display: inline-block;
-    margin-left: 2%;
+.article-card-desc {
+    font-size: 16px;
+    color: #838B8B;
+    margin: 30px auto;
+    /*width: 100%;*/
+    /*text-overflow: ellipsis;*/
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
 }
 
-.index-nav .index-nav-items {
-    display: inline-block;
-    margin-left: 23%;
-}
-
-.index-nav .index-nav-items a {
-    display: inline-block;
-    font-size: 21px;
-    padding: 0 12px;
-}
-
-/*.index-nav .index-nav-items a:hover {*/
-/*    color: lightskyblue;*/
-/*    font-size: 23px;*/
-/*    font-weight: 500;*/
-/*    border-bottom: solid 5px #40E0D0;*/
+/*.article-card-tag {*/
+/*    display: inline-block;*/
+/*    list-style: none;*/
+/*    margin: auto 5px auto 0;*/
 /*}*/
-
-.index-body {
-    display: block;
-}
-
-.index-body .index-lside {
-    display: inline-block;
-    margin-left: 20%;
-}
-
-.index-body .index-content {
-    display: inline-block;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-.index-body .index-rside {
-    display: inline-block;
-    margin-right: 20%;
-}
-
-.index-footer {
-    border-top: 4px solid #f3f3f3;
-    height: 70px;
-    width: 100%;
-    line-height: 70px;
-    position: absolute;
-    bottom: 0;
-}
-
-.index-footer p {
-    text-align: center;
-    height: 30px;
-    line-height: 30px;
-    margin: 5px auto;
-    font-weight: 600;
-}
