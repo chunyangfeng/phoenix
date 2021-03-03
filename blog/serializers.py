@@ -120,12 +120,15 @@ class ArticleSerializer(serializers.ModelSerializer):
         Returns:
             instance(models.Article): 数据实例
         """
-        tags_id = validated_data.pop('tags_id')
+        tags_id = validated_data.get('tags_id', None)
+        if tags_id is not None:  # 如果没有传递tags_id，则不进行标签的赋值
+            validated_data.pop('tags_id')
         instance = super().update(instance, validated_data)
 
         # 清空多对多关系，并重新赋值
-        instance.tags.clear()
-        instance.tags.set(tags_id)
+        if tags_id:
+            instance.tags.clear()
+            instance.tags.set(tags_id)
         return instance
 
     class Meta:
