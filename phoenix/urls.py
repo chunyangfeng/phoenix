@@ -25,7 +25,7 @@ from blog.index.views import IndexPageView, AuthForbiddenPageView, AuthNoPermiss
 
 urlpatterns = [
     # 处理静态资源
-    path('static/<path:path>', serve, {'document_root': settings.STATIC_URL}),
+    path('phoenix-web/<path:path>', serve, {'document_root': settings.STATIC_URL}),
 
     # # 处理媒体资源
     # path('media/<path:path>', serve, {'document_root': settings.MEDIA_URL}),

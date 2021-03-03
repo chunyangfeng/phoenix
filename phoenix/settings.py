@@ -131,7 +131,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = '/phoenix-web/'
 STATIC_URL = '/phoenix-web/'
 STATICFILES_DIRS = (
     os.path.join(os.path.dirname(__file__), '../phoenix-web/').replace('\\', '/'),
