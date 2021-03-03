@@ -51,7 +51,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     serial = serializers.SerializerMethodField(read_only=True)
     tags = ArticleTagSerializer(many=True, read_only=True)
     comment_count = serializers.SerializerMethodField(read_only=True)
-    creator = serializers.SerializerMethodField(read_only=True)
+    creator_display = serializers.SerializerMethodField(read_only=True)
 
     tags_id = serializers.ListField(write_only=True, required=False)
     classify_id = serializers.CharField(required=False)
@@ -81,7 +81,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         return 0
 
     @staticmethod
-    def get_creator(obj):
+    def get_creator_display(obj):
         """获取文章作者真实姓名
 
         Args:

@@ -358,7 +358,7 @@ export const generateArticleCard = (data) => {
                         <hr class="layui-bg-gray">
                         <div class="article-card-pane-item">
                             <h6 class="article-card-sub-title">
-                              <span><i class="layui-icon layui-icon-user"></i> 作者 ${data.creator}</span>
+                              <span><i class="layui-icon layui-icon-user"></i> 作者 ${data.creator_display}</span>
                               <span><i class="layui-icon layui-icon-release"></i> 发表于 ${data.ctime}</span>
                               <span><i class="layui-icon layui-icon-app"></i> 分类 ${data.classify}</span>
                               <span><i class="layui-icon layui-icon-read"></i> 阅读量 ${data.read_count}</span>
