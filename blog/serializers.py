@@ -143,6 +143,7 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
     link = serializers.SerializerMethodField(read_only=True)
     creator = serializers.SerializerMethodField(read_only=True)
     relate = serializers.SerializerMethodField(read_only=True)
+    tags = serializers.SerializerMethodField(read_only=True)
 
     @staticmethod
     def _get_url(pk, url_name='article-detail-page'):
@@ -240,6 +241,18 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
             'latest': self._get_relate_data(obj.id+1, previous=False, latest=True),
         }
         return data
+
+    def get_tags(self, obj):
+        """
+
+        Args:
+            obj(models.Article): 数据实例
+
+        Returns:
+            tags(list): 标签信息
+        """
+        tag_data = obj.tags.values('id', 'name')
+        return list(tag_data)
 
     class Meta:
         model = models.Article

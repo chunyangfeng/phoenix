@@ -37,6 +37,15 @@
     background-color: #F5F5F5;
 }
 
+.article-body-tags {
+    margin-left: 23px;
+    padding: 10px 1px;
+}
+
+.article-body-tags span {
+    margin-right: 10px;
+}
+
 .article-body-nav {
     border: 1px solid #C2C2C2;
     /*border-left: 5px solid #00FF7F;*/

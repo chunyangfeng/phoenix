@@ -14,7 +14,7 @@
         <h2 class="article-body-title">{{ article.title }}</h2>
         <h6 class="article-body-sub-title">
             <span><i class="layui-icon layui-icon-user"></i> 作者 {{ article.creator }}</span>
-            <span><i class="layui-icon layui-icon-release"></i> 发表于 {{ article.ctime }}</span>
+            <span><i class="layui-icon layui-icon-release"></i> 发表于 {{ article.ptime }}</span>
             {% if article.etime %}
                 <span><i class="layui-icon layui-icon-edit"></i> 更新于 {{ article.etime }}</span>
             {% endif %}
@@ -25,6 +25,11 @@
         <p class="article-body-desc">{{ article.desc }}</p>
         <div class="article-body-content" id="editorDetail">
             <textarea name="content">{{ article.content }}</textarea>
+        </div>
+        <div class="article-body-tags">
+            {% for tag in article.tags %}
+                <span class="layui-badge layui-badge-rim layui-bg-blue">{{ tag.name }}</span>
+            {% endfor %}
         </div>
         <div class="article-body-nav">
             <div class="article-body-nav-left">
