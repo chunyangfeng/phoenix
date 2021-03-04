@@ -90,7 +90,7 @@ DATABASES = {
         'HOST': '192.168.1.103',
         'USER': 'root',
         'PASSWORD': 'nishengri',
-        'NAME': 'phoenix',
+        'NAME': 'phoenix_test',
     }
 }
 

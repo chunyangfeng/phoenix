@@ -5,7 +5,8 @@
 */
 import {urls} from "../../../../config/urls.js";
 import {
-    generateLaySwitch, layTableReload, asyncApiResolve, getLaySelectItem, syncApiResolve, tableRowEventHandle
+    generateLaySwitch, layTableReload, asyncApiResolve, getLaySelectItem, syncApiResolve, tableRowEventHandle,
+    getCurrentDate,
 } from "../../../../common/utils.js";
 import {params} from "../../../../config/params.js";
 
@@ -65,6 +66,11 @@ const monitorTableEvent = (filter, data) => {
     layer.confirm('确定?', {icon: 1, title: '操作确认'}, function (index) {
         let json_data = {};
         json_data[filter] = data.elem.checked ? 1 : 0;  // 如果当前为关闭状态则赋值0，否则赋值1
+
+        // 如果是发布按钮，则仅当发布状态为true时，修改发布时间
+        if (filter === params.isPublish && data.elem.checked) {
+            json_data['ptime'] = getCurrentDate('-', '-', '');
+        }
 
         const url = `${urls.articleInfoApi}/${data.elem.getAttribute('pk')}`;
         const response = syncApiResolve(url, json_data, 'patch');

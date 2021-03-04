@@ -70,6 +70,7 @@ class Article(CommonDataModel):
     etime = models.DateTimeField(verbose_name="编辑时间", blank=True, null=True)
     html_content = models.TextField(verbose_name="html正文", blank=True, null=True,
                                     help_text="由content转化为html格式的正文内容")
+    ptime = models.DateTimeField(verbose_name="发表时间", blank=True, null=True)
 
     def save(self, *args, **kwargs):
         """重载父类的save方法，设置初始创建时的编辑时间

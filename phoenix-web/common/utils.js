@@ -32,8 +32,8 @@ export const getRelativePath = ()=> {
     return relUrl;
 };
 
-// 获取动态时钟
-export const dynamicClock = (elem_id) => {
+// 获取当前日期
+export const getCurrentDate = (ym='年', md='月', dh='日', seq=' ', hm=':', ms=':') => {
     let time = new Date();  // 获得当前时间
     let year = time.getFullYear();  // 获得年月日
     let month = time.getMonth() + 1;  // 获得年月日,time的month默认为0-11，即0为1月，11为12月
@@ -52,8 +52,12 @@ export const dynamicClock = (elem_id) => {
         second = "0" + second;
     }
 
-    // 设置文本框的内容为当前时间
-    const datetime_str = year + "年" + month + "月" + date + "日 " + hour + ":" + minute + ":" + second;
+    return `${year}${ym}${month}${md}${date}${dh}${seq}${hour}${hm}${minute}${ms}${second}`
+};
+
+// 设置动态时钟
+export const dynamicClock = (elem_id) => {
+    const datetime_str = getCurrentDate();
     $('#'+elem_id).empty().append(datetime_str);
 };
 
@@ -352,14 +356,14 @@ export const generateArticleCard = (data) => {
         tags += `<span class="layui-badge layui-bg-green">${value.name}</span>`;
     });
 
-    let card = `<div class="article-card">
+    return `<div class="article-card">
                     <a class="article-card-pane" href="${urls.articleDetailPage}/${data.id}">
                         <div class="article-card-pane-item"><h2 class="article-card-title">${data.title}</h2></div>
                         <hr class="layui-bg-gray">
                         <div class="article-card-pane-item">
                             <h6 class="article-card-sub-title">
                               <span><i class="layui-icon layui-icon-user"></i> 作者 ${data.creator_display}</span>
-                              <span><i class="layui-icon layui-icon-release"></i> 发表于 ${data.ctime}</span>
+                              <span><i class="layui-icon layui-icon-release"></i> 发表于 ${data.ptime}</span>
                               <span><i class="layui-icon layui-icon-app"></i> 分类 ${data.classify}</span>
                               <span><i class="layui-icon layui-icon-read"></i> 阅读量 ${data.read_count}</span>
                               <span><i class="layui-icon layui-icon-chat"></i> 评论数 ${data.comment_count}</span>
@@ -373,8 +377,6 @@ export const generateArticleCard = (data) => {
                         </div>
                     </a>
                 </div>`;
-
-    return card
 };
 
 
