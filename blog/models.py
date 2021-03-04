@@ -87,5 +87,5 @@ class Article(CommonDataModel):
     class Meta:
         db_table = "blog_article"
         verbose_name = "博客文章表"
-        ordering = ('-id', )
+        ordering = ('-is_top', '-id')  # 置顶排序操作
 

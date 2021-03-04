@@ -356,9 +356,16 @@ export const generateArticleCard = (data) => {
         tags += `<span class="layui-badge layui-bg-green">${value.name}</span>`;
     });
 
+    let isTop = '';
+    if (data.is_top) {
+        isTop += '[置顶] '
+    }
+
     return `<div class="article-card">
                     <a class="article-card-pane" href="${urls.articleDetailPage}/${data.id}">
-                        <div class="article-card-pane-item"><h2 class="article-card-title">${data.title}</h2></div>
+                        <div class="article-card-pane-item">
+                            <h2 class="article-card-title">${isTop}${data.title}</h2>
+                        </div>
                         <hr class="layui-bg-gray">
                         <div class="article-card-pane-item">
                             <h6 class="article-card-sub-title">
