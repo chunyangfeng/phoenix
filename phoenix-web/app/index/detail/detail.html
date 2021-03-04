@@ -22,15 +22,20 @@
             <span><i class="layui-icon layui-icon-read"></i> 阅读量 {{ article.read_count }}</span>
             <span><i class="layui-icon layui-icon-form"></i> 字数≈{{ article.word_count }}</span>
         </h6>
+        <h6 class="article-body-sub-title">
+            {% for tag in article.tags %}
+                <span><i class="layui-icon layui-icon-note"></i> {{ tag.name }}</span>
+            {% endfor %}
+        </h6>
         <p class="article-body-desc">{{ article.desc }}</p>
         <div class="article-body-content" id="editorDetail">
             <textarea name="content">{{ article.content }}</textarea>
         </div>
-        <div class="article-body-tags">
-            {% for tag in article.tags %}
-                <span class="layui-badge layui-badge-rim layui-bg-blue">{{ tag.name }}</span>
-            {% endfor %}
-        </div>
+{#        <div class="article-body-tags">#}
+{#            {% for tag in article.tags %}#}
+{#                <span class="layui-badge layui-badge-rim layui-bg-blue">{{ tag.name }}</span>#}
+{#            {% endfor %}#}
+{#        </div>#}
         <div class="article-body-nav">
             <div class="article-body-nav-left">
                 <a href="{{ article.relate.previous.link }}">上一篇：{{ article.relate.previous.title }}</a>

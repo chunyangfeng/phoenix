@@ -292,7 +292,7 @@ class ArticleSiteMapSerializer(serializers.ModelSerializer):
             link(str): url链接
         """
         url = reverse('article-detail-page', kwargs={params.MODEL_UNIQUE_KEY: obj.id})
-        return f'{params.SYSTEM_DOMAIN}{url}'
+        return f'{settings.SYSTEM_DOMAIN}{url}'
 
     class Meta:
         model = models.Article

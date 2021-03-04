@@ -29,7 +29,7 @@
 }
 
 .article-body-desc {
-    margin-left: 23px;
+    margin: 25px auto 25px 23px;
     font-size: 18px;
     border-left: 5px solid #409EFF;
     text-indent: 8px;
@@ -38,6 +38,7 @@
 }
 
 .article-body-tags {
+    border: 1px solid #C2C2C2;
     margin-left: 23px;
     padding: 10px 1px;
 }
@@ -50,7 +51,7 @@
     border: 1px solid #C2C2C2;
     /*border-left: 5px solid #00FF7F;*/
     background-color: #F5F5F5;
-    margin: 20px 0 20px 25px;
+    margin: 25px 0 20px 25px;
     height: 50px;
     font-size: 16px;
 }
@@ -71,7 +72,7 @@
     border: 1px solid #C2C2C2;
     border-left: 5px solid #00FF7F;
     background-color: #F5F5F5;
-    margin: 10px 0 25px 25px;
+    margin: 25px 0 25px 25px;
     font-size: 18px;
 }
 

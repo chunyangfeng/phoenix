@@ -11,6 +11,7 @@ import {params} from "../../config/params.js";
 
 
 const getBlogData = (page=1, limit=5) => {
+    const baseLimit = 5;
     const successCallback = (response) => {
         let card = '';
 
@@ -23,10 +24,11 @@ const getBlogData = (page=1, limit=5) => {
         layui.laypage.render({
             elem: params.articlePageElem,
             count: response.count,
-            limit: limit,
-            limits: [limit, limit*2, limit*4, limit*8, limit*16],
+            limit: baseLimit,
+            limits: [baseLimit, baseLimit*2, baseLimit*4, baseLimit*8, baseLimit*16],
             curr: page,
-            groups: limit,
+            groups: baseLimit,
+            layout: ['prev', 'page', 'next', 'limit', 'count', 'skip'],
             jump: (obj, first) => {
                 if (!first) {
                     getBlogData(obj.curr, obj.limit);
