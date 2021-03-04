@@ -44,8 +44,8 @@ class ArticleDetailPageView(BasePageView):
     authentication_enable = False
     page = 'index/detail/detail.html'
 
-    def _post_get(self, request, *args, **kwargs):
-        """响应页面之后的操作，设置文章数据，增加文章的阅读数
+    def _pre_get(self, request, *args, **kwargs):
+        """响应页面之前的操作，设置文章数据
 
         Args:
             request(Request): http request
@@ -58,12 +58,28 @@ class ArticleDetailPageView(BasePageView):
         """
         error, reason, instance = self.get_object(*args, **kwargs)
         if error:
-            return self.set_response(result=error, data=reason, status=drf_status.HTTP_400_BAD_REQUEST)
+            return error, reason
 
         # 添加文章数据至模板对象中
         self.data['article'] = self.serializer_class(instance, many=False).data
 
+        setattr(self, 'instance', instance)
+        return None, ''
+
+    def _post_get(self, request, *args, **kwargs):
+        """响应页面之后的操作，增加文章的阅读数
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，None为没有错误
+            reason(str): 错误原因，为''则没有错误
+        """
         # 当访问成功时，将文章的阅读数量加一
+        instance = self.instance
         instance.read_count += 1
         instance.save()
         return None, ''

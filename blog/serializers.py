@@ -11,6 +11,7 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+from django.conf import settings
 from django.urls import reverse
 from rest_framework import serializers
 
@@ -157,7 +158,7 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
             data(dict): {title: '', link: ''}
         """
         url = reverse(url_name, kwargs={params.MODEL_UNIQUE_KEY: pk})
-        link = f'{params.SYSTEM_DOMAIN}{url}'
+        link = f'{settings.SYSTEM_DOMAIN}{url}'
         return link
 
     @staticmethod
@@ -196,13 +197,12 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
         user_info = adapt_get_user_info(True, username=obj.creator)
         return user_info.get('real_name', obj.creator)
 
-    def _get_relate_data(self, pk, previous=True, latest=False):
+    def _get_relate_data(self, pk, classification='previous'):
         """获取指定主键的关联数据
 
         Args:
             pk(int): 主键值
-            previous(bool): 获取上一条
-            latest(bool): 获取下一条
+            classification(str): previous为获取上一条，next为获取下一条
 
         Returns:
             data(dict): 数据结果
@@ -213,12 +213,13 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
         }
 
         try:
-            if previous and not latest:
-                instance = self.Meta.model.objects.filter(id__lte=pk).order_by('-id').first()
-            elif not previous and latest:
-                instance = self.Meta.model.objects.filter(id__gt=pk).first()
+            if classification == 'previous':
+                instance = self.Meta.model.objects.filter(id__lt=pk).order_by('-id').first()
+            elif classification == 'next':
+                instance = self.Meta.model.objects.filter(id__gt=pk).order_by('id').first()
             else:
                 instance = None
+
             if instance:
                 data['title'] = instance.title
                 data['link'] = self._get_url(instance.id)
@@ -237,13 +238,14 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
             relate(dict): 关联信息
         """
         data = {
-            'previous': self._get_relate_data(obj.id-1, previous=True, latest=False),
-            'latest': self._get_relate_data(obj.id+1, previous=False, latest=True),
+            'previous': self._get_relate_data(obj.id, 'previous'),
+            'latest': self._get_relate_data(obj.id, 'next'),
         }
         return data
 
-    def get_tags(self, obj):
-        """
+    @staticmethod
+    def get_tags(obj):
+        """获取标签信息
 
         Args:
             obj(models.Article): 数据实例

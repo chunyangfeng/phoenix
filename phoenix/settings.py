@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 
 from common.params.params import DATETIME_STANDARD
+from . import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,9 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'mhr%cog9957ery5jf*5605@1l)a_iix_@yh_vtomy=525nofnq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config.DEBUG
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config.ALLOWED_HOSTS
+
+SYSTEM_DOMAIN = config.SYSTEM_DOMAIN
 
 
 # Application definition
@@ -85,13 +88,7 @@ DATABASES = {
     #     'ENGINE': 'django.db.backends.sqlite3',
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # },
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': '192.168.1.103',
-        'USER': 'root',
-        'PASSWORD': 'nishengri',
-        'NAME': 'phoenix_test',
-    }
+    'default': config.BACKEND_DB
 }
 
 
