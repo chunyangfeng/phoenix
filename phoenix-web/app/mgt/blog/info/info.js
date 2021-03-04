@@ -6,7 +6,7 @@
 
 import {
     getLaySelectItem, getLayCheckboxItem, getCheckboxCheckedData, asyncApiResolve, formAssignment, getQueryString,
-    syncApiResolve
+    syncApiResolve, getCurrentDate,
 } from "../../../../common/utils.js";
 import {urls} from "../../../../config/urls.js";
 import {params} from "../../../../config/params.js";
@@ -81,6 +81,11 @@ const articleCommitEvent = (postData, edit_data) => {
     // 手动获取复选框选中的数据
     delete postData.tags;
     postData.tags_id = getCheckboxCheckedData();
+
+    // 设置发布时间字段
+    if (postData.is_publish) {
+        postData['ptime'] = getCurrentDate('-', '-', '');
+    }
 
     const commitSuccessCallback = (response) => {
         if (response.result === params.resSuccessTip) {
