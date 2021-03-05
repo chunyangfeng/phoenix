@@ -1,0 +1,18 @@
+{% extends 'base/mgt/basic.html' %}
+
+{% block title %}SEO管理{% endblock %}
+
+{% block content %}
+    <fieldset class="layui-elem-field">
+        <legend class="layui-field-title">有效文章链接</legend>
+        <div class="layui-field-box">
+            <div class="layui-row">
+                <table id="url-list-table" lay-filter="urlListTableFilter"></table>
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}
+
+{% block footer-scripts %}
+    <script src="/phoenix-web/app/mgt/system/seo/seo.js" type="module"></script>
+{% endblock %}
