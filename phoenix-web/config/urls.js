@@ -27,6 +27,8 @@ export const urls = {
     serialListApi: "/blog/mgt/article/data/serial/list",
     articleDetailPage: "/blog/index/article",
 
+    urlListApi: "/blog/mgt/system/seo/url-list",
+
     authForbidden: "/errors/401",
     noPermission: "/errors/403",
 };

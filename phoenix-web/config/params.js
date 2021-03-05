@@ -42,5 +42,8 @@ export const params = {
     rowDeleteEvent: 'rowDelete',
     rowEditEvent: 'rowEdit',
     rowDetailEvent: 'rowDetail',
+
+    urlTableElem: '#url-list-table',
+    urlTableID: 'urlTableID',
 };
 

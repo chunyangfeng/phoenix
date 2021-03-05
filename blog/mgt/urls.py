@@ -11,10 +11,11 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
-from django.urls import path
+from django.urls import path, include
 
 from common.params import params
 from . import views
+from .system import urls as system_urls
 
 urlpatterns = [
     path('dashboard/page', views.DashboardPageView.as_view(), name='dashboard-page'),
@@ -36,4 +37,6 @@ urlpatterns = [
          name='article-tag-info-api'),  # 文章标详情表接口
     path('article/data/serial/list', views.ArticleSerialListApiView.as_view(),
          name='article-serial-list-api'),  # 文章系列列表接口
+
+    path('system/', include(system_urls)),  # 系统配置路由入口
 ]

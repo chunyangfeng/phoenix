@@ -296,4 +296,4 @@ class ArticleSiteMapSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Article
-        fields = ('title', 'classify_name', 'tags', 'link')
+        fields = ('title', 'classify_name', 'tags', 'link', 'ctime', 'mtime')

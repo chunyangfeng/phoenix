@@ -16,6 +16,8 @@ PER_ARTICLE_CLASSIFY = 'ArticleClassify'  # 文章分类接口权限
 PER_ARTICLE_TAG = 'ArticleTag'  # 文章标签接口权限
 PER_ARTICLE_SERIAL = 'ArticleSerial'  # 文章系列接口权限
 
+PER_SYSTEM_SEO = 'SystemSeo'  # seo管理接口
+
 
 RES_PERM = {
     PER_BASE: 'ROOT权限',
@@ -23,4 +25,5 @@ RES_PERM = {
     PER_ARTICLE_SERIAL: '博客系列',
     PER_ARTICLE_CLASSIFY: '博客分类',
     PER_ARTICLE_TAG: '博客标签',
+    PER_SYSTEM_SEO: 'SEO管理',
 }

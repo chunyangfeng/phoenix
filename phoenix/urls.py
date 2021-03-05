@@ -34,6 +34,7 @@ urlpatterns = [
     path('', IndexPageView.as_view(), name='index-page'),
     path('errors/401', AuthForbiddenPageView.as_view(), name='401'),
     path('errors/403', AuthNoPermissionPageView.as_view(), name='403'),
+
     path('common/', include(common_urls)),
     path('blog/', include(blog_urls)),
     path('fapd/', include(fapd_urls)),
