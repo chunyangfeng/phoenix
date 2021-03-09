@@ -1,0 +1,46 @@
+{% extends 'base/modal/modal_base.html' %}
+
+{% block body %}
+    <div class="layui-row modal-form">
+        <form class="layui-form layui-form-pane" lay-filter="projectTaskFormFilter">
+            <div class="layui-form-item">
+                <label class="layui-form-label">所属项目</label>
+                <div class="layui-input-block">
+                    <select name="project" lay-filter="project" lay-search="" id="projectInfoSelectElem">
+                        <option value="">--选择所属项目--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">任务名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入任务名称..." required lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">任务描述</label>
+                <div class="layui-input-block">
+                    <input type="text" name="desc" class="layui-input" required lay-verify="required"
+                           placeholder="请输入任务描述...">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注说明</label>
+                <div class="layui-input-block">
+                    <textarea name="remark" placeholder="请输入备注说明..." class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="projectTaskFormSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer-js %}
+    <script src="/phoenix-web/app/mgt/system/flow/task/task_add.js" type="module"></script>
+{% endblock %}

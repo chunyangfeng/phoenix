@@ -1,0 +1,54 @@
+{% extends 'base/mgt/basic.html' %}
+
+{% block title %}项目管理{% endblock %}
+
+{% block content %}
+    <fieldset class="layui-elem-field">
+        <div class="layui-field-box">
+            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">项目信息</li>
+                    <li>项目任务</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <table id="project-info-list-table" lay-filter="projectInfoTableFilter"></table>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <form class="layui-form">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-inline">
+                                            <select name="status" lay-filter="status" lay-search=""
+                                                    id="projectITaskStatusSelectElem">
+                                                <option value="">--选择状态--</option>
+                                                <option value="done">已完成</option>
+                                                <option value="other">其他</option>
+                                            </select>
+                                        </div>
+                                        <div class="layui-input-inline search-form-btn">
+                                            <button type="button" class="layui-btn" lay-submit
+                                                    lay-filter="projectTaskSearchForm">查询
+                                            </button>
+                                            <button type="reset" tableID="projectTaskTable"
+                                                    class="layui-btn layui-btn-normal">重置
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="layui row">
+                            <table id="project-task-list-table" lay-filter="projectTaskTableFilter"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}
+
+{% block footer-scripts %}
+    <script src="/phoenix-web/app/mgt/system/flow/flow.js" type="module"></script>
+{% endblock %}

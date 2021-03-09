@@ -1,0 +1,167 @@
+/*
+** Author: Fengchunyang
+** Date: 2021/3/5 10:20
+** Blog: http://www.fengchunyang.com
+*/
+import {params} from "../../../../config/params.js";
+import {urls} from "../../../../config/urls.js";
+import {
+    layerIframe, tableBulkDelete, tableToolbarEventHandle, layTableToolBar, assigmentAttribute, tableRowEventHandle,
+    syncApiResolve, layTableReload
+} from "../../../../common/utils.js";
+
+
+// 项目信息table表格
+const initialProjectInfoTable = ()=> {
+    layui.table.render({
+        elem: params.projectInfoTableElem,
+        url: urls.projectInfoListApi,
+        id: params.projectInfoTableID,
+        page: true,
+        limit: 10,
+        limits: [10, 20, 40, 80, 100],
+        text: {
+            none: "暂无相关数据",
+        },
+        toolbar: true,
+        defaultToolbar: ['filter', layTableToolBar.add, layTableToolBar.delete],
+        width: params.tableWidth,
+        cellMinWidth: 100,
+        cols: [[
+            { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
+            {field: 'id', title: 'ID', align: "center", sort: true, hide: true},
+            // {field: 'f_project', title: '父项目', align: "center"},
+            {field: 'name', title: '项目名称', align: "center"},
+            // {field: 'in_charges', title: '责任人', align: "center"},
+            {field: 'stime', title: '开始时间', align: "center"},
+            {field: 'etime', title: '结束时间', align: "center"},
+            {field: 'dtime', title: '完成时间', align: "center"},
+            // {field: 'budget', title: '项目预算', align: "center"},
+            // {field: 'desc', title: '简介', align: "center"},
+            {field: 'ctime', title: '创建时间', align: "center"},
+            {field: 'mtime', title: '修改时间', align: "center"},
+            {field: 'status_display', title: '状态', align: "center"},
+            {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
+        ]]
+    })
+};
+
+
+// 项目任务table表格
+const initialProjectTaskTable = ()=> {
+    layui.table.render({
+        elem: params.projectTaskTableElem,
+        url: urls.projectTaskListApi,
+        id: params.projectTaskTableID,
+        page: true,
+        limit: 10,
+        limits: [10, 20, 40, 80, 100],
+        text: {
+            none: "暂无相关数据",
+        },
+        toolbar: true,
+        defaultToolbar: ['filter', layTableToolBar.add, layTableToolBar.delete, layTableToolBar.update],
+        width: params.tableWidth,
+        cellMinWidth: 100,
+        cols: [[
+            { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
+            {field: 'id', title: 'ID', align: "center", sort: true, hide: true},
+            {field: 'project_name', title: '所属项目', align: "center"},
+            {field: 'name', title: '任务名称', align: "center"},
+            // {field: 'in_charges', title: '责任人', align: "center"},
+            {field: 'dtime', title: '完成时间', align: "center"},
+            // {field: 'desc', title: '简介', align: "center"},
+            {field: 'remark', title: '备注说明', align: "center"},
+            {field: 'ctime', title: '创建时间', align: "center"},
+            {field: 'mtime', title: '修改时间', align: "center"},
+            {field: 'status_display', title: '状态', align: "center"},
+            {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
+        ]]
+    })
+};
+
+// 项目信息新增/编辑事件
+const projectInfoAddEvent = (obj, type='新增') => {
+    layerIframe(urls.projectInfoAddPage, `${type}项目信息`, 'projectInfoIframe', ['40rem', '28rem']);
+};
+
+// 项目信息批量删除事件
+const projectInfoBulkDeleteEvent = (obj) => {
+    tableBulkDelete(obj, urls.projectInfoListApi);
+};
+
+// 项目任务新增/编辑事件
+const projectTaskAddEvent = (obj, type='新增') => {
+    layerIframe(urls.projectTaskAddPage, `${type}项目任务`, 'projectTaskIframe', ['40rem', '35rem']);
+};
+
+// 项目任务批量删除事件
+const projectTaskDeleteEvent = (obj) => {
+    tableBulkDelete(obj, urls.projectTaskListApi);
+};
+
+// 项目信息编辑事件
+const projectInfoEditEvent = (obj) => {
+    assigmentAttribute(window, params.projectInfoFormFilter, obj.data);
+    projectInfoAddEvent('编辑');
+};
+
+// 项目任务编辑事件
+const projectTaskEditEvent = (obj) => {
+    assigmentAttribute(window, params.projectTaskFormFilter, obj.data);
+    projectTaskAddEvent('编辑');
+};
+
+// 项目任务批量更新事件
+const projectTaskUpdateEvent = (obj) => {
+    let selectData = layui.table.checkStatus(params.projectTaskTableID);
+    let putData = {
+        status: 'done',
+        instances_id: selectData.data.map(item => item.id)
+    };
+
+    // 执行批量更新
+    layer.confirm('确定更新?', {icon: 2, title: '更新确认'}, function (index) {
+        const response = syncApiResolve(urls.projectTaskListApi, putData, 'put');
+        if (response.result === params.resSuccessTip) {
+            parent.layui.table.reload(params.projectTaskTableID);  // 重载表格
+            parent.layui.layer.close(index);
+        }
+    });
+};
+
+
+// 页面加载后的动态操作
+layui.jquery(document).ready(() => {
+    // 初始化项目信息表格
+    initialProjectInfoTable();
+
+    // 初始化项目任务表格
+    initialProjectTaskTable();
+
+    // 监听表格头部工具事件
+    layui.table.on(`toolbar(${params.projectInfoTableFilter})`, function (obj) {
+        tableToolbarEventHandle(obj, projectInfoAddEvent, projectInfoBulkDeleteEvent);
+    });
+
+    // 监听表格行工具事件
+    layui.table.on(`tool(${params.projectInfoTableFilter})`, function (obj) {
+        tableRowEventHandle(obj, urls.projectInfoInfoApi, null, projectInfoEditEvent);
+    });
+
+    // 监听表格头部工具事件
+    layui.table.on(`toolbar(${params.projectTaskTableFilter})`, function (obj) {
+        tableToolbarEventHandle(obj, projectTaskAddEvent, projectTaskDeleteEvent, projectTaskUpdateEvent);
+    });
+
+    // 监听表格行工具事件
+    layui.table.on(`tool(${params.projectTaskTableFilter})`, function (obj) {
+        tableRowEventHandle(obj, urls.projectTaskInfoApi, null, projectTaskEditEvent);
+    });
+
+    // 监听搜索表单提交事件
+    layui.form.on(`submit(${params.projectTaskSearchForm})`, function (data) {
+        layTableReload(params.projectTaskTableID, data.field);
+        return false
+    });
+});

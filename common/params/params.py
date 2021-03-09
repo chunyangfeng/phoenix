@@ -75,6 +75,7 @@ RSA_SESSION_PRIVATE_KEY = 'RSA_PRIVATE_KEY'
 
 # Model settings
 MODEL_UNIQUE_KEY = 'pk'
+LOGIN_EXPIRE_HOUR = 8
 
 # 前端分页查询字符串
 PAGINATE_PAGE = 'page'

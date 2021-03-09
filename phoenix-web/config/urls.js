@@ -29,6 +29,13 @@ export const urls = {
 
     urlListApi: "/blog/mgt/system/seo/url-list",
 
+    projectInfoListApi: "/blog/mgt/system/project-info/list",
+    projectInfoInfoApi: "/blog/mgt/system/project-info/info",
+    projectTaskListApi: "/blog/mgt/system/project-task/list",
+    projectTaskInfoApi: "/blog/mgt/system/project-task/info",
+    projectInfoAddPage: "/blog/mgt/system/project-info/add/page",
+    projectTaskAddPage: "/blog/mgt/system/project-task/add/page",
+
     authForbidden: "/errors/401",
     noPermission: "/errors/403",
 };

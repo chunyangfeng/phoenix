@@ -96,7 +96,12 @@ export const layTableToolBar = {
         title: '删除',
         layEvent: 'TABLE_DELETE',
         icon: 'layui-icon-delete',
-    }
+    },
+    update: {
+        title: '批量更新',
+        layEvent: 'TABLE_UPDATE',
+        icon: 'layui-icon-survey',
+    },
 };
 
 // 关闭当前层弹出的模态框
@@ -159,7 +164,7 @@ export const tableBulkDelete = (obj, url) => {
 };
 
 // 表格头部工具事件处理
-export const tableToolbarEventHandle = (obj, add_callback=null, delete_callback=null) => {
+export const tableToolbarEventHandle = (obj, add_callback=null, delete_callback=null, update_callback=null) => {
     switch (obj.event) {
         case layTableToolBar.add.layEvent:
             if (add_callback) {
@@ -173,6 +178,13 @@ export const tableToolbarEventHandle = (obj, add_callback=null, delete_callback=
                 delete_callback(obj);
             } else {
                 layer.msg('触发删除事件...');
+            }
+            break;
+        case layTableToolBar.update.layEvent:
+            if (update_callback) {
+                update_callback(obj);
+            } else {
+                layer.msg('触发批量更新事件...');
             }
             break;
     }
@@ -384,6 +396,12 @@ export const generateArticleCard = (data) => {
                         </div>
                     </a>
                 </div>`;
+};
+
+
+// 分隔字符串,separator为字符串分隔符
+export const splitText = (text, separator=',') => {
+    return text.split(separator);
 };
 
 

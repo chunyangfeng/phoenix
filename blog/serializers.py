@@ -297,3 +297,38 @@ class ArticleSiteMapSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Article
         fields = ('title', 'classify_name', 'tags', 'link', 'ctime', 'mtime')
+
+
+class ProjectInfoListSerializer(serializers.ModelSerializer):
+    """项目信息列表序列化器"""
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+
+    class Meta:
+        model = models.ProjectInfo
+        fields = '__all__'
+
+
+class ProjectInfoInfoSerializer(serializers.ModelSerializer):
+    """项目信息详情序列化器"""
+
+    class Meta:
+        model = models.ProjectInfo
+        fields = '__all__'
+
+
+class ProjectTaskListSerializer(serializers.ModelSerializer):
+    """项目任务列表序列化器"""
+    project_name = serializers.CharField(source='project.name', read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+
+    class Meta:
+        model = models.ProjectPlanTask
+        fields = '__all__'
+
+
+class ProjectTaskInfoSerializer(serializers.ModelSerializer):
+    """项目任务详情序列化器"""
+
+    class Meta:
+        model = models.ProjectPlanTask
+        fields = '__all__'

@@ -12,6 +12,7 @@ Blog: www.fengchunyang.com
 from django.db import models
 
 from common.models.base import BasicModel
+from common.models.managers import UserTokenManager
 from common.params import params
 from common.utils import sington
 
@@ -132,6 +133,8 @@ class UserToken(BasicModel):
     is_expired = models.BooleanField(verbose_name="是否过期", default=True,
                                      help_text="token是否过期的标识，过期的token会被认证系统认为是无效的")
     login_time = models.DateTimeField(verbose_name="登录时间", help_text="用户登录的时间，用于判断当前token是否过期")
+
+    # objects = UserTokenManager()
 
     class Meta:
         db_table = 'common_user_token'

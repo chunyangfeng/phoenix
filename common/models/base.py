@@ -67,3 +67,14 @@ class BasicModel(models.Model):
         if v_str is None:
             v_str = ''
         return {key: v_str}
+
+
+class BasicModelManager(models.Manager):
+    """通用模型管理器"""
+    def get_queryset(self):
+        """显示定义默认管理器行为，在models.objects的基础上，扩展额外的行为
+
+        Returns:
+            QuerySet: 结果集
+        """
+        return super().get_queryset()

@@ -1,0 +1,55 @@
+{% extends 'base/modal/modal_base.html' %}
+
+{% block body %}
+    <div class="layui-row modal-form">
+        <form class="layui-form layui-form-pane" lay-filter="projectInfoFormFilter">
+{#            <div class="layui-form-item">#}
+{#                <label class="layui-form-label">所属项目</label>#}
+{#                <div class="layui-input-block">#}
+{#                    <select name="project" lay-filter="project" lay-search="">#}
+{#                        <option value="">--选择所属项目--</option>#}
+{#                    </select>#}
+{#                </div>#}
+{#            </div>#}
+            <div class="layui-form-item">
+                <label class="layui-form-label">项目名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入项目名称..." required lay-verify="required"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+{#            <div class="layui-form-item">#}
+{#                <label class="layui-form-label">责任人</label>#}
+{#                <div class="layui-input-block">#}
+{#                    <select name="in_charge" lay-filter="in_charge" lay-search="">#}
+{#                        <option value="">--选择责任人--</option>#}
+{#                    </select>#}
+{#                </div>#}
+{#            </div>#}
+            <div class="layui-form-item">
+                <label class="layui-form-label">开始日期</label>
+                <div class="layui-input-block">
+                     <input type="text" name="stime" class="layui-input" required lay-verify="required"
+                            id="projectInfoStartDate" placeholder="选择开始日期...">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">结束日期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="etime" class="layui-input" required lay-verify="required"
+                           id="projectInfoEndDate" placeholder="选择结束日期...">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="projectInfoFormSubmit">提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer-js %}
+    <script src="/phoenix-web/app/mgt/system/flow/info/info_add.js" type="module"></script>
+{% endblock %}

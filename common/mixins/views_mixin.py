@@ -9,6 +9,7 @@ Record:
 
 Site: http://www.fengchunyang.com
 """
+import copy
 import json
 
 from django.db import transaction
@@ -542,25 +543,38 @@ class BasicBulkUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
         """
         return None, ''
 
-    def _perform_update(self, serializer, *args, **kwargs):
+    def _perform_update(self, request, *args, **kwargs):
         """执行更新操作
 
         Args:
-            serializer (Serializer): 序列化器
+            request (Request): request
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
         Returns:
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
+            instances(QuerySet): 数据集
         """
-        return None, ''
+        # 获取更新数据
+        data = copy.deepcopy(request.data)
+        data = data.dict()
 
-    def _post_process_update(self, request, *args, **kwargs):
+        # 获取待更新的实例
+        instances_id = data.pop('instances_id')
+        queryset = self.get_queryset(*args, **kwargs)
+        queryset = queryset.filter(id__in=instances_id)
+
+        # 执行更新
+        queryset.update(**data)
+        return None, '', queryset
+
+    def _post_process_update(self, request, instances, *args, **kwargs):
         """更新能完成后处理流程
 
         Args:
             request(Request): DRF Request
+            instances(QuerySet): 数据集
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
@@ -588,13 +602,6 @@ class BasicBulkUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        # 获取序列化器
-        serializer = self.get_serializer()
-        if not serializer.is_valid():
-            transaction.set_rollback(True)
-            return self.set_response('Serializer validate failed', '序列化器校验失败',
-                                     status=drf_status.HTTP_400_BAD_REQUEST)
-
         # 更新前预校验
         error, reason = self._validate_update(request, *args, **kwargs)
         if error:
@@ -603,7 +610,7 @@ class BasicBulkUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
 
         # 执行更新操作
         try:
-            error, reason = self._perform_update(serializer, *args, **kwargs)
+            error, reason, instances = self._perform_update(request, *args, **kwargs)
         except Exception as error:
             transaction.set_rollback(True)
             return self.set_response('Update failed', f'更新失败，错误信息为:{error}',
@@ -613,12 +620,12 @@ class BasicBulkUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
         # 更新后预处理
-        error, reason = self._post_process_update(request, *args, **kwargs)
+        error, reason = self._post_process_update(request, instances, *args, **kwargs)
         if error:
             transaction.set_rollback(True)
             return self.set_response(error, reason, status=drf_status.HTTP_400_BAD_REQUEST)
 
-        return self.set_response(params.HTTP_SUCCESS, '更新成功')
+        return self.set_response(params.HTTP_SUCCESS, '批量更新成功')
 
 
 class BasicUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):

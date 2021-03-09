@@ -8,6 +8,7 @@ export const params = {
     apiPrefix: '',
     tableWidth: layui.jquery(window).width() - 290,
     resSuccessTip: 'Success',
+    dateRangeSeparator: '~',  // 日期范围分隔符
 
     classifyTableElem: '#article-classify-table',
     tagTableElem: '#article-tag-table',
@@ -22,6 +23,7 @@ export const params = {
     classifySelectElem: '#classifySelectElem',
     tagSelectElem: '#tagSelectElem',
     serialSelectElem: '#serialSelectElem',
+    projectInfoSelectElem: '#projectInfoSelectElem',
     tagCheckboxElem: '#tagCheckboxElem',
     articleCardElem: '#articleCardElem',
     articlePageElem: 'articlePageElem',
@@ -37,6 +39,8 @@ export const params = {
     classifyAddSubmit: 'classifyAddSubmit',
     tagAddSubmit: 'tagAddSubmit',
     articleFormSubmit: 'articleFormSubmit',
+    projectInfoFormSubmit: 'projectInfoFormSubmit',
+    projectTaskFormSubmit: 'projectTaskFormSubmit',
 
     rowActionElem: '#actionBar',
     rowDeleteEvent: 'rowDelete',
@@ -45,5 +49,16 @@ export const params = {
 
     urlTableElem: '#url-list-table',
     urlTableID: 'urlTableID',
+
+    projectInfoTableElem: '#project-info-list-table',
+    projectTaskTableElem: '#project-task-list-table',
+    projectInfoTableID: 'projectInfoTableID',
+    projectTaskTableID: 'projectTaskTableID',
+    projectInfoSearchForm: 'projectInfoSearchForm',
+    projectTaskSearchForm: 'projectTaskSearchForm',
+    projectInfoFormFilter: 'projectInfoFormFilter',
+    projectTaskFormFilter: 'projectTaskFormFilter',
+    projectInfoTableFilter: 'projectInfoTableFilter',
+    projectTaskTableFilter: 'projectTaskTableFilter',
 };
 

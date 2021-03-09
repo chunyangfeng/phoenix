@@ -17,6 +17,7 @@ PER_ARTICLE_TAG = 'ArticleTag'  # 文章标签接口权限
 PER_ARTICLE_SERIAL = 'ArticleSerial'  # 文章系列接口权限
 
 PER_SYSTEM_SEO = 'SystemSeo'  # seo管理接口
+PER_SYSTEM_PROJECT_MGT = 'SystemProjectManagement'  # 项目管理接口
 
 
 RES_PERM = {
@@ -26,4 +27,5 @@ RES_PERM = {
     PER_ARTICLE_CLASSIFY: '博客分类',
     PER_ARTICLE_TAG: '博客标签',
     PER_SYSTEM_SEO: 'SEO管理',
+    PER_SYSTEM_PROJECT_MGT: '项目管理',
 }
