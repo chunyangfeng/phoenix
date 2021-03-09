@@ -138,3 +138,18 @@ class ProjectPlanTask(CommonDataModel):
         db_table = 'fapd_project_plan_task'
         verbose_name = '项目计划任务表'
 
+
+class AccessRecord(models.Model):
+    """访问记录表"""
+    path = models.CharField(verbose_name="目标地址", max_length=256, help_text='访问对象请求的目标地址')
+    atime = models.DateTimeField(verbose_name="访问时间")
+    user_agent = models.CharField(verbose_name="Agent属性", max_length=256, help_text='访问对象的user_agent')
+    address = models.CharField(verbose_name="IP地址", max_length=256, help_text='访问对象的ip地址')
+    query_str = models.CharField(verbose_name="查询字符串", max_length=256, blank=True, null=True)
+    referer = models.CharField(verbose_name="上一个页面", max_length=256, blank=True, null=True)
+
+    class Meta:
+        db_table = 'blog_access_record'
+        verbose_name = '访问记录表'
+
+

@@ -558,10 +558,11 @@ class BasicBulkUpdateModelMixin(mixins.UpdateModelMixin, BasicResponseMixin):
         """
         # 获取更新数据
         data = copy.deepcopy(request.data)
-        data = data.dict()
 
         # 获取待更新的实例
         instances_id = data.pop('instances_id')
+        data = data.dict()
+
         queryset = self.get_queryset(*args, **kwargs)
         queryset = queryset.filter(id__in=instances_id)
 

@@ -7,7 +7,7 @@ import {params} from "../../../../config/params.js";
 import {urls} from "../../../../config/urls.js";
 import {
     layerIframe, tableBulkDelete, tableToolbarEventHandle, layTableToolBar, assigmentAttribute, tableRowEventHandle,
-    syncApiResolve, layTableReload
+    syncApiResolve, layTableReload, getCurrentDate
 } from "../../../../common/utils.js";
 
 
@@ -115,13 +115,28 @@ const projectTaskEditEvent = (obj) => {
 // 项目任务批量更新事件
 const projectTaskUpdateEvent = (obj) => {
     let selectData = layui.table.checkStatus(params.projectTaskTableID);
+
+    let instances_id = [];
+    layui.jquery.each(selectData.data, (index, value) => {
+        if (value.status !== 'done') {
+            instances_id.push(value.id)
+        }
+    });
+
+    if (instances_id.length === 0) {
+        layui.layer.msg('请选择未完成的项目任务进行更新！');
+        return
+    }
+
     let putData = {
         status: 'done',
-        instances_id: selectData.data.map(item => item.id)
+        instances_id: instances_id,
+        dtime: getCurrentDate('-', '-', ''),
     };
+    console.log(putData);
 
     // 执行批量更新
-    layer.confirm('确定更新?', {icon: 2, title: '更新确认'}, function (index) {
+    layer.confirm('确定更新?', {icon: 1, title: '更新确认'}, function (index) {
         const response = syncApiResolve(urls.projectTaskListApi, putData, 'put');
         if (response.result === params.resSuccessTip) {
             parent.layui.table.reload(params.projectTaskTableID);  // 重载表格
