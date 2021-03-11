@@ -82,9 +82,10 @@ const articleCommitEvent = (postData, edit_data) => {
     delete postData.tags;
     postData.tags_id = getCheckboxCheckedData();
 
-    // 设置发布时间字段
-    if (postData.is_publish) {
-        postData['ptime'] = getCurrentDate('-', '-', '');
+    // 发布时间字段,当且仅当不为编辑模式时设置
+    let now = getCurrentDate('-', '-', '');
+    if (postData.is_publish && Object.keys(edit_data).length === 0) {
+        postData['ptime'] = now;
     }
 
     const commitSuccessCallback = (response) => {
@@ -95,6 +96,8 @@ const articleCommitEvent = (postData, edit_data) => {
 
     // 如果formData不为{}，则当前为编辑页面，调用put接口进行更新，否则为新增
     if (Object.keys(edit_data).length > 0) {
+        postData['etime'] = now;  // 当为编辑模式时，设置编辑时间
+
         asyncApiResolve(`${urls.articleInfoApi}/${edit_data.id}`, postData, 'put', commitSuccessCallback);
     } else {
         asyncApiResolve(urls.articleListApi, postData, 'post', commitSuccessCallback);

@@ -52,10 +52,13 @@ const initialArticleListTable = ()=> {
             {field: 'content', title: '正文', align: "center"},
             {field: 'creator', title: '作者', align: "center"},
             {field: 'ctime', title: '创建时间', align: "center"},
-            {field: 'mtime', title: '修改时间', align: "center"},
+            // {field: 'mtime', title: '修改时间', align: "center"},
             {field: 'etime', title: '编辑时间', align: "center"},
-            {field: 'is_publish', title: '发布', align: "center", templet: (d) => {return isPublishResolve(d)}},
-            {field: 'is_top', title: '置顶', align: "center", templet: (d) => {return isTopResolve(d)}},
+            {field: 'ptime', title: '发布时间', align: "center"},
+            {field: 'is_publish', title: '发布', align: "center",
+                templet: (d) => {return isPublishResolve(d)}, width: 80},
+            {field: 'is_top', title: '置顶', align: "center",
+                templet: (d) => {return isTopResolve(d)}, width: 80},
             {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
         ]]
     })
