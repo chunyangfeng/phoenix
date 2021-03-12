@@ -38,7 +38,7 @@ class IndexPageView(BasePageView):
 
 
 class ArticleDetailPageView(BasePageView):
-    """博客主页"""
+    """博客文章详情页"""
     model_class = Article
     serializer_class = ArticleDetailSerializer
     authentication_enable = False

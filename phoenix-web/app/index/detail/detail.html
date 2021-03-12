@@ -29,13 +29,8 @@
         </h6>
         <p class="article-body-desc">{{ article.desc }}</p>
         <div class="article-body-content" id="editorDetail">
-            <textarea name="content">{{ article.content }}</textarea>
+            {% autoescape off %}{{ article.html_content }}{% endautoescape %}
         </div>
-{#        <div class="article-body-tags">#}
-{#            {% for tag in article.tags %}#}
-{#                <span class="layui-badge layui-badge-rim layui-bg-blue">{{ tag.name }}</span>#}
-{#            {% endfor %}#}
-{#        </div>#}
         <div class="article-body-nav">
             <div class="article-body-nav-left">
                 <a href="{{ article.relate.previous.link }}">上一篇：{{ article.relate.previous.title }}</a>
