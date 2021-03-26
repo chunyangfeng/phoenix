@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <title>却邪水心泮-{% block title %}{% endblock %}</title>
+    <title>却邪水心泮 {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="/phoenix-web/plugin/layui/css/layui.css">
     <link rel="stylesheet" href="/phoenix-web/base/index/index_base.css">
     <link rel="icon" href="/phoenix-web/assets/img/favicon.ico" type="image/x-icon"/>
@@ -31,15 +31,15 @@
             <a href="#" id="management">管理</a>
         </div>
     </div>
-    {% block main-body %}
-        <div class="index-body layui-row">
+    <div class="index-body layui-row">
+        {% block main-body %}
             <div class="index-lside layui-col-md2">{% block body-left %}&nbsp;{% endblock %}</div>
             <div class="index-content layui-col-md6">
                 {% block body-middle %}中间主体{% endblock %}
             </div>
             <div class="index-rside layui-col-md4">{% block body-right %}&nbsp;{% endblock %}</div>
-        </div>
-    {% endblock %}
+        {% endblock %}
+    </div>
     <div class="index-footer">
         {% block footer %}
             <p>

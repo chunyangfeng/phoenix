@@ -7,6 +7,10 @@
     border: 1px solid #f2f2f2;
     box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, .3);
     width: 100%;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    z-index: 1;
 }
 
 .index-nav .index-logo {
@@ -37,9 +41,10 @@
 /*    border-bottom: solid 5px #40E0D0;*/
 /*}*/
 
-/*.index-body {*/
-/*    display: block;*/
-/*}*/
+.index-body {
+    display: block;
+    margin-top: 60px;
+}
 
 /*.index-body .index-lside {*/
 /*    display: inline-block;*/
