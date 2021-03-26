@@ -13,7 +13,7 @@ Blog: http://www.fengchunyang.com
 """
 from django.urls import path
 
-from common.params.params import MODEL_UNIQUE_KEY
+from common.params import MODEL_UNIQUE_KEY
 
 from . import views
 

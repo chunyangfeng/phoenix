@@ -14,12 +14,12 @@ Blog: http://www.fengchunyang.com
 from django.db import models
 
 from blog import params
-from common.models.base import BasicModel
-from common.models.models import CommonDataModel, User
+from blog.auth.models import User
+from common.models import BasicModel, CommonDataModel
 
 
 class ArticleClassify(CommonDataModel):
-    """博客文章分类表,用于表示博客内容的具体分类，比如python、mysql、ansible等"""
+    """博客文章分类表,用于表示博客内容的具体分类"""
     name = models.CharField(verbose_name="分类名称", max_length=50, unique=True)
 
     class Meta:

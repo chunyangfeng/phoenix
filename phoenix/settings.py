@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
-from common.params.params import DATETIME_STANDARD
+from common.params import DATETIME_STANDARD
 from . import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'common.models',
     'common',
     'blog',
 ]

@@ -11,6 +11,20 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+# 状态相关
+STATE_ENABLED = 'enabled'
+STATE_DISABLED = 'disabled'
+STATE_PUBLISHED = 'published'
+STATE_EDITING = 'editing'
+STATE_DELETED = 'deleted'
+
+STATE_CHOICE = (
+    (STATE_ENABLED, '已启用'),
+    (STATE_DISABLED, '已禁用'),
+    (STATE_PUBLISHED, '已发布'),
+    (STATE_EDITING, '编辑中'),
+    (STATE_DELETED, '已删除'),
+)
 
 # 项目状态配置
 PROJECT_STATUS_START = 'start'

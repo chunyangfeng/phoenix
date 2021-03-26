@@ -17,7 +17,7 @@ from rest_framework import serializers
 
 from blog import models
 from blog.adapt import adapt_get_user_info
-from common.params import params
+from common import params
 
 
 class ArticleClassifySerializer(serializers.ModelSerializer):

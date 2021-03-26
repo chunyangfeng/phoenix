@@ -11,12 +11,10 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
-from rest_framework import status as drf_status
 
 from blog.models import Article
 from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer
-from common.viewset.basic import BasePageView
-from common.params import params
+from common.views import BasePageView
 
 
 class AuthForbiddenPageView(BasePageView):

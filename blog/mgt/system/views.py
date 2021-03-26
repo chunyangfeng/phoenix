@@ -11,9 +11,9 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
-from common.viewset.basic import BasePageView, BasicListViewSet, BasicInfoViewSet
+from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
 from blog import models, serializers
-from common.params import permissions
+from common import permissions
 
 
 class SeoPageView(BasePageView):

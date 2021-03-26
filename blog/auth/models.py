@@ -1,29 +1,22 @@
 # -*- coding: utf-8 -*-
-"""通用模型
-时间: 2020/11/26 17:39
+"""认证授权模型层
+时间: 2021/3/26 9:21
 
-Blog: www.fengchunyang.com
+作者: Fengchunyang
+
+Blog: http://www.fengchunyang.com
 
 更改记录:
-    2020/11/26 新增文件。
+    2021/3/26 新增文件。
 
 重要说明:
 """
 from django.db import models
 
-from common.models.base import BasicModel
-from common.models.managers import UserTokenManager
-from common.params import params
+from blog.auth import params
+from blog.params import STATE_CHOICE, STATE_ENABLED
+from common.models import BasicModel, CommonDataModel
 from common.utils import sington
-
-
-class CommonDataModel(BasicModel):
-    """通用数据类抽象model"""
-    creator = models.CharField(verbose_name="创建者", max_length=64, blank=True, null=True)
-    owner = models.CharField(verbose_name="拥有者", max_length=64, blank=True, null=True)
-
-    class Meta:
-        abstract = True
 
 
 class Resource(BasicModel):
@@ -59,8 +52,8 @@ class Role(CommonDataModel):
     name = models.CharField(verbose_name="角色名称", max_length=64, unique=True)
     desc = models.CharField(verbose_name="角色描述", max_length=256, blank=True, null=True)
     resource = models.ManyToManyField('Resource', verbose_name='关联资源', related_name='role')
-    state = models.CharField(verbose_name="角色状态", choices=params.STATE_CHOICE,
-                             default=params.STATE_ENABLED, max_length=32)
+    state = models.CharField(verbose_name="角色状态", choices=STATE_CHOICE,
+                             default=STATE_ENABLED, max_length=32)
     is_default = models.BooleanField(verbose_name="是否为内置角色", default=False)
     is_test = models.BooleanField(verbose_name="是否为测试角色", default=False)
 
@@ -68,20 +61,6 @@ class Role(CommonDataModel):
         db_table = 'common_role'
         verbose_name = '角色表'
         ordering = ('-id', )
-
-
-class Department(BasicModel):
-    """部门模型"""
-    parent = models.ForeignKey('Department', verbose_name="父级部门", blank=True, null=True, on_delete=models.CASCADE)
-    name = models.CharField(verbose_name="部门名称", max_length=128)
-    code = models.CharField(verbose_name="部门编码", max_length=64, blank=True, null=True)
-    level = models.SmallIntegerField(verbose_name="部门层级", default=0)
-    desc = models.CharField(verbose_name="部门描述", max_length=256, blank=True, null=True)
-    leader = models.ForeignKey('User', verbose_name="部门负责人", blank=True, null=True, on_delete=models.SET_NULL)
-
-    class Meta:
-        db_table = 'common_department'
-        verbose_name = '部门表'
 
 
 class UserGroup(CommonDataModel):
@@ -116,7 +95,7 @@ class User(CommonDataModel):
         # 前端创建用户时，限制了密码长度最长为16位，AES加密后的密码长度为64位，以此判断密码是否已经被加密
         if len(self.password) != 64:
             self.password = sington.aes.encrypt(self.password)
-        
+
         super().save(*args, **kwargs)
 
     class Meta:
@@ -139,30 +118,3 @@ class UserToken(BasicModel):
     class Meta:
         db_table = 'common_user_token'
         verbose_name = '用户Token表'
-
-
-class MigrationsHistory(BasicModel):
-    app_name = models.CharField(verbose_name="app名称", max_length=256)
-    file_name = models.CharField(verbose_name="文件名称", max_length=256)
-    file_content = models.TextField(verbose_name="文件内容")
-
-    class Meta:
-        db_table = 'common_migrations_history'
-        verbose_name = "迁移文件备份表"
-
-
-class SystemParameter(BasicModel):
-    """系统参数"""
-    name = models.CharField(verbose_name='参数名称', max_length=64, unique=True)
-    value = models.CharField(verbose_name='参数值', max_length=128, unique=True)
-    code = models.CharField(verbose_name='参数编码', max_length=32, unique=True)
-    is_builtin = models.BooleanField(verbose_name='是否内置', default=False)
-
-    class Meta:
-        db_table = 'common_system_parameter'
-        verbose_name = '系统参数表'
-
-
-class SystemLogRecord(BasicModel):
-    """系统日志记录"""
-    pass

@@ -10,7 +10,6 @@ Record:
 Site: http://www.fengchunyang.com
 """
 import copy
-import json
 
 from django.db import transaction
 from django.urls import reverse
@@ -18,12 +17,9 @@ from rest_framework.response import Response
 from rest_framework import status as drf_status
 from rest_framework import mixins
 from django.shortcuts import HttpResponseRedirect
-from rest_framework.settings import api_settings
 
-from common.exceptions.authentication import UnauthorizedException
-from common.models.models import UserToken
-from common.params import params
-from common.params.permissions import PER_BASE
+from common import params
+from common.permissions import PER_BASE
 
 
 class BasicResponseMixin:
@@ -1290,12 +1286,6 @@ class BasicAuthPermissionViewMixin(BasicResponseMixin):
             token = request.session.get(params.SESSION_TOKEN_KEY)
 
             if not token:
-                is_auth = False
-
-            try:
-                UserToken.objects.get(token=token, is_expired=False)
-            except UserToken.DoesNotExist:
-                del request.session
                 is_auth = False
 
         return is_auth

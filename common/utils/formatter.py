@@ -13,7 +13,7 @@ Blog: http://www.fengchunyang.com
 """
 import datetime
 
-from common.params.params import DATETIME_STANDARD
+from common.params import DATETIME_STANDARD
 
 
 def strftime(obj, formatter=DATETIME_STANDARD):

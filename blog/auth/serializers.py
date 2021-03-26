@@ -1,26 +1,19 @@
 # -*- coding: utf-8 -*-
-"""通用序列化器
-时间: 2021/2/23 14:30
+"""序列化器
+时间: 2021/3/26 9:47
 
 作者: Fengchunyang
 
 Blog: http://www.fengchunyang.com
 
 更改记录:
-    2021/2/23 新增文件。
+    2021/3/26 新增文件。
 
 重要说明:
 """
 from rest_framework import serializers
-from common.models.models import User, UserToken
 
-
-class UserTokenSerializer(serializers.ModelSerializer):
-    """用户token序列化器"""
-
-    class Meta:
-        model = UserToken
-        fields = "__all__"
+from blog.auth.models import User
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
@@ -29,4 +22,3 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
-

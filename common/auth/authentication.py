@@ -16,8 +16,8 @@ from django.utils import timezone
 from rest_framework import authentication
 from rest_framework import exceptions
 from common.models.models import UserToken, User
-from common.params import params
-from common.params.params import ANONYMOUS_TOKEN
+from common import params
+from common.params import ANONYMOUS_TOKEN
 
 
 class UserAccessAuthentication(authentication.BasicAuthentication):

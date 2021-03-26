@@ -15,8 +15,10 @@ from django.urls import path, include
 
 from .mgt import urls as mgt_urls
 from .index import urls as index_urls
+from .auth import urls as auth_urls
 
 urlpatterns = [
     path('mgt/', include(mgt_urls)),
     path('index/', include(index_urls)),
+    path('auth/', include(auth_urls)),
 ]

@@ -11,7 +11,7 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
-from common.interfaces import get_user_info
+from blog.auth.interfaces import get_user_info
 
 
 def adapt_get_user_info(simple=False, **kwargs):

@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
-"""通用架构路由配置
-Date: 2021/1/27 14:53
+"""认证授权路由层
+时间: 2021/3/26 9:37
 
-Author: phoenix@fengchunyang.com
+作者: Fengchunyang
 
-Record:
-    2021/1/27 新增文件。
+Blog: http://www.fengchunyang.com
 
-Site: http://www.fengchunyang.com
+更改记录:
+    2021/3/26 新增文件。
+
+重要说明:
 """
 from django.urls import path
 
-from common import views
+from . import views
 
 urlpatterns = [
     path('login/page', views.UserLoginPageView.as_view(), name='login_page'),  # 用户登录页面

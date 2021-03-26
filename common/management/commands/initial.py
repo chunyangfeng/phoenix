@@ -15,7 +15,7 @@ from django.core.management import BaseCommand
 
 from common.models import models
 from common.utils.formatter import output_formatter
-from common.params import permissions, params
+from common import params, permissions
 
 from common.management.initial_data.users import BUILTIN_USER
 

@@ -11,10 +11,9 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
-from rest_framework import status as drf_status
 
-from common.viewset.basic import BasePageView, BasicListViewSet, BasicInfoViewSet
-from common.params import permissions
+from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
+from common import permissions
 from blog import models
 from blog import serializers
 

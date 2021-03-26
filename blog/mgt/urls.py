@@ -13,7 +13,7 @@ Blog: http://www.fengchunyang.com
 """
 from django.urls import path, include
 
-from common.params import params
+from common import params
 from . import views
 from .system import urls as system_urls
 

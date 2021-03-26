@@ -17,7 +17,6 @@ from django.urls import path, include
 from django.views.static import serve
 from django.conf import settings
 
-from common import urls as common_urls
 from blog import urls as blog_urls
 
 from blog.index.views import IndexPageView, AuthForbiddenPageView, AuthNoPermissionPageView
@@ -34,6 +33,5 @@ urlpatterns = [
     path('errors/401', AuthForbiddenPageView.as_view(), name='401'),
     path('errors/403', AuthNoPermissionPageView.as_view(), name='403'),
 
-    path('common/', include(common_urls)),
     path('blog/', include(blog_urls)),
 ]
