@@ -115,6 +115,7 @@ class ProjectInfo(CommonDataModel):
                               default=params.PROJECT_STATUS_START)
 
     class Meta:
+        ordering = ('-id',)
         db_table = 'fapd_project_info'
         verbose_name = '项目信息表'
 
@@ -132,6 +133,7 @@ class ProjectPlanTask(CommonDataModel):
                                    default=params.TASK_PRIORITY_3)
 
     class Meta:
+        ordering = ('-id', )
         db_table = 'fapd_project_plan_task'
         verbose_name = '项目计划任务表'
 
@@ -146,6 +148,7 @@ class AccessRecord(models.Model):
     referer = models.CharField(verbose_name="上一个页面", max_length=256, blank=True, null=True)
 
     class Meta:
+        ordering = ('-id', )
         db_table = 'blog_access_record'
         verbose_name = '访问记录表'
 
