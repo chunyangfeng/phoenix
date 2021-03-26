@@ -6,7 +6,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">所属项目</label>
                 <div class="layui-input-block">
-                    <select name="project" lay-filter="project" lay-search="" id="projectInfoSelectElem">
+                    <select name="project" lay-filter="project" lay-search="" id="projectInfoSelectElem" required lay-verify="required">
                         <option value="">--选择所属项目--</option>
                     </select>
                 </div>
@@ -19,10 +19,14 @@
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">任务描述</label>
+                <label class="layui-form-label">优先级</label>
                 <div class="layui-input-block">
-                    <input type="text" name="desc" class="layui-input" required lay-verify="required"
-                           placeholder="请输入任务描述...">
+                    <select name="priority" lay-filter="priority" lay-search="" required lay-verify="required">
+                        <option value="">--选择任务优先级--</option>
+                        <option value="1">紧急</option>
+                        <option value="2">重要</option>
+                        <option value="3">一般</option>
+                    </select>
                 </div>
             </div>
             <div class="layui-form-item">

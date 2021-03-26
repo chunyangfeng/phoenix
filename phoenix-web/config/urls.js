@@ -7,11 +7,11 @@
 export const urls = {
     indexPage: "/",
 
-    loginPage: "/common/login/page",
-    publicKey: "/common/public-key",
-    loginModule: "/common/login",
-    logoutModule: "/common/logout",
-    userInfoApi: "/common/user/info",
+    loginPage: "/blog/auth/login/page",
+    publicKey: "/blog/auth/public-key",
+    loginModule: "/blog/auth/login",
+    logoutModule: "/blog/auth/logout",
+    userInfoApi: "/blog/auth/user/info",
 
     dashboardPage: "/blog/mgt/dashboard/page",
     articleListPage: "/blog/mgt/article/list/page",

@@ -13,9 +13,10 @@ Blog: http://www.fengchunyang.com
 """
 from django.core.management import BaseCommand
 
-from common.models import models
+from blog.auth.models import User, Resource, Permission
+from blog.auth.params import PERMISSION_CHOICE
 from common.utils.formatter import output_formatter
-from common import params, permissions
+from common import permissions
 
 from common.management.initial_data.users import BUILTIN_USER
 
@@ -26,7 +27,7 @@ class InitialCommandMixin:
     def create_resource(self):
         """初始化资源数据"""
         for key, value in permissions.RES_PERM.items():
-            resource, _ = models.Resource.objects.update_or_create(code=key, defaults={
+            resource, _ = Resource.objects.update_or_create(code=key, defaults={
                 "name": value,
                 "desc": value,
             })
@@ -40,11 +41,10 @@ class InitialCommandMixin:
         Args:
             resource(models.Resource): 资源实例
         """
-        for key, value in params.PERMISSION_CHOICE:
-            models.Permission.objects.update_or_create(resource=resource, classification=key, defaults={
+        for key, value in PERMISSION_CHOICE:
+            Permission.objects.update_or_create(resource=resource, classification=key, defaults={
                 "desc": f'{resource.name}-{value}'
             })
-        print(output_formatter("权限数据初始化完成"))
 
     @staticmethod
     def create_role():
@@ -60,7 +60,7 @@ class InitialCommandMixin:
     def create_builtin_user():
         """初始化内置用户"""
         for username, data in BUILTIN_USER.items():
-            models.User.objects.get_or_create(username=username, defaults=data)
+            User.objects.get_or_create(username=username, defaults=data)
 
         print(output_formatter("内置用户初始化完成"))
 

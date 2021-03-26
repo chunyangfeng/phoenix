@@ -107,14 +107,10 @@ class ProjectInCharge(BasicModel):
 
 class ProjectInfo(CommonDataModel):
     """项目/业务信息记录表"""
-    # project = models.ForeignKey('ProjectInfo', on_delete=models.CASCADE, related_name='sub_project', blank=True,
-    #                             null=True, help_text='自关联，如果关联有外键，则当前实例为子项目')
     name = models.CharField(verbose_name="项目名称", max_length=255, unique=True)
-    # in_charge = models.ManyToManyField('ProjectInCharge', verbose_name="责任人")
     stime = models.DateField(verbose_name="项目开始时间")
     etime = models.DateField(verbose_name="项目结束时间")
     dtime = models.DateField(verbose_name="项目完成时间", blank=True, null=True)
-    # budget = models.BigIntegerField(verbose_name="项目预算", default=0)
     status = models.CharField(verbose_name="项目状态", choices=params.PROJECT_STATUS_CHOICE, max_length=16,
                               default=params.PROJECT_STATUS_START)
 
@@ -131,8 +127,9 @@ class ProjectPlanTask(CommonDataModel):
     status = models.CharField(verbose_name="任务状态", choices=params.TASK_STATUS_CHOICE, max_length=16,
                               default=params.TASK_STATUS_PLAN, help_text="任务当前的状态")
     dtime = models.DateTimeField(verbose_name="任务完成时间", blank=True, null=True)
-    # in_charge = models.ManyToManyField('ProjectInCharge', verbose_name="责任人")
     remark = models.TextField(verbose_name="备注说明", blank=True, null=True)
+    priority = models.IntegerField(verbose_name='优先级', choices=params.TASK_PRIORITY_CHOICE,
+                                   default=params.TASK_PRIORITY_3)
 
     class Meta:
         db_table = 'fapd_project_plan_task'

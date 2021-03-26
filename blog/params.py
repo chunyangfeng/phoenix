@@ -55,3 +55,14 @@ TASK_STATUS_CHOICE = (
     (TASK_STATUS_DISCARD, '已废弃'),
     (TASK_STATUS_DONE, '已完成'),
 )
+
+# 项目任务的优先级
+TASK_PRIORITY_1 = 1
+TASK_PRIORITY_2 = 2
+TASK_PRIORITY_3 = 3
+
+TASK_PRIORITY_CHOICE = (
+    (TASK_PRIORITY_1, '紧急'),
+    (TASK_PRIORITY_2, '重要'),
+    (TASK_PRIORITY_3, '一般'),
+)

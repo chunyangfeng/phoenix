@@ -15,7 +15,7 @@ import os
 from django.conf import settings
 
 from common.management.base import SingleArgBaseCommand
-from common.models.models import MigrationsHistory
+from common.models import MigrationsHistory
 from common.utils.formatter import output_formatter
 
 
