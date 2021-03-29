@@ -293,19 +293,21 @@ class BasePageView(views_mixin.BasicAuthPermissionViewMixin, View):
         """
         return render(request, f'{self.app}{self.page}', self.data)
 
-    def _post_get(self, request, *args, **kwargs):
+    def _post_get(self, request, response, *args, **kwargs):
         """响应页面之后的操作，由子类自定义
 
         Args:
             request(Request): http request
+            response(Response): 响应主体
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
         Returns:
             error(str): 错误信息，None为没有错误
             reason(str): 错误原因，为''则没有错误
+            response(Response): 响应主体
         """
-        return None, ''
+        return None, '', response
 
     def get(self, request, *args, **kwargs):
         """get方法，返回请求的页面内容
@@ -318,15 +320,17 @@ class BasePageView(views_mixin.BasicAuthPermissionViewMixin, View):
         Returns:
             response(Response): 响应主体
         """
-
+        # 请求预处理
         error, reason = self._pre_get(request, *args, **kwargs)
         if error:
             # TODO 后续统一错误返回
             return error, reason
 
+        # 处理请求
         response = self._perform_get(request, *args, **kwargs)
 
-        error, reason = self._post_get(request, *args, **kwargs)
+        # 请求后处理
+        error, reason, response = self._post_get(request, response, *args, **kwargs)
         if error:
             # TODO 后续统一错误返回
             return error, reason

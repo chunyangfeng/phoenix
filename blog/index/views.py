@@ -90,8 +90,8 @@ class IndexSiteMapPageView(BasePageView):
     authentication_enable = False
     page = 'index/map/map.html'
 
-    def _post_get(self, request, *args, **kwargs):
-        """响应页面之后的操作，设置文章链接数据
+    def _pre_get(self, request, *args, **kwargs):
+        """响应页面之前的操作，设置文章链接
 
         Args:
             request(Request): http request
