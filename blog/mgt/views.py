@@ -53,7 +53,6 @@ class ArticleListApiView(BasicListViewSet):
     queryset = models.Article.objects.all()
     serializer_class = serializers.ArticleSerializer
     permission_name = permissions.PER_ARTICLE
-    authentication_enable = False
 
 
 class ArticleInfoApiView(BasicInfoViewSet):

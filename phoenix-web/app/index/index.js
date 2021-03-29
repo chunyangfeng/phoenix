@@ -37,9 +37,9 @@ const getBlogData = (page=1, limit=5) => {
         });
     };
 
-    const queryString = `page=${page}&limit=${limit}&is_publish=1`;
+    const queryString = `page=${page}&limit=${limit}`;
 
-    asyncApiResolve(`${urls.articleListApi}?${queryString}`, null, 'get', successCallback);
+    asyncApiResolve(`${urls.indexArticleListApi}?${queryString}`, null, 'get', successCallback);
 };
 
 // 页面加载时的动态操作

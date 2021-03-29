@@ -13,8 +13,9 @@ Blog: http://www.fengchunyang.com
 """
 
 from blog.models import Article
-from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer
-from common.views import BasePageView
+from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer
+from common import permissions
+from common.views import BasePageView, BasicListViewSet
 
 
 class AuthForbiddenPageView(BasePageView):
@@ -107,3 +108,12 @@ class IndexSiteMapPageView(BasePageView):
         # 添加文章链接数据至模板对象中
         self.data['articles'] = self.serializer_class(instances, many=True).data
         return None, ''
+
+
+class IndexArticleListView(BasicListViewSet):
+    """首页展示的文章列表接口"""
+    queryset = Article.objects.filter(is_publish=True)
+    serializer_class = ArticleSerializer
+    permission_name = permissions.PER_ARTICLE
+    authentication_enable = False
+    http_method_names = ('get', )

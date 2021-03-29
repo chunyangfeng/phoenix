@@ -19,6 +19,7 @@ export const urls = {
     articleTagPage: "/blog/mgt/article/data/tag/page",
     articleInfoPage: "/blog/mgt/article/info/page",
     articleListApi: "/blog/mgt/article/list",
+    indexArticleListApi: "/blog/index/article/list",
     articleInfoApi: "/blog/mgt/article/info",
     tagListApi: "/blog/mgt/article/data/tag/list",
     tagInfoApi: "/blog/mgt/article/data/tag/info",
