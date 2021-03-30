@@ -153,3 +153,14 @@ class AccessRecord(models.Model):
         verbose_name = '访问记录表'
 
 
+class SubscribeRecord(BasicModel):
+    """订阅记录表"""
+    email = models.CharField(verbose_name="电子邮箱", unique=True)
+    enable = models.BooleanField(verbose_name="是否启用", default=True)
+
+    class Meta:
+        ordering = ('-id', )
+        db_table = 'blog_subscribe_record'
+        verbose_name = '订阅记录表'
+
+
