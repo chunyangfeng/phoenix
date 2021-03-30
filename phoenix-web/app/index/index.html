@@ -2,11 +2,58 @@
 
 {% block header-css %}
     <link rel="stylesheet" href="/phoenix-web/app/index/index.css">
+    <link rel="stylesheet" href="/phoenix-web/assets/icons/iconfont.css">
 {% endblock %}
 
 {% block body-middle %}
     <div id="articleCardElem"></div>
     <div id="articlePageElem"></div>
+{% endblock %}
+
+{% block body-right %}
+    <div class="show-card">
+        <div class="show-card-row show-card-row-first">
+            <a><img src="/phoenix-web/assets/img/show.png" alt="show"></a>
+            <div class="show-card-header-name">
+                <div>却邪水心</div>
+                <span>北京朝阳区</span>
+                <span>Python开发工程师</span>
+            </div>
+        </div>
+        <div class="show-card-row show-card-row-fourth">
+            <button class="layui-btn layui-btn-radius layui-btn-primary layui-btn-sm">关注</button>
+            <button class="layui-btn layui-btn-radius layui-btn-normal layui-btn-sm">订阅</button>
+        </div>
+        <div class="show-card-row show-card-row-second">
+            <span class="iconfont icon-weixin1"></span>
+            <span class="iconfont icon-qq"></span>
+            <span class="iconfont icon-github"></span>
+            <span class="iconfont icon-news-fill"></span>
+        </div>
+        <hr>
+        <div class="show-card-row show-card-row-third">
+            <div>
+                <div>文章</div>
+                <div id="showCardArticleCount">0</div>
+            </div>
+            <div>
+                <div>评论</div>
+                <div id="showCardCommentCount">0</div>
+            </div>
+            <div>
+                <div>粉丝</div>
+                <div id="showCardFansCount">0</div>
+            </div>
+            <div>
+                <div>分类</div>
+                <div id="showCardClassifyCount">0</div>
+            </div>
+            <div>
+                <div>访问</div>
+                <div id="showCardAccessCount">0</div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 

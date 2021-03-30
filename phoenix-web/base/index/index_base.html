@@ -23,21 +23,21 @@
         </div>
         <div class="index-nav-items">
             <a href="{% url 'index-page' %}">首页</a>
-            <a href="">分类</a>
-            <a href="">归档</a>
-            <a href="">留言板</a>
-            <a href="">友链</a>
-            <a href="">关于</a>
+            <a href="#">分类</a>
+            <a href="#">归档</a>
+            <a href="#">留言板</a>
+            <a href="#">友链</a>
+            <a href="#">关于</a>
             <a href="#" id="management">管理</a>
         </div>
     </div>
     <div class="index-body layui-row">
         {% block main-body %}
             <div class="index-lside layui-col-md2">{% block body-left %}&nbsp;{% endblock %}</div>
-            <div class="index-content layui-col-md6">
+            <div class="index-content layui-col-md5">
                 {% block body-middle %}中间主体{% endblock %}
             </div>
-            <div class="index-rside layui-col-md4">{% block body-right %}&nbsp;{% endblock %}</div>
+            <div class="index-rside layui-col-md5">{% block body-right %}&nbsp;{% endblock %}</div>
         {% endblock %}
     </div>
     <div class="index-footer">

@@ -11,6 +11,8 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+from abc import ABC
+
 from django.conf import settings
 from django.urls import reverse
 from rest_framework import serializers

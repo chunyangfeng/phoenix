@@ -60,5 +60,11 @@ export const params = {
     projectTaskFormFilter: 'projectTaskFormFilter',
     projectInfoTableFilter: 'projectInfoTableFilter',
     projectTaskTableFilter: 'projectTaskTableFilter',
+
+    showCardArticleCountElem: 'showCardArticleCount',
+    showCardCommentCountElem: 'showCardCommentCount',
+    showCardFansCountElem: 'showCardFansCount',
+    showCardClassifyCountElem: 'showCardClassifyCount',
+    showCardAccessCountElem: 'showCardAccessCount',
 };
 

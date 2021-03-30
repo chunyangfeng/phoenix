@@ -46,3 +46,105 @@
 /*    list-style: none;*/
 /*    margin: auto 5px auto 0;*/
 /*}*/
+
+.show-card {
+    position: fixed;
+    display: block;
+    border: 2px solid #eee;
+    margin: 30px 40px;
+    padding: 0 15px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    width: 25rem;
+}
+
+.show-card-row {
+    display: block;
+    padding: 10px 1px;
+    margin: 10px 1px;
+}
+
+.show-card-row.show-card-row-first {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.show-card-row.show-card-row-first a {
+    display: block;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.show-card-row.show-card-row-first a img {
+    width: 100%;
+    height: 100%;
+}
+
+.show-card-row.show-card-row-first .show-card-header-name {
+    font-family: '华文宋体', cursive;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: left;
+    margin: 0 0 0 15px;
+}
+
+.show-card-header-name span {
+    font-weight: 600;
+    font-size: 12px;
+    font-family: "Microsoft YaHei UI Light", cursive;
+    color: #423f3f;
+}
+
+.show-card-row-second {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 55px;
+}
+
+.show-card-row-second span {
+    display: block;
+    font-size: 35px;
+    width: 30px;
+    height: 30px;
+}
+
+.show-card-row-fourth {
+    text-align: center;
+}
+
+.show-card-row-fourth button {
+    letter-spacing: 15px;
+    text-align: center;
+    text-indent: 15px;
+}
+
+.show-card-row-fourth span:last-child {
+    margin: 0;
+}
+
+.show-card-row-third {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 55px;
+    align-items: center;
+    line-height: 25px;
+    text-align: center;
+}
+
+.show-card-row-third > div > div:first-child {
+    /*letter-spacing: 8px;*/
+    text-align: center;
+    /*text-indent: 8px;*/
+    font-weight: 600;
+    font-size: 16px;
+    font-family: "Microsoft YaHei UI Light", cursive;
+}
+
+.show-card-row-third > div > div:last-child {
+    font-weight: 300;
+    font-size: 16px;
+    font-family: "Microsoft YaHei UI Light", cursive;
+}

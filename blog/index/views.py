@@ -11,11 +11,13 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+from django.db.models import QuerySet
 
-from blog.models import Article
+from blog.models import Article, ArticleClassify, AccessRecord
 from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer
 from common import permissions
-from common.views import BasePageView, BasicListViewSet
+from common.serializers import DoNothingSerializer
+from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
 
 
 class AuthForbiddenPageView(BasePageView):
@@ -65,23 +67,25 @@ class ArticleDetailPageView(BasePageView):
         setattr(self, 'instance', instance)
         return None, ''
 
-    def _post_get(self, request, *args, **kwargs):
+    def _post_get(self, request, response, *args, **kwargs):
         """响应页面之后的操作，增加文章的阅读数
 
         Args:
             request(Request): http request
+            response(Response): 响应主体
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
         Returns:
             error(str): 错误信息，None为没有错误
             reason(str): 错误原因，为''则没有错误
+            response(Response): 响应主体
         """
         # 当访问成功时，将文章的阅读数量加一
-        instance = self.instance
+        instance = getattr(self, 'instance')
         instance.read_count += 1
         instance.save()
-        return None, ''
+        return None, '', response
 
 
 class IndexSiteMapPageView(BasePageView):
@@ -117,3 +121,32 @@ class IndexArticleListView(BasicListViewSet):
     permission_name = permissions.PER_ARTICLE
     authentication_enable = False
     http_method_names = ('get', )
+
+
+class IndexShowCardInfoView(BasicInfoViewSet):
+    """个人名片数据接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_SHOW_CARD
+    authentication_enable = False
+    http_method_names = ('get', )
+
+    def get(self, request, *args, **kwargs):
+        """获取资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        data = {
+            "article_count": Article.objects.count(),
+            "fans_count": "0",
+            "classify_count": ArticleClassify.objects.count(),
+            "comment_count": "0",
+            "access_count": AccessRecord.objects.count(),
+        }
+        return self.set_response(result='Success', data=[data, ])

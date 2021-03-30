@@ -1,0 +1,44 @@
+{
+  "id": "2452997",
+  "name": "my_icon",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "309946",
+      "name": "weixin",
+      "font_class": "weixin1",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "405727",
+      "name": "qq",
+      "font_class": "qq",
+      "unicode": "e6a0",
+      "unicode_decimal": 59040
+    },
+    {
+      "icon_id": "859693",
+      "name": "微信",
+      "font_class": "weixin",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "18727201",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "19685118",
+      "name": "邮件",
+      "font_class": "news-fill",
+      "unicode": "eb58",
+      "unicode_decimal": 60248
+    }
+  ]
+}

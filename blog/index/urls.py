@@ -21,4 +21,5 @@ urlpatterns = [
     path(f'article/<int:{params.MODEL_UNIQUE_KEY}>', views.ArticleDetailPageView.as_view(), name='article-detail-page'),
     path('map', views.IndexSiteMapPageView.as_view(), name='site-map-page'),
     path('article/list', views.IndexArticleListView.as_view(), name='index-article-list'),
+    path('show-card/info', views.IndexShowCardInfoView.as_view(), name='index-show-card-info'),
 ]

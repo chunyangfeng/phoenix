@@ -19,6 +19,8 @@ PER_ARTICLE_SERIAL = 'ArticleSerial'  # 文章系列接口权限
 PER_SYSTEM_SEO = 'SystemSeo'  # seo管理接口
 PER_SYSTEM_PROJECT_MGT = 'SystemProjectManagement'  # 项目管理接口
 
+PER_SHOW_CARD = 'ShowCard'  # 名片信息接口
+
 
 RES_PERM = {
     PER_BASE: 'ROOT权限',
@@ -28,4 +30,5 @@ RES_PERM = {
     PER_ARTICLE_TAG: '博客标签',
     PER_SYSTEM_SEO: 'SEO管理',
     PER_SYSTEM_PROJECT_MGT: '项目管理',
+    PER_SHOW_CARD: '名片信息',
 }

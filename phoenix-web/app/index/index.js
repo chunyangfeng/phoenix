@@ -42,9 +42,27 @@ const getBlogData = (page=1, limit=5) => {
     asyncApiResolve(`${urls.indexArticleListApi}?${queryString}`, null, 'get', successCallback);
 };
 
+const getShowCardData = () => {
+    const successCallback = (response) => {
+        const data = response.data;
+
+        if (data.length === 1) {
+            layui.jquery(`#${params.showCardArticleCountElem}`).empty().append(data[0].article_count);
+            layui.jquery(`#${params.showCardCommentCountElem}`).empty().append(data[0].comment_count);
+            layui.jquery(`#${params.showCardFansCountElem}`).empty().append(data[0].fans_count);
+            layui.jquery(`#${params.showCardClassifyCountElem}`).empty().append(data[0].classify_count);
+            layui.jquery(`#${params.showCardAccessCountElem}`).empty().append(data[0].access_count);
+        }
+    };
+    asyncApiResolve(`${urls.showCardInfoApi}`, null, 'get', successCallback);
+};
+
 // 页面加载时的动态操作
 layui.jquery(document).ready(function () {
     // 获取博客文章数据
     getBlogData();
+
+    // 获取展示卡数据
+    getShowCardData();
 });
 
