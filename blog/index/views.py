@@ -13,7 +13,8 @@ Blog: http://www.fengchunyang.com
 """
 from django.db.models import QuerySet
 
-from blog.models import Article, ArticleClassify, AccessRecord
+from blog.index.adapt import adapt_get_comment_count
+from blog.models import Article, ArticleClassify, AccessRecord, SubscribeRecord
 from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer
 from common import permissions
 from common.serializers import DoNothingSerializer
@@ -144,9 +145,9 @@ class IndexShowCardInfoView(BasicInfoViewSet):
         """
         data = {
             "article_count": Article.objects.count(),
-            "fans_count": "0",
+            "fans_count": SubscribeRecord.objects.count(),
             "classify_count": ArticleClassify.objects.count(),
-            "comment_count": "0",
+            "comment_count": adapt_get_comment_count(),
             "access_count": AccessRecord.objects.count(),
         }
         return self.set_response(result='Success', data=[data, ])
