@@ -5,7 +5,7 @@
 */
 
 // 获取博客文章数据
-import {asyncApiResolve, generateArticleCard} from "/phoenix-web/common/utils.js";
+import {asyncApiResolve, generateArticleCard, syncApiResolve} from "/phoenix-web/common/utils.js";
 import {urls} from "../../config/urls.js";
 import {params} from "../../config/params.js";
 
@@ -57,7 +57,7 @@ const getShowCardData = () => {
     asyncApiResolve(`${urls.showCardInfoApi}`, null, 'get', successCallback);
 };
 
-const messageEvent = () => {
+const visitorLogin = (callback) => {
     const email = localStorage.getItem(params.visitorEmail);
 
     if (!email) {
@@ -70,6 +70,12 @@ const messageEvent = () => {
             content: urls.visitorInfoPage,
         });
     } else {
+        callback();
+    }
+};
+
+const messageEvent = () => {
+    const callback = () => {
         layui.layer.prompt({
             formType: 2,
             title: '请畅所欲言',
@@ -83,7 +89,36 @@ const messageEvent = () => {
             asyncApiResolve(urls.visitorMessageListApi, data, 'post');
             layui.layer.close(index);
         });
-    }
+    };
+
+    visitorLogin(callback);
+};
+
+const subscribeEvent = () => {
+    const callback = () => {
+        const name = localStorage.getItem(params.visitorName);
+        const email = localStorage.getItem(params.visitorEmail);
+        const data = {
+            name: name,
+            email: email
+        };
+        const response = syncApiResolve(urls.visitorSubscribeListApi, {email: email}, 'patch');
+
+        if (!response.data.is_repeat) {
+            asyncApiResolve(urls.visitorSubscribeListApi, data, 'post');
+            layui.layer.msg(`${email} 订阅成功`)
+        } else {
+            layui.layer.msg(`${email} 已订阅过`)
+        }
+
+    };
+
+    layer.confirm('订阅成功后，本站的新文章发布/活动等将会通过订阅邮箱发送即时通知，取消订阅可以通过本站发送的邮件进行操作。',
+        {icon: 3, title: '订阅提示'}, function (index) {
+        visitorLogin(callback);
+
+        layer.close(index);
+    });
 };
 
 // 页面加载时的动态操作
@@ -97,6 +132,11 @@ layui.jquery(document).ready(function () {
     // 私信操作
     layui.jquery('#message').on('click', () => {
         messageEvent();
-    })
+    });
+
+    // 订阅操作
+    layui.jquery('#subscribe').on('click', () => {
+        subscribeEvent();
+    });
 });
 

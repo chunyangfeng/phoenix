@@ -155,6 +155,7 @@ class AccessRecord(models.Model):
 
 class SubscribeRecord(BasicModel):
     """订阅记录表"""
+    name = models.CharField(verbose_name="用户名", max_length=32)
     email = models.CharField(verbose_name="电子邮箱", unique=True, max_length=64)
     enable = models.BooleanField(verbose_name="是否启用", default=True)
 

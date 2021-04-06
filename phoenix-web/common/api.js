@@ -37,7 +37,7 @@ const error_callback = (request, status, error) => {
 
 // 默认请求成功回调
 const success_callback = (response, status) => {
-    layui.layer.msg('执行成功')
+    // layui.layer.msg(response.result)
 };
 
 export const apiConfig = {

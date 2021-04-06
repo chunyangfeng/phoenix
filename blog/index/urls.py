@@ -24,4 +24,5 @@ urlpatterns = [
     path('show-card/info', views.IndexShowCardInfoView.as_view(), name='index-show-card-info'),
     path('visitor/info/page', views.IndexVisitorInfoPageView.as_view(), name='index-visitor-info-page'),
     path('visitor/message/list', views.IndexVisitorMessageListView.as_view(), name='index-visitor-message-list'),
+    path('visitor/subscribe/list', views.IndexVisitorScribeListView.as_view(), name='index-visitor-scribe-list'),
 ]

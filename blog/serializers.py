@@ -343,3 +343,11 @@ class InnerMessageListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.InnerMessage
         fields = '__all__'
+
+
+class SubscribeRecordListSerializer(serializers.ModelSerializer):
+    """订阅列表序列化器"""
+
+    class Meta:
+        model = models.SubscribeRecord
+        fields = '__all__'

@@ -22,6 +22,7 @@ PER_SYSTEM_PROJECT_MGT = 'SystemProjectManagement'  # 项目管理接口
 PER_SHOW_CARD = 'ShowCard'  # 名片信息接口
 
 PER_VISITOR_MESSAGE = 'VisitorMessage'  # 访客私信接口
+PER_VISITOR_Subscribe = 'VisitorSubscribe'  # 访客订阅接口
 
 
 RES_PERM = {
@@ -34,4 +35,5 @@ RES_PERM = {
     PER_SYSTEM_PROJECT_MGT: '项目管理',
     PER_SHOW_CARD: '名片信息',
     PER_VISITOR_MESSAGE: '访客私信',
+    PER_VISITOR_Subscribe: '访客订阅',
 }

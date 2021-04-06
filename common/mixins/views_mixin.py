@@ -55,7 +55,7 @@ class BasicResponseMixin:
 
         Args:
             result(str): 结果
-            data(str|list): 数据主体
+            data(str|list|dict): 数据主体
             extra(dict): 额外的数据主体
             status(str): 状态码
 

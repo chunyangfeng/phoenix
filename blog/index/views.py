@@ -16,7 +16,7 @@ from django.db.models import QuerySet
 from blog.index.adapt import adapt_get_comment_count
 from blog.models import Article, ArticleClassify, AccessRecord, SubscribeRecord, InnerMessage
 from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer, \
-    InnerMessageListSerializer
+    InnerMessageListSerializer, SubscribeRecordListSerializer
 from common import permissions
 from common.serializers import DoNothingSerializer
 from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
@@ -166,3 +166,29 @@ class IndexVisitorMessageListView(BasicListViewSet):
     serializer_class = InnerMessageListSerializer
     permission_name = permissions.PER_VISITOR_MESSAGE
     authentication_enable = False
+
+
+class IndexVisitorScribeListView(BasicListViewSet):
+    """访客订阅接口"""
+    queryset = SubscribeRecord.objects.all()
+    serializer_class = SubscribeRecordListSerializer
+    permission_name = permissions.PER_VISITOR_MESSAGE
+    authentication_enable = False
+
+    def patch(self, request, *args, **kwargs):
+        """额外的逻辑控制，查重
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        data = {'is_repeat': False}
+        email = request.data.get('email')
+        queryset = SubscribeRecord.objects.filter(email=email)
+        if queryset.exists():
+            data['is_repeat'] = True
+        return self.set_response(result='ok', data=data)
