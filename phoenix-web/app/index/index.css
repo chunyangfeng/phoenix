@@ -48,7 +48,7 @@
 /*}*/
 
 .show-card {
-    position: fixed;
+    /*position: fixed;*/
     display: block;
     border: 2px solid #eee;
     margin: 30px 40px;

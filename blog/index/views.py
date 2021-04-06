@@ -14,8 +14,9 @@ Blog: http://www.fengchunyang.com
 from django.db.models import QuerySet
 
 from blog.index.adapt import adapt_get_comment_count
-from blog.models import Article, ArticleClassify, AccessRecord, SubscribeRecord
-from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer
+from blog.models import Article, ArticleClassify, AccessRecord, SubscribeRecord, InnerMessage
+from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer, \
+    InnerMessageListSerializer
 from common import permissions
 from common.serializers import DoNothingSerializer
 from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
@@ -151,3 +152,17 @@ class IndexShowCardInfoView(BasicInfoViewSet):
             "access_count": AccessRecord.objects.count(),
         }
         return self.set_response(result='Success', data=[data, ])
+
+
+class IndexVisitorInfoPageView(BasePageView):
+    """访客信息页面"""
+    authentication_enable = False
+    page = 'index/visitor/form.html'
+
+
+class IndexVisitorMessageListView(BasicListViewSet):
+    """访客私信接口"""
+    queryset = InnerMessage.objects.all()
+    serializer_class = InnerMessageListSerializer
+    permission_name = permissions.PER_VISITOR_MESSAGE
+    authentication_enable = False

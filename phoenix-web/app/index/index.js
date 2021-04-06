@@ -5,7 +5,7 @@
 */
 
 // 获取博客文章数据
-import {asyncApiResolve, generateArticleCard} from "../../common/utils.js";
+import {asyncApiResolve, generateArticleCard} from "/phoenix-web/common/utils.js";
 import {urls} from "../../config/urls.js";
 import {params} from "../../config/params.js";
 
@@ -57,6 +57,35 @@ const getShowCardData = () => {
     asyncApiResolve(`${urls.showCardInfoApi}`, null, 'get', successCallback);
 };
 
+const messageEvent = () => {
+    const email = localStorage.getItem(params.visitorEmail);
+
+    if (!email) {
+        layui.layer.open({
+            type: 2,
+            title: '访客信息',
+            id: 'visitorInfoIframe',
+            skin: 'layui-layer-molv',
+            area: ['30rem', '20rem'],
+            content: urls.visitorInfoPage,
+        });
+    } else {
+        layui.layer.prompt({
+            formType: 2,
+            title: '请畅所欲言',
+            area: ['600px', '250px']
+        }, function (value, index, elem) {
+            const data = {};
+            data.name = localStorage.getItem(params.visitorName);
+            data.email = localStorage.getItem(params.visitorEmail);
+            data.message = value;
+
+            asyncApiResolve(urls.visitorMessageListApi, data, 'post');
+            layui.layer.close(index);
+        });
+    }
+};
+
 // 页面加载时的动态操作
 layui.jquery(document).ready(function () {
     // 获取博客文章数据
@@ -64,5 +93,10 @@ layui.jquery(document).ready(function () {
 
     // 获取展示卡数据
     getShowCardData();
+
+    // 私信操作
+    layui.jquery('#message').on('click', () => {
+        messageEvent();
+    })
 });
 

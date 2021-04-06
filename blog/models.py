@@ -164,3 +164,16 @@ class SubscribeRecord(BasicModel):
         verbose_name = '订阅记录表'
 
 
+class InnerMessage(BasicModel):
+    """私信消息"""
+    name = models.CharField(verbose_name="私信用户名", max_length=32)
+    email = models.CharField(verbose_name="电子邮箱", max_length=32)
+    message = models.TextField(verbose_name="私信消息")
+    is_reply = models.BooleanField(verbose_name="是否回复", default=False)
+
+    class Meta:
+        ordering = ('-id', )
+        db_table = 'blog_inner_message'
+        verbose_name = '私信消息表'
+
+

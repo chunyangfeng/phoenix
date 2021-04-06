@@ -66,5 +66,8 @@ export const params = {
     showCardFansCountElem: 'showCardFansCount',
     showCardClassifyCountElem: 'showCardClassifyCount',
     showCardAccessCountElem: 'showCardAccessCount',
+
+    visitorName: 'visitorName',
+    visitorEmail: 'visitorEmail',
 };
 

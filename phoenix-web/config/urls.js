@@ -30,6 +30,8 @@ export const urls = {
 
     urlListApi: "/blog/mgt/system/seo/url-list",
     showCardInfoApi: "/blog/index/show-card/info",
+    visitorInfoPage: "/blog/index/visitor/info/page",
+    visitorMessageListApi: "/blog/index/visitor/message/list",
 
     projectInfoListApi: "/blog/mgt/system/project-info/list",
     projectInfoInfoApi: "/blog/mgt/system/project-info/info",

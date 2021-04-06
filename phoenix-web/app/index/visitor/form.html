@@ -1,0 +1,32 @@
+{% extends 'base/modal/modal_base.html' %}
+
+{% block body %}
+    <div class="layui-row modal-form">
+        <form class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <label class="layui-form-label">昵称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入昵称..." autocomplete="off"
+                           class="layui-input" maxlength="64">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">电子邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" required lay-verify="required|email" placeholder="请输入电子邮箱..."
+                           autocomplete="off" class="layui-input" maxlength="32">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="visitorLoginFilter">确定</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block footer-js %}
+    <script src="/phoenix-web/app/index/visitor/form.js" type="module"></script>
+{% endblock %}

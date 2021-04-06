@@ -335,3 +335,11 @@ class ProjectTaskInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ProjectPlanTask
         fields = '__all__'
+
+
+class InnerMessageListSerializer(serializers.ModelSerializer):
+    """私信消息列表序列化器"""
+
+    class Meta:
+        model = models.InnerMessage
+        fields = '__all__'

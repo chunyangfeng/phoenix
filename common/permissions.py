@@ -21,6 +21,8 @@ PER_SYSTEM_PROJECT_MGT = 'SystemProjectManagement'  # 项目管理接口
 
 PER_SHOW_CARD = 'ShowCard'  # 名片信息接口
 
+PER_VISITOR_MESSAGE = 'VisitorMessage'  # 访客私信接口
+
 
 RES_PERM = {
     PER_BASE: 'ROOT权限',
@@ -31,4 +33,5 @@ RES_PERM = {
     PER_SYSTEM_SEO: 'SEO管理',
     PER_SYSTEM_PROJECT_MGT: '项目管理',
     PER_SHOW_CARD: '名片信息',
+    PER_VISITOR_MESSAGE: '访客私信',
 }
