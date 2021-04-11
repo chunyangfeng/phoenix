@@ -148,3 +148,25 @@
     font-size: 16px;
     font-family: "Microsoft YaHei UI Light", cursive;
 }
+
+#wechatCode img {
+    display: none;
+    position: relative;
+    right: 53px;
+    bottom: 190px;
+}
+
+#wechatCode:hover img {
+    display: block;
+}
+
+#qqCode img {
+    display: none;
+    position: relative;
+    right: 53px;
+    bottom: 190px;
+}
+
+#qqCode:hover img {
+    display: block;
+}
