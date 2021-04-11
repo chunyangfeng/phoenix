@@ -33,6 +33,7 @@ export const urls = {
     visitorInfoPage: "/blog/index/visitor/info/page",
     visitorMessageListApi: "/blog/index/visitor/message/list",
     visitorSubscribeListApi: "/blog/index/visitor/subscribe/list",
+    hotArticleInfoApi: "/blog/index/hot-article/info",
 
     projectInfoListApi: "/blog/mgt/system/project-info/list",
     projectInfoInfoApi: "/blog/mgt/system/project-info/info",

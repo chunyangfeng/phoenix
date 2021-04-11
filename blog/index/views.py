@@ -12,12 +12,14 @@ Blog: http://www.fengchunyang.com
 重要说明:
 """
 from django.db.models import QuerySet
+from django.urls import reverse
 
 from blog.index.adapt import adapt_get_comment_count
 from blog.models import Article, ArticleClassify, AccessRecord, SubscribeRecord, InnerMessage
 from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer, \
     InnerMessageListSerializer, SubscribeRecordListSerializer
 from common import permissions
+from common.params import MODEL_UNIQUE_KEY
 from common.serializers import DoNothingSerializer
 from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
 
@@ -192,3 +194,43 @@ class IndexVisitorScribeListView(BasicListViewSet):
         if queryset.exists():
             data['is_repeat'] = True
         return self.set_response(result='ok', data=data)
+
+
+class IndexHotArticleInfoView(BasicInfoViewSet):
+    """热门文章数据接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_HOT_ARTICLE
+    authentication_enable = False
+    http_method_names = ('get', )
+
+    @staticmethod
+    def _get_link(pk):
+        """获取文章相对链接
+
+        Args:
+            pk(int): 自增id
+
+        Returns:
+            link(str): 相对链接
+        """
+        return reverse('article-detail-page', kwargs={MODEL_UNIQUE_KEY: pk})
+
+    def get(self, request, *args, **kwargs):
+        """获取资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        articles = Article.objects.order_by('-read_count')[:10]
+        data = [{
+            'title': article.title,
+            'read_count': article.read_count,
+            'link': self._get_link(article.id)
+        } for article in articles]
+        return self.set_response(result='Success', data=data)

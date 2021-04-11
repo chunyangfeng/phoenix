@@ -24,6 +24,8 @@ PER_SHOW_CARD = 'ShowCard'  # 名片信息接口
 PER_VISITOR_MESSAGE = 'VisitorMessage'  # 访客私信接口
 PER_VISITOR_Subscribe = 'VisitorSubscribe'  # 访客订阅接口
 
+PER_HOT_ARTICLE = 'HotArticle'  # 热门文章接口
+
 
 RES_PERM = {
     PER_BASE: 'ROOT权限',
@@ -36,4 +38,5 @@ RES_PERM = {
     PER_SHOW_CARD: '名片信息',
     PER_VISITOR_MESSAGE: '访客私信',
     PER_VISITOR_Subscribe: '访客订阅',
+    PER_HOT_ARTICLE: '热门文章',
 }

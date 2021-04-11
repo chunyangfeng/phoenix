@@ -170,3 +170,27 @@
 #qqCode:hover img {
     display: block;
 }
+
+.hot-article {
+    /*position: fixed;*/
+    display: block;
+    border: 2px solid #eee;
+    margin: 30px 40px;
+    padding: 0 15px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    width: 25rem;
+}
+
+.hot-article div.layui-card-header {
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.hot-article-elem {
+    display: block;
+    font-size: 16px;
+}
+
+.hot-article-elem span {
+    float: right;
+}

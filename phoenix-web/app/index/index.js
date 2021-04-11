@@ -120,6 +120,22 @@ const subscribeEvent = () => {
     });
 };
 
+const getHotArticle = () => {
+    const successCallback = (response) => {
+        const data = response.data;
+        const hotArticleElem = layui.jquery('#hotArticleList');
+        hotArticleElem.empty();
+
+        layui.jquery.each(data, (index, value) => {
+            const html = `<a class="hot-article-elem" href="${value.link}">
+                              ${index + 1}.${value.title} 
+                          </a><hr>`;
+            hotArticleElem.append(html);
+        });
+    };
+    asyncApiResolve(`${urls.hotArticleInfoApi}`, null, 'get', successCallback);
+};
+
 // 页面加载时的动态操作
 layui.jquery(document).ready(function () {
     // 获取博客文章数据
@@ -127,6 +143,9 @@ layui.jquery(document).ready(function () {
 
     // 获取展示卡数据
     getShowCardData();
+
+    // 获取热门文章数据
+    getHotArticle();
 
     // 私信操作
     layui.jquery('#message').on('click', () => {
