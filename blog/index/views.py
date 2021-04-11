@@ -147,7 +147,7 @@ class IndexShowCardInfoView(BasicInfoViewSet):
             response(Response): 响应数据
         """
         data = {
-            "article_count": Article.objects.count(),
+            "article_count": Article.objects.filter(is_publish=True).count(),
             "fans_count": SubscribeRecord.objects.count(),
             "classify_count": ArticleClassify.objects.count(),
             "comment_count": adapt_get_comment_count(),
