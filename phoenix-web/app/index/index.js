@@ -110,7 +110,6 @@ const subscribeEvent = () => {
         } else {
             layui.layer.msg(`${email} 已订阅过`)
         }
-
     };
 
     layer.confirm('订阅成功后，本站的新文章发布/活动等将会通过订阅邮箱发送即时通知，取消订阅可以通过本站发送的邮件进行操作。',

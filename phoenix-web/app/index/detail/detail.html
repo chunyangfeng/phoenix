@@ -1,5 +1,22 @@
 {% extends 'base/index/index_base.html' %}
 
+{% block header-meta %}
+    <!-- 优先使用 IE 最新版本和 Chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!-- 描述 -->
+    <meta name="description" content="{{ article.desc }}"/>
+    <!-- 关键词 -->
+    <meta name="keywords" content="{{ article.title }} - {{ article.classify_name }}"/>
+    <!-- 作者 -->
+    <meta name="author" content="却邪水心"/>
+    <!-- 搜索引擎抓取 -->
+    <meta name="robots" content="all"/>
+    <!-- 版权 -->
+    <meta name="copyright" content="却邪水心">
+    <!-- 站点标识 -->
+    <meta name="applicable-device" content="pc">
+{% endblock %}
+
 {% block title %}
     {{ article.title }} - {{ article.classify_name }}
 {% endblock %}
