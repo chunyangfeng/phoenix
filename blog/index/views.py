@@ -198,7 +198,7 @@ class IndexVisitorScribeListView(BasicListViewSet):
 
 class IndexHotArticleInfoView(BasicInfoViewSet):
     """热门文章数据接口"""
-    queryset = QuerySet()
+    queryset = Article.objects.filter(is_publish=True).order_by('-read_count')[:10]
     serializer_class = DoNothingSerializer
     permission_name = permissions.PER_HOT_ARTICLE
     authentication_enable = False
@@ -227,7 +227,7 @@ class IndexHotArticleInfoView(BasicInfoViewSet):
         Returns:
             response(Response): 响应数据
         """
-        articles = Article.objects.order_by('-read_count')[:10]
+        articles = self.get_queryset()
         data = [{
             'title': article.title,
             'read_count': article.read_count,
