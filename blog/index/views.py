@@ -36,6 +36,12 @@ class AuthNoPermissionPageView(BasePageView):
     page = 'errors/403.html'
 
 
+class NotFoundPageView(BasePageView):
+    """不允许访问页面"""
+    authentication_enable = False
+    page = 'errors/404.html'
+
+
 class IndexPageView(BasePageView):
     """博客主页"""
     authentication_enable = False
@@ -65,9 +71,10 @@ class ArticleDetailPageView(BasePageView):
         if error:
             return error, reason
 
-        # 添加文章数据至模板对象中
-        self.data['article'] = self.serializer_class(instance, many=False).data
-
+        # 如果文章未发布，则不允许访问，默认返回404
+        if instance.is_publish is True:
+            # 添加文章数据至模板对象中
+            self.data['article'] = self.serializer_class(instance, many=False).data
         setattr(self, 'instance', instance)
         return None, ''
 
@@ -87,8 +94,9 @@ class ArticleDetailPageView(BasePageView):
         """
         # 当访问成功时，将文章的阅读数量加一
         instance = getattr(self, 'instance')
-        instance.read_count += 1
-        instance.save()
+        if instance.is_publish is True:
+            instance.read_count += 1
+            instance.save()
         return None, '', response
 
 

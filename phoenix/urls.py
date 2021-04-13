@@ -32,6 +32,7 @@ urlpatterns = [
     path('', IndexPageView.as_view(), name='index-page'),
     path('errors/401', AuthForbiddenPageView.as_view(), name='401'),
     path('errors/403', AuthNoPermissionPageView.as_view(), name='403'),
+    path('errors/404', AuthNoPermissionPageView.as_view(), name='404'),
 
     path('blog/', include(blog_urls)),
 ]

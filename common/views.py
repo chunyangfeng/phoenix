@@ -263,7 +263,10 @@ class BasePageView(views_mixin.BasicAuthPermissionViewMixin, View):
 
         # 获取实例数据
         model = self.get_model_class()
-        instance = model.objects.get(pk=pk)
+        try:
+            instance = model.objects.get(pk=pk)
+        except model.DoesNotExist:
+            return 'Data does not exist', '数据不存在', None
         return None, '', instance
 
     def _pre_get(self, request, *args, **kwargs):
