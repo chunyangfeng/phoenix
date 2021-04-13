@@ -216,9 +216,9 @@ class ArticleDetailSerializer(serializers.ModelSerializer):
 
         try:
             if classification == 'previous':
-                instance = self.Meta.model.objects.filter(id__lt=pk).order_by('-id').first()
+                instance = self.Meta.model.objects.filter(id__lt=pk, is_publish=True).order_by('-id').first()
             elif classification == 'next':
-                instance = self.Meta.model.objects.filter(id__gt=pk).order_by('id').first()
+                instance = self.Meta.model.objects.filter(id__gt=pk, is_publish=True).order_by('id').first()
             else:
                 instance = None
 
