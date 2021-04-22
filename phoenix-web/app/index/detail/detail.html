@@ -64,9 +64,66 @@
                 许可协议。转载请注明出处！
             </p>
         </div>
-{#        <div class="article-body-comment">#}
-{#            评论区#}
-{#        </div>#}
+        <div class="article-body-comment">
+            <div class="article-body-comment-explain">
+                <p><i class="layui-icon layui-icon-light" style="color: #ef4136;"></i> 评论提示：</p>
+                <p>请填写有效的邮箱地址，以便收到回复通知哦~</p>
+            </div>
+            <hr>
+            <div class="article-body-comment-form">
+                <form class="layui-form layui-form-pane" lay-filter="articleCommentFormFilter">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">昵称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="nickname" required lay-verify="required" placeholder="请输入昵称..."
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="email" required lay-verify="required|email" placeholder="请输入邮箱地址..."
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">评论</label>
+                        <div class="layui-input-block">
+                            <textarea name="comment" required lay-verify="required" placeholder="请留下神评..."
+                                      class="layui-textarea" rows="7"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="articleCommentSubmit">评论</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <hr>
+            <div class="article-body-comment-count">
+                <div class="article-body-comment-count-nums">评论总数</div>
+                <div class="article-body-comment-count-sort">
+                    <a class="article-body-comment-count-sort-active" id="articleCommentSortAsc">按时间正序</a>
+                    <span>|</span>
+                    <a id="articleCommentSortDesc">按时间倒序</a>
+                </div>
+            </div>
+            <div class="article-body-comment-show">
+                <div class="article-body-comment-show-card">
+                    <div class="article-body-comment-show-card-img">
+                        <span>却</span>
+                    </div>
+                    <div class="article-body-comment-show-card-body">
+                        <div class="article-body-comment-show-card-body-nickname">却邪水心</div>
+                        <div class="article-body-comment-show-card-body-comment">我是测试评论~</div>
+                        <div class="article-body-comment-show-card-body-ctime">2021-04-13 21:21:21</div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
     </div>
 {% endblock %}
 
