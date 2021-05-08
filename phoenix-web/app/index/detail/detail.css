@@ -147,7 +147,6 @@
 
 .article-body-comment-show-card-img {
     display: inline-block;
-    margin-left: 20px;
     height: 50px;
     width: 50px;
     border-radius: 50px;
@@ -158,19 +157,37 @@
     font-size: 20px;
 }
 
-.article-body-comment-show-card-body .article-body-comment-show-card-body-nickname {
+.article-body-comment-show-card-body {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.article-body-comment-show-card-body-nickname {
     color: #87CEFF;
     letter-spacing: 2px;
     margin-bottom: 15px;
 }
 
-.article-body-comment-show-card-body .article-body-comment-show-card-body-comment {
+.article-body-comment-show-card-body-comment {
     font-size: 17px;
     margin-bottom: 15px;
 }
 
-.article-body-comment-show-card-body .article-body-comment-show-card-body-ctime {
+.article-body-comment-show-card-body-ctime {
+    display: inline-block;
     margin-bottom: 2px;
     font-size: 14px;
-    font-weight: 300;
+    font-weight: 100;
+}
+
+.article-body-comment-show-card-body-up {
+    display: inline-block;
+}
+
+.article-body-comment-show-card-body-down {
+    display: inline-block;
+}
+
+.article-body-comment-show-card-body-reply {
+    display: inline-block;
 }
