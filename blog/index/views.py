@@ -100,30 +100,30 @@ class ArticleDetailPageView(BasePageView):
         return None, '', response
 
 
-class IndexSiteMapPageView(BasePageView):
-    """网站地图"""
-    model_class = Article
-    serializer_class = ArticleSiteMapSerializer
-    authentication_enable = False
-    page = 'index/map/map.html'
-
-    def _pre_get(self, request, *args, **kwargs):
-        """响应页面之前的操作，设置文章链接
-
-        Args:
-            request(Request): http request
-            *args(list): 可变参数
-            **kwargs(dict): 可变关键字参数
-
-        Returns:
-            error(str): 错误信息，None为没有错误
-            reason(str): 错误原因，为''则没有错误
-        """
-        instances = self.model_class.objects.filter(is_publish=True)
-
-        # 添加文章链接数据至模板对象中
-        self.data['articles'] = self.serializer_class(instances, many=True).data
-        return None, ''
+# class IndexSiteMapPageView(BasePageView):
+#     """网站地图"""
+#     model_class = Article
+#     serializer_class = ArticleSiteMapSerializer
+#     authentication_enable = False
+#     page = 'index/map/map.html'
+#
+#     def _pre_get(self, request, *args, **kwargs):
+#         """响应页面之前的操作，设置文章链接
+#
+#         Args:
+#             request(Request): http request
+#             *args(list): 可变参数
+#             **kwargs(dict): 可变关键字参数
+#
+#         Returns:
+#             error(str): 错误信息，None为没有错误
+#             reason(str): 错误原因，为''则没有错误
+#         """
+#         instances = self.model_class.objects.filter(is_publish=True)
+#
+#         # 添加文章链接数据至模板对象中
+#         self.data['articles'] = self.serializer_class(instances, many=True).data
+#         return None, ''
 
 
 class IndexArticleListView(BasicListViewSet):

@@ -12,6 +12,7 @@ Blog: http://www.fengchunyang.com
 重要说明:
 """
 from django.db import models
+from django.urls import reverse
 
 from blog import params
 from blog.auth.models import User
@@ -85,6 +86,14 @@ class Article(CommonDataModel):
             self.etime = self.ctime
 
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        """返回文章的绝对路径
+
+        Returns:
+            abs_url(str): 文章的绝对路径
+        """
+        return reverse('article-detail-page', kwargs={'pk': self.id})
 
     class Meta:
         db_table = "blog_article"
