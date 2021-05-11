@@ -127,6 +127,7 @@
     margin-right: 20px;
     font-size: 15px;
     font-weight: 200;
+    cursor: pointer;
 }
 
 .article-body-comment-count-sort a {
@@ -165,11 +166,12 @@
 .article-body-comment-show-card-body-nickname {
     color: #87CEFF;
     letter-spacing: 2px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
+    font-size: 15px;
 }
 
 .article-body-comment-show-card-body-comment {
-    font-size: 17px;
+    font-size: 16px;
     margin-bottom: 15px;
 }
 
@@ -180,14 +182,26 @@
     font-weight: 100;
 }
 
-.article-body-comment-show-card-body-up {
-    display: inline-block;
-}
-
-.article-body-comment-show-card-body-down {
-    display: inline-block;
-}
-
 .article-body-comment-show-card-body-reply {
     display: inline-block;
+    margin-left: 10px;
+    font-size: 13px;
+    font-weight: 100;
+    cursor: pointer;
+}
+
+.article-body-comment-show-card-body-child {
+    margin-top: 10px;
+}
+
+.article-body-comment-show-card-child-img {
+    display: inline-block;
+    height: 25px;
+    width: 25px;
+    border-radius: 25px;
+    line-height: 25px;
+    text-align: center;
+    background-color: brown;
+    color: green;
+    font-size: 12px;
 }
