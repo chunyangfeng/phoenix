@@ -30,6 +30,12 @@ const initialCommentData = (reverse=false, page=1, limit=10) => {
     const successCallback = (response) => {
         let data = response.data;
 
+        if (data.length === 0) {
+            layui.jquery('#articleCommentCount').addClass('layui-hide').prev().addClass('layui-hide')
+            layui.jquery('#articleCommentList').addClass('layui-hide').next().addClass('layui-hide')
+            layui.jquery('#articleCommentPagination').addClass('layui-hide')
+        }
+
         if (reverse) {
             data.reverse()
         }
