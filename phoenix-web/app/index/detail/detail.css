@@ -88,7 +88,7 @@
 .article-body-comment {
     border: 1px solid #C2C2C2;
     border-left: 5px solid #7bbfea;
-    background-color: #F5F5F5;
+    /*background-color: #F5F5F5;*/
     margin: 25px 0 25px 25px;
 }
 
@@ -146,6 +146,10 @@
     margin: 25px;
 }
 
+.article-body-comment-pagination {
+    margin-left: 18px;
+}
+
 .article-body-comment-show-card-img {
     display: inline-block;
     height: 50px;
@@ -153,14 +157,14 @@
     border-radius: 50px;
     line-height: 50px;
     text-align: center;
-    background-color: red;
-    color: blue;
+    /*background-color: red;*/
+    /*color: blue;*/
     font-size: 20px;
 }
 
 .article-body-comment-show-card-body {
     display: inline-block;
-    margin-left: 15px;
+    margin-left: 25px;
 }
 
 .article-body-comment-show-card-body-nickname {

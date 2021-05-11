@@ -73,23 +73,23 @@
             <div class="article-body-comment-form">
                 <form class="layui-form layui-form-pane" lay-filter="articleCommentFormFilter">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">昵称</label>
+                        <label class="layui-form-label"> <span class="form-require-field">*</span>昵称</label>
                         <div class="layui-input-block">
                             <input type="text" name="nickname" required lay-verify="required" placeholder="请输入昵称..."
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">邮箱</label>
+                        <label class="layui-form-label"><span class="form-require-field">*</span>邮箱</label>
                         <div class="layui-input-block">
                             <input type="text" name="email" required lay-verify="required|email" placeholder="请输入邮箱地址..."
                                    autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">评论</label>
+                        <label class="layui-form-label"><span class="form-require-field">*</span>评论</label>
                         <div class="layui-input-block">
-                            <textarea name="comment" required lay-verify="required" placeholder="请留下神评..."
+                            <textarea name="content" required lay-verify="required" placeholder="请留下神评..."
                                       class="layui-textarea" rows="7"></textarea>
                         </div>
                     </div>
@@ -104,43 +104,15 @@
             <hr>
             <div class="article-body-comment-count">
                 <div class="article-body-comment-count-nums">评论总数</div>
-                <div class="article-body-comment-count-sort">
-                    <a class="article-body-comment-count-sort-active" id="articleCommentSortAsc">按时间正序</a>
-                    <span>|</span>
-                    <a id="articleCommentSortDesc">按时间倒序</a>
-                </div>
+{#                <div class="article-body-comment-count-sort">#}
+{#                    <a class="article-body-comment-count-sort-active" id="articleCommentSortAsc">按时间倒序</a>#}
+{#                    <span>|</span>#}
+{#                    <a id="articleCommentSortDesc">按时间正序</a>#}
+{#                </div>#}
             </div>
-            <div class="article-body-comment-show">
-                <div class="article-body-comment-show-card layui-row">
-                    <div class="article-body-comment-show-card-img layui-col-md3">
-                        <span>却</span>
-                    </div>
-                    <div class="article-body-comment-show-card-body layui-col-md9">
-                        <div class="article-body-comment-show-card-body-nickname">却邪水心</div>
-                        <div class="article-body-comment-show-card-body-comment">
-                            我是测试评论~
-                        </div>
-                        <div class="article-body-comment-show-card-body-ctime">2021-04-13 21:21:21</div>
-{#                        <div class="article-body-comment-show-card-body-reply">#}
-{#                            回复#}
-{#                        </div>#}
-                        <div class="article-body-comment-show-card-body-child">
-                            <div class="article-body-comment-show-card layui-row">
-                                <div class="article-body-comment-show-card-child-img layui-col-md3">
-                                    <span>天</span>
-                                </div>
-                                <div class="article-body-comment-show-card-body layui-col-md9">
-                                    <div class="article-body-comment-show-card-body-nickname">天使的眼泪</div>
-                                    <div class="article-body-comment-show-card-body-comment">
-                                        我是回复测试评论~
-                                    </div>
-                                    <div class="article-body-comment-show-card-body-ctime">2021-05-10 11:21:21</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="article-body-comment-show" id="articleCommentList"></div>
+            <hr>
+            <div class="article-body-comment-pagination" id="articleCommentPagination"></div>
             <hr>
         </div>
     </div>

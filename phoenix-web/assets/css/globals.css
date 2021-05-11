@@ -1,3 +1,8 @@
 .bg-lightGreen {
     background-color: #67c23a !important;
 }
+
+.form-require-field {
+    color: red;
+    letter-spacing: 10px;
+}

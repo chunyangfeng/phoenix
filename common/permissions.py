@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
+"""权限配置
 时间: 2020/11/26 17:37
 
 作者: Fengchunyang
@@ -26,6 +26,8 @@ PER_VISITOR_Subscribe = 'VisitorSubscribe'  # 访客订阅接口
 
 PER_HOT_ARTICLE = 'HotArticle'  # 热门文章接口
 
+PER_COMMENT = 'Comment'  # 评论接口
+
 
 RES_PERM = {
     PER_BASE: 'ROOT权限',
@@ -39,4 +41,5 @@ RES_PERM = {
     PER_VISITOR_MESSAGE: '访客私信',
     PER_VISITOR_Subscribe: '访客订阅',
     PER_HOT_ARTICLE: '热门文章',
+    PER_COMMENT: '评论',
 }

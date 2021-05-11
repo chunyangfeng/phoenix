@@ -1,3 +1,23 @@
-from django.shortcuts import render
+"""评论模块视图
 
-# Create your views here.
+Author: Fengchunyang
+
+Site: http://www.fengchunyang.com
+
+Date: 2021/5/11 11:03
+
+Desc:
+    2021/5/11 11:03 add file.
+"""
+from blog.comment.models import Comment
+from blog.comment.serializers import CommentListSerializer
+from common.views import BasicListViewSet
+from common import permissions
+
+
+class CommentListView(BasicListViewSet):
+    """评论列表接口"""
+    queryset = Comment.objects.filter(comment=None)
+    serializer_class = CommentListSerializer
+    permission_name = permissions.PER_COMMENT
+    authentication_enable = False

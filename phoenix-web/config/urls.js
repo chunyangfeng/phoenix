@@ -34,6 +34,7 @@ export const urls = {
     visitorMessageListApi: "/blog/index/visitor/message/list",
     visitorSubscribeListApi: "/blog/index/visitor/subscribe/list",
     hotArticleInfoApi: "/blog/index/hot-article/info",
+    articleCommentListApi: "/blog/comment/list",
 
     projectInfoListApi: "/blog/mgt/system/project-info/list",
     projectInfoInfoApi: "/blog/mgt/system/project-info/info",
