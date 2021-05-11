@@ -66,6 +66,11 @@ const visitorLogin = (callback) => {
             skin: 'layui-layer-molv',
             area: ['30rem', '20rem'],
             content: urls.visitorInfoPage,
+            end: function () {
+                if (localStorage.getItem(params.visitorEmail)) {
+                    callback();
+                }
+            }
         });
     } else {
         callback();
