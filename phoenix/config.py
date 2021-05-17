@@ -20,7 +20,7 @@ if DEBUG is True:
     SYSTEM_DOMAIN = 'http://127.0.0.1:8888'
     BACKEND_DB = {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '192.168.1.102',
+        'HOST': '127.0.0.1',
         'USER': 'root',
         'PASSWORD': 'nishengri',
         'NAME': 'phoenix_test',
