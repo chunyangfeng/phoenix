@@ -42,6 +42,27 @@ const initialProjectInfoTable = ()=> {
     })
 };
 
+// 替换table中的status字段
+const statusResolve = (data) => {
+    const pubClassAttr = "layui-btn layui-btn-radius layui-btn-xs"
+    const statusMap = {
+        "已完成": `${pubClassAttr}`,
+        "计划中": `${pubClassAttr} layui-btn-warm`
+    }
+    return `<button type="button" class="${statusMap[data.status_display]}">${data.status_display}</button>`
+};
+
+// 替换table中的priority字段
+const priorityResolve = (data) => {
+    const pubClassAttr = "layui-btn layui-btn-radius layui-btn-xs"
+    const statusMap = {
+        "一般": `${pubClassAttr} layui-btn-normal`,
+        "重要": `${pubClassAttr} layui-btn-warm`,
+        "紧急": `${pubClassAttr} layui-btn-danger`
+    }
+    return `<button type="button" class="${statusMap[data.priority_display]}">${data.priority_display}</button>`
+};
+
 
 // 项目任务table表格
 const initialProjectTaskTable = ()=> {
@@ -63,13 +84,13 @@ const initialProjectTaskTable = ()=> {
             { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
             {field: 'id', title: 'ID', align: "center", sort: true, hide: true},
             {field: 'project_name', title: '所属项目', align: "center"},
-            {field: 'priority_display', title: '优先级', align: "center"},
+            {field: 'priority_display', title: '优先级', align: "center", templet: (d) => {return priorityResolve(d)}},
             {field: 'name', title: '任务名称', align: "center"},
             {field: 'remark', title: '备注说明', align: "center"},
             {field: 'ctime', title: '创建时间', align: "center"},
             {field: 'dtime', title: '完成时间', align: "center"},
             {field: 'record', title: '记录', align: "center"},
-            {field: 'status_display', title: '状态', align: "center"},
+            {field: 'status_display', title: '状态', align: "center", templet: (d) => {return statusResolve(d)}},
             {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
         ]]
     })
