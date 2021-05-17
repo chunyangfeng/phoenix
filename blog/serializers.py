@@ -19,6 +19,7 @@ from rest_framework import serializers
 
 from blog import models
 from blog.adapt import adapt_get_user_info
+from blog.comment.interfaces import get_comment_count
 from common import params
 
 
@@ -81,7 +82,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         Returns:
             count(int): 评论数
         """
-        return 0
+        return get_comment_count(article_id=obj.id, comment=None)
 
     @staticmethod
     def get_creator_display(obj):
