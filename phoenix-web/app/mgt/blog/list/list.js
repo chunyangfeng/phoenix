@@ -49,7 +49,7 @@ const initialArticleListTable = ()=> {
             {field: 'tags', title: '标签', align: "center", templet: (d) => {return tagsResolve(d)}},
             {field: 'title', title: '标题', align: "center"},
             {field: 'desc', title: '简介', align: "center"},
-            {field: 'content', title: '正文', align: "center"},
+            // {field: 'content', title: '正文', align: "center"},
             {field: 'creator', title: '作者', align: "center"},
             {field: 'ctime', title: '创建时间', align: "center"},
             // {field: 'mtime', title: '修改时间', align: "center"},
@@ -99,18 +99,6 @@ layui.jquery(document).ready(function () {
 
     // 动态加载博客标签数据
     getLaySelectItem(urls.tagListApi, params.tagSelectElem, 'id', 'name');
-
-    // 监听表格事件
-    layui.table.on(`tool(${params.articleTableFilter})`, function (obj) {
-        switch (obj.event) {
-            case params.isPublish:
-                layui.layer.msg('is publish');
-                break;
-            case params.isTop:
-                layui.layer.msg('is top');
-                break;
-        }
-    });
 
     // 监听table表格switch切换事件
     layui.form.on(`switch(${params.isPublish})`, function (data) {
