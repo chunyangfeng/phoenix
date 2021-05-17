@@ -187,10 +187,16 @@
 }
 
 .hot-article-elem {
-    display: block;
+    /*display: block;*/
     font-size: 16px;
 }
 
 .hot-article-elem span {
-    float: right;
+    display: inline-block;
+    float: left;
+    margin: 3px auto;
+}
+
+.hot-article-elem a {
+    margin-left: 10px !important;
 }

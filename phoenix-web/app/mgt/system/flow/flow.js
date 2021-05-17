@@ -30,14 +30,10 @@ const initialProjectInfoTable = ()=> {
         cols: [[
             { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
             {field: 'id', title: 'ID', align: "center", sort: true, hide: true},
-            // {field: 'f_project', title: '父项目', align: "center"},
             {field: 'name', title: '项目名称', align: "center"},
-            // {field: 'in_charges', title: '责任人', align: "center"},
             {field: 'stime', title: '开始时间', align: "center"},
             {field: 'etime', title: '结束时间', align: "center"},
             {field: 'dtime', title: '完成时间', align: "center"},
-            // {field: 'budget', title: '项目预算', align: "center"},
-            // {field: 'desc', title: '简介', align: "center"},
             {field: 'ctime', title: '创建时间', align: "center"},
             {field: 'mtime', title: '修改时间', align: "center"},
             {field: 'status_display', title: '状态', align: "center"},
@@ -69,11 +65,10 @@ const initialProjectTaskTable = ()=> {
             {field: 'project_name', title: '所属项目', align: "center"},
             {field: 'priority_display', title: '优先级', align: "center"},
             {field: 'name', title: '任务名称', align: "center"},
-            {field: 'dtime', title: '完成时间', align: "center"},
-            // {field: 'desc', title: '简介', align: "center"},
             {field: 'remark', title: '备注说明', align: "center"},
             {field: 'ctime', title: '创建时间', align: "center"},
-            // {field: 'mtime', title: '修改时间', align: "center"},
+            {field: 'dtime', title: '完成时间', align: "center"},
+            {field: 'record', title: '记录', align: "center"},
             {field: 'status_display', title: '状态', align: "center"},
             {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
         ]]
@@ -133,7 +128,6 @@ const projectTaskUpdateEvent = (obj) => {
         instances_id: instances_id,
         dtime: getCurrentDate('-', '-', ''),
     };
-    console.log(putData);
 
     // 执行批量更新
     layer.confirm('确定更新?', {icon: 1, title: '更新确认'}, function (index) {

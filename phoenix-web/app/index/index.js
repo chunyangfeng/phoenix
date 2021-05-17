@@ -130,9 +130,21 @@ const getHotArticle = () => {
         hotArticleElem.empty();
 
         layui.jquery.each(data, (index, value) => {
-            const html = `<a class="hot-article-elem" href="${value.link}">
-                              ${index + 1}.${value.title} 
-                          </a><hr>`;
+            let hotBadge = "";
+            if (index === 0) {
+                hotBadge = ""
+            } else if (index === 1 || index === 2) {
+                hotBadge = "layui-bg-orange"
+            } else {
+                hotBadge = "layui-bg-green"
+            }
+            // const html = `<a class="hot-article-elem" href="${value.link}">
+            //                   <span class="layui-badge ${hotBadge}">${index + 1}</span> ${value.title}
+            //               </a><hr>`;
+            const html = `<div class="hot-article-elem">
+                            <span class="layui-badge ${hotBadge}">${index + 1}</span>
+                            <a href="${value.link}">${value.title}</a>
+                          </div>`
             hotArticleElem.append(html);
         });
     };
