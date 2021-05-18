@@ -11,7 +11,10 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+from django.db.models import QuerySet
 
+from blog.index.adapt import adapt_get_comment_count
+from common.serializers import DoNothingSerializer
 from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
 from common import permissions
 from blog import models
@@ -95,3 +98,31 @@ class ArticleSerialListApiView(BasicListViewSet):
     queryset = models.ArticleSerial.objects.all()
     serializer_class = serializers.ArticleSerialSerializer
     permission_name = permissions.PER_ARTICLE_SERIAL
+
+
+class DashboardStatisticView(BasicInfoViewSet):
+    """仪表板统计数据接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_DASHBOARD
+    http_method_names = ('get', )
+
+    def get(self, request, *args, **kwargs):
+        """获取资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        articles = models.Article.objects.all()
+        data = {
+            "article_count": f'{articles.count()}/{articles.filter(is_publish=False).count()}',
+            "tags_count": models.ArticleTag.objects.count(),
+            "comment_count": adapt_get_comment_count(),
+            "access_count": models.AccessRecord.objects.count(),
+        }
+        return self.set_response(result='Success', data=[data, ])

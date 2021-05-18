@@ -14,6 +14,7 @@ export const urls = {
     userInfoApi: "/blog/auth/user/info",
 
     dashboardPage: "/blog/mgt/dashboard/page",
+    dashboardStatistic: "/blog/mgt/dashboard/statistic/info",
     articleListPage: "/blog/mgt/article/list/page",
     articleClassifyPage: "/blog/mgt/article/data/classify/page",
     articleTagPage: "/blog/mgt/article/data/tag/page",

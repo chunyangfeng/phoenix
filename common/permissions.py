@@ -28,6 +28,8 @@ PER_HOT_ARTICLE = 'HotArticle'  # 热门文章接口
 
 PER_COMMENT = 'Comment'  # 评论接口
 
+PER_DASHBOARD = 'Dashboard'  # 仪表板接口
+
 
 RES_PERM = {
     PER_BASE: 'ROOT权限',
@@ -42,4 +44,5 @@ RES_PERM = {
     PER_VISITOR_Subscribe: '访客订阅',
     PER_HOT_ARTICLE: '热门文章',
     PER_COMMENT: '评论',
+    PER_DASHBOARD: '仪表板',
 }
