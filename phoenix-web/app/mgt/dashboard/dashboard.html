@@ -2,6 +2,87 @@
 
 {% block title %}仪表板{% endblock %}
 
+{% block header-css %}
+    <link rel="stylesheet" href="/phoenix-web/app/mgt/dashboard/dashboard.css">
+{% endblock %}
+
 {% block content %}
-我是仪表板内容
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md9">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <i class="layui-icon layui-icon-console"></i>
+                            博客统计
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row layui-col-space10 dashboard-card">
+                                <div class="layui-col-md5">
+                                    <p class="dashboard-card-title">文章总数</p>
+                                    <p class="dashboard-card-content">40</p>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <p class="dashboard-card-title">评论总数</p>
+                                    <p class="dashboard-card-content">150</p>
+                                </div>
+                                <div class="layui-col-md5">
+                                    <p class="dashboard-card-title">标签总数</p>
+                                    <p class="dashboard-card-content">20</p>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <p class="dashboard-card-title">访问总数</p>
+                                    <p class="dashboard-card-content">552</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <i class="layui-icon layui-icon-chart-screen"></i>
+                            系统数据
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row layui-col-space10 dashboard-card">
+                                <div class="layui-col-md5">
+                                    <p class="dashboard-card-title">磁盘使用</p>
+                                    <p class="dashboard-card-content">40%</p>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <p class="dashboard-card-title">内存使用</p>
+                                    <p class="dashboard-card-content">45%</p>
+                                </div>
+                                <div class="layui-col-md5">
+                                    <p class="dashboard-card-title">TCP连接</p>
+                                    <p class="dashboard-card-content">1200</p>
+                                </div>
+                                <div class="layui-col-md6">
+                                    <p class="dashboard-card-title">CPU使用</p>
+                                    <p class="dashboard-card-content">58%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md3">
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">日历</div>
+                        <div class="layui-card-body">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer-scripts %}
+    <script src="/phoenix-web/app/mgt/dashboard/dashboard.js" type="module"></script>
 {% endblock %}
