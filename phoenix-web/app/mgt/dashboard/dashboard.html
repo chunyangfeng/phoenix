@@ -13,8 +13,7 @@
                 <div class="layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header">
-                            <i class="layui-icon layui-icon-console"></i>
-                            博客统计
+                            <i class="layui-icon layui-icon-console"> 博客统计</i>
                         </div>
                         <div class="layui-card-body">
                             <div class="layui-row layui-col-space10 dashboard-card">
@@ -41,8 +40,7 @@
                 <div class="layui-col-md6">
                     <div class="layui-card">
                         <div class="layui-card-header">
-                            <i class="layui-icon layui-icon-chart-screen"></i>
-                            其他统计
+                            <i class="layui-icon layui-icon-chart-screen"> 其他统计</i>
                         </div>
                         <div class="layui-card-body">
                             <div class="layui-row layui-col-space10 dashboard-card">
@@ -63,12 +61,32 @@
                     </div>
                 </div>
             </div>
+            <div class="layui-row">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        <i class="layui-icon layui-icon-website"> 访问记录</i>
+                    </div>
+                    <div class="layui-card-body">
+                        <div class="layui-carousel" id="dashboard-access" lay-filter="dashboard-access">
+                            <div carousel-item="">
+                                <div id="accessStackAreaCharts" class="dashboard-charts"></div>
+                                <div class="dashboard-charts">条目2</div>
+                                <div class="dashboard-charts">条目3</div>
+                                <div class="dashboard-charts">条目4</div>
+                                <div class="dashboard-charts">条目5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="layui-col-md3">
             <div class="layui-row">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header">日历</div>
+                        <div class="layui-card-header">
+                            <i class="layui-icon layui-icon-date"> 日历</i>
+                        </div>
                         <div class="layui-card-body">
                             <div id="calendar"></div>
                         </div>
@@ -81,4 +99,5 @@
 
 {% block footer-scripts %}
     <script src="/phoenix-web/app/mgt/dashboard/dashboard.js" type="module"></script>
+    <script src="/phoenix-web/plugin/others/echarts.min.js"></script>
 {% endblock %}

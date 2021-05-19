@@ -21,6 +21,8 @@ urlpatterns = [
     path('dashboard/page', views.DashboardPageView.as_view(), name='dashboard-page'),
     path('dashboard/statistic/info', views.DashboardStatisticView.as_view(),
          name='dashboard-statistic'),  # 仪表板统计数据接口
+    path('dashboard/statistic/access-chart', views.DashboardAccessChart.as_view(),
+         name='dashboard-access-chart'),  # 仪表板访问数据统计接口
 
     path('article/list/page', views.ArticleListPageView.as_view(), name='article-list-page'),
     path('article/data/page', views.ArticleDataPageView.as_view(), name='article-data-page'),

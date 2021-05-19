@@ -11,6 +11,8 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+import datetime
+
 from django.db.models import QuerySet
 
 from blog.index.adapt import adapt_get_comment_count
@@ -129,3 +131,36 @@ class DashboardStatisticView(BasicInfoViewSet):
             "fans_count": models.SubscribeRecord.objects.filter(enable=True).count()
         }
         return self.set_response(result='Success', data=[data, ])
+
+
+class DashboardAccessChart(BasicInfoViewSet):
+    """仪表板访问数据折线图接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_DASHBOARD
+    http_method_names = ('get',)
+
+    def get(self, request, *args, **kwargs):
+        """获取资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        data = []
+        now = datetime.datetime.now()
+        flag = 31
+        while flag != 0:
+            data.insert(0, {
+                "date": now.strftime("%m-%d"),
+                "count": models.AccessRecord.objects.filter(
+                    atime__year=now.year, atime__month=now.month, atime__day=now.day
+                ).count()
+            })
+            now -= datetime.timedelta(days=1)
+            flag -= 1
+        return self.set_response(result='Success', data=data)
