@@ -20,6 +20,9 @@ const initialStatisticData = () => {
         layui.jquery("#dashboardCommentCount").empty().text(res.data[0].comment_count)
         layui.jquery("#dashboardTagCount").empty().text(res.data[0].tags_count)
         layui.jquery("#dashboardAccessCount").empty().text(res.data[0].access_count)
+        layui.jquery("#dashboardUnpublishArticleCount").empty().text(res.data[0].unpublish_count)
+        layui.jquery("#dashboardFlinkCount").empty().text(res.data[0].flink_apply)
+        layui.jquery("#dashboardFansCount").empty().text(res.data[0].fans_count)
     }
     asyncApiResolve(urls.dashboardStatistic, null, 'get', successCallback);
 }

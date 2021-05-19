@@ -17,6 +17,7 @@ body {
 .dashboard-card-content {
     font-size: 18px;
     margin: 5px;
+    color: #009688;
 }
 
 #calendar {

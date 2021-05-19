@@ -120,9 +120,12 @@ class DashboardStatisticView(BasicInfoViewSet):
         """
         articles = models.Article.objects.all()
         data = {
-            "article_count": f'{articles.count()}/{articles.filter(is_publish=False).count()}',
+            "article_count": articles.count(),
+            "unpublish_count": articles.filter(is_publish=False).count(),
             "tags_count": models.ArticleTag.objects.count(),
             "comment_count": adapt_get_comment_count(),
             "access_count": models.AccessRecord.objects.count(),
+            "flink_apply": 0,
+            "fans_count": models.SubscribeRecord.objects.filter(enable=True).count()
         }
         return self.set_response(result='Success', data=[data, ])
