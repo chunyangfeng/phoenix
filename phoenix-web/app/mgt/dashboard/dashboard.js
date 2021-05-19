@@ -27,7 +27,7 @@ const initialStatisticData = () => {
 
 const initialCarousel = () => {
     layui.carousel.render({
-        elem: "#dashboard-access",
+        elem: "#dashboardCarousel",
         width: '100%',
         autoplay: false,
         height: '350px',
@@ -40,7 +40,7 @@ const initialCarousel = () => {
 // 堆叠区域折线图
 const stackAreaLineCharts = () => {
     const charts = echarts.init(document.getElementById("accessStackAreaCharts"))
-    let response = syncApiResolve(urls.dashboardAccessCharts, 'get')
+    let response = syncApiResolve(urls.dashboardAccessCharts)
 
     let option = {
         title: {
@@ -99,6 +99,54 @@ const stackAreaLineCharts = () => {
     charts.setOption(option)
 }
 
+const articleBarChart = () => {
+    const chart = echarts.init(document.getElementById('articlePublishCharts'))
+    const response = syncApiResolve(urls.dashboardArticleChart)
+
+    let option = {
+        title: {
+            text: '博文记录',
+            x: 'center',
+            y: '10px',
+            textAlign: 'center',
+            textStyle: {
+                fontSize: 15,
+                fontWeight: 500,
+                fontFamily: 'Microsoft YaHei',
+            },
+        },
+        color: ['#3398DB'],
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: response.data.map(obj => {return obj.date}),
+            axisTick: {
+                alignWithLabel: true
+            }
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: {
+            name: '创建博文',
+            type: 'bar',
+            barWidth: '40%',
+            data: response.data.map(obj => {return obj.count}),
+        }
+    };
+    chart.setOption(option)
+}
+
+const resizeCharts = (elemID) => {
+    const chart = echarts.init(document.getElementById(elemID))
+    chart.resize()
+}
+
 // 页面加载完毕后的动态操作
 layui.jquery(document).ready(() => {
     // 渲染日历  TODO 考虑将日历替换为收录数据，用echarts仪表盘进行展示
@@ -112,4 +160,12 @@ layui.jquery(document).ready(() => {
 
     // 渲染访问记录堆叠区域折线图
     stackAreaLineCharts();
+
+    // 渲染文章发表柱状图
+    articleBarChart();
+
+    // 轮播图切换时，重载charts图表
+    layui.carousel.on('change(dashboardCarousel)', function (obj) {
+        resizeCharts(obj.item.attr('id'))
+    })
 })

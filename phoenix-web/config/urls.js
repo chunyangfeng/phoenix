@@ -16,6 +16,7 @@ export const urls = {
     dashboardPage: "/blog/mgt/dashboard/page",
     dashboardStatistic: "/blog/mgt/dashboard/statistic/info",
     dashboardAccessCharts: "/blog/mgt/dashboard/statistic/access-chart",
+    dashboardArticleChart: "/blog/mgt/dashboard/statistic/article-chart",
     articleListPage: "/blog/mgt/article/list/page",
     articleClassifyPage: "/blog/mgt/article/data/classify/page",
     articleTagPage: "/blog/mgt/article/data/tag/page",

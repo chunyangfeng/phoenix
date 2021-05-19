@@ -164,3 +164,36 @@ class DashboardAccessChart(BasicInfoViewSet):
             now -= datetime.timedelta(days=1)
             flag -= 1
         return self.set_response(result='Success', data=data)
+
+
+class DashboardArticleChart(BasicInfoViewSet):
+    """仪表板文章发表数据柱状图接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_DASHBOARD
+    http_method_names = ('get',)
+
+    def get(self, request, *args, **kwargs):
+        """获取资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        data = []
+        now = datetime.datetime.now()
+        flag = 31
+        while flag != 0:
+            data.insert(0, {
+                "date": now.strftime("%m-%d"),
+                "count": models.Article.objects.filter(
+                    ctime__year=now.year, ctime__month=now.month, ctime__day=now.day
+                ).count()
+            })
+            now -= datetime.timedelta(days=1)
+            flag -= 1
+        return self.set_response(result='Success', data=data)

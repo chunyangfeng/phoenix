@@ -23,6 +23,8 @@ urlpatterns = [
          name='dashboard-statistic'),  # 仪表板统计数据接口
     path('dashboard/statistic/access-chart', views.DashboardAccessChart.as_view(),
          name='dashboard-access-chart'),  # 仪表板访问数据统计接口
+    path('dashboard/statistic/article-chart', views.DashboardArticleChart.as_view(),
+         name='dashboard-article-chart'),  # 仪表板文章发表数据统计接口
 
     path('article/list/page', views.ArticleListPageView.as_view(), name='article-list-page'),
     path('article/data/page', views.ArticleDataPageView.as_view(), name='article-data-page'),
