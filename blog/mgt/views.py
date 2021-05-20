@@ -16,6 +16,7 @@ import datetime
 from django.db.models import QuerySet
 
 from blog.index.adapt import adapt_get_comment_count
+from blog.params import TASK_STATUS_PLAN
 from common.serializers import DoNothingSerializer
 from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
 from common import permissions
@@ -151,7 +152,7 @@ class DashboardAccessChart(BasicInfoViewSet):
         Returns:
             response(Response): 响应数据
         """
-        data = []
+        data = list()
         now = datetime.datetime.now()
         flag = 31
         while flag != 0:
@@ -184,7 +185,7 @@ class DashboardArticleChart(BasicInfoViewSet):
         Returns:
             response(Response): 响应数据
         """
-        data = []
+        data = list()
         now = datetime.datetime.now()
         flag = 31
         while flag != 0:
@@ -196,4 +197,64 @@ class DashboardArticleChart(BasicInfoViewSet):
             })
             now -= datetime.timedelta(days=1)
             flag -= 1
+        return self.set_response(result='Success', data=data)
+
+
+class DashboardProcessData(BasicInfoViewSet):
+    """仪表板事件进度统计接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_DASHBOARD
+    http_method_names = ('get',)
+
+    @staticmethod
+    def _get_article_update_rate(days=30):
+        """获取文章的更新频率
+
+        Args:
+            days(int): 统计周期，默认为最近30天
+
+        Returns:
+            rate(float): 更新频率
+        """
+        now = datetime.datetime.now()
+        start = now - datetime.timedelta(days=days)
+        date_range = (
+            f'{start.strftime("%F")} 00:00:00',
+            f'{now.strftime("%F")} 23:59:59'
+        )
+        obj = models.Article.objects.filter(ctime__range=date_range)
+        update_date = [qs.strftime("%F") for qs in obj.values_list('ctime', flat=True)]
+        update_date = list(set(update_date))
+        return round(len(update_date)*100 / days, 2)
+
+    @staticmethod
+    def _get_incomplete_task_rate():
+        """获取未完成任务占比
+
+        Returns:
+            rate(float): 未完成任务占比
+        """
+        total = models.ProjectPlanTask.objects.count()
+        incomplete = models.ProjectPlanTask.objects.filter(status=TASK_STATUS_PLAN).count()
+        if total == 0:  # 如果没有计划任务，则未完成任务占比为0
+            return 0
+        return round(incomplete*100/total, 2)
+
+    def get(self, request, *args, **kwargs):
+        """获取资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        data = list()
+        data.append({
+            "article_update_rate": self._get_article_update_rate(),
+            "task_incomplete_rate": self._get_incomplete_task_rate(),
+        })
         return self.set_response(result='Success', data=data)

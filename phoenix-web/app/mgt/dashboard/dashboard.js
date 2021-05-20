@@ -147,6 +147,17 @@ const resizeCharts = (elemID) => {
     chart.resize()
 }
 
+const initialProcess = () => {
+    const response = syncApiResolve(urls.dashboardProcessData)
+    const articlePercent = `${response.data[0].article_update_rate}%`
+    const taskPercent = `${response.data[0].task_incomplete_rate}%`
+    layui.element.progress('articleUpdateRate', articlePercent)
+    layui.jquery('#articleUpdateRate').attr('lay-percent', articlePercent);
+    layui.element.progress('taskIncompleteRate', taskPercent)
+    layui.jquery('#taskIncompleteRate').attr('lay-percent', taskPercent);
+    layui.element.init()
+}
+
 // 页面加载完毕后的动态操作
 layui.jquery(document).ready(() => {
     // 渲染日历  TODO 考虑将日历替换为收录数据，用echarts仪表盘进行展示
@@ -163,6 +174,9 @@ layui.jquery(document).ready(() => {
 
     // 渲染文章发表柱状图
     articleBarChart();
+
+    // 加载事件进度
+    initialProcess();
 
     // 轮播图切换时，重载charts图表
     layui.carousel.on('change(dashboardCarousel)', function (obj) {

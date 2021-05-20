@@ -23,3 +23,8 @@ body {
 #calendar {
     text-align: center;
 }
+
+.dashboard-process-title {
+    margin: 10px auto;
+    font-weight: 100;
+}

@@ -78,7 +78,7 @@
             </div>
         </div>
         <div class="layui-col-md3">
-            <div class="layui-row">
+            <div class="layui-row layui-col-space15">
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-header">
@@ -86,6 +86,31 @@
                         </div>
                         <div class="layui-card-body">
                             <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-header">
+                            <i class="layui-icon layui-icon-refresh"> 事件进度</i>
+                        </div>
+                        <div class="layui-card-body">
+                            <div class="layui-row layui-col-space25">
+                                <div class="layui-col-md-12" style="margin-top: 5px">
+                                    <h3 class="dashboard-process-title">文章更新频率(近30天)</h3>
+                                    <div class="layui-progress layui-progress-big" lay-showPercent="true" lay-filter="articleUpdateRate">
+                                        <div id="articleUpdateRate" class="layui-progress-bar layui-bg-green" lay-percent="0%"></div>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md-12" style="margin-top: 5px">
+                                    <h3 class="dashboard-process-title">计划任务(未完成率)</h3>
+                                    <div class="layui-progress layui-progress-big" lay-showPercent="true" lay-filter="taskIncompleteRate">
+                                        <div id="taskIncompleteRate" class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
