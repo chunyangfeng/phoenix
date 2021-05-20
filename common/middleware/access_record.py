@@ -40,7 +40,7 @@ class AccessRecordMiddleware(MiddlewareMixin):
             if re.match(allowed, path) is not None:
                 address = meta.get('REMOTE_ADDR', 'unknown')
                 ip_info = get_ip_info(address)
-                region = [ip_info.get("country", ""), ip_info.get("regionName", "")]
+                region = [ip_info.get("country", ""), ip_info.get("regionName", ""), ip_info.get("city", "")]
                 data = {
                     "path": path,
                     'query_str': meta.get('QUERY_STRING', ''),
@@ -48,7 +48,7 @@ class AccessRecordMiddleware(MiddlewareMixin):
                     'user_agent': meta.get('HTTP_USER_AGENT', 'unknown'),
                     'referer': meta.get('HTTP_REFERER', ''),
                     'atime': now,
-                    'source': '-'.join(list(set(region)))
+                    'source': '-'.join(region) if ip_info else '',
                 }
                 AccessRecord.objects.create(**data)
                 break

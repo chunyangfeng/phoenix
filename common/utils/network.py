@@ -11,8 +11,6 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
-import json
-
 import requests
 import socket
 
@@ -43,7 +41,7 @@ def get_ip_info(ipaddr):
     """
     url = f'{params.SeoIpaddressInfoApi}/{ipaddr}?lang=zh-CN'
     response = requests.get(url)
-    return response.json() if response.status_code == '200' else dict()
+    return response.json() if response.status_code == 200 else dict()
 
 
 def baidu_api_put(site, token, data):
