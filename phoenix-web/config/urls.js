@@ -38,7 +38,7 @@ export const urls = {
     visitorMessageListApi: "/blog/index/visitor/message/list",
     visitorSubscribeListApi: "/blog/index/visitor/subscribe/list",
     hotArticleInfoApi: "/blog/index/hot-article/info",
-    articleCommentListApi: "/blog/comment/list",
+    articleCommentListApi: "/blog/comment/article-comment/list",
 
     projectInfoListApi: "/blog/mgt/system/project-info/list",
     projectInfoInfoApi: "/blog/mgt/system/project-info/info",
@@ -46,6 +46,8 @@ export const urls = {
     projectTaskInfoApi: "/blog/mgt/system/project-task/info",
     projectInfoAddPage: "/blog/mgt/system/project-info/add/page",
     projectTaskAddPage: "/blog/mgt/system/project-task/add/page",
+
+    commentListApi: "/blog/comment/list",
 
     authForbidden: "/errors/401",
     noPermission: "/errors/403",

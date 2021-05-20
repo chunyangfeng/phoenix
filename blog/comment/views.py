@@ -15,9 +15,16 @@ from common.views import BasicListViewSet
 from common import permissions
 
 
-class CommentListView(BasicListViewSet):
-    """评论列表接口"""
+class ArticleCommentListView(BasicListViewSet):
+    """文章评论列表接口"""
     queryset = Comment.objects.filter(comment=None)
     serializer_class = CommentListSerializer
     permission_name = permissions.PER_COMMENT
     authentication_enable = False
+
+
+class CommentListView(BasicListViewSet):
+    """评论列表接口"""
+    queryset = Comment.objects.all()
+    serializer_class = CommentListSerializer
+    permission_name = permissions.PER_COMMENT

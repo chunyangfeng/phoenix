@@ -181,6 +181,28 @@ const initialPlanTaskTable = () => {
     })
 }
 
+const initialRecentCommentTable = () => {
+    layui.table.render({
+        elem: '#recentCommentTable',
+        url: urls.commentListApi,
+        id: 'recentCommentTable',
+        limit: 10,
+        text: {
+            none: "暂无相关数据",
+        },
+        cols: [[
+            {field: 'nickname', title: '评论人', align: "center", templet: (obj)=>{
+                return `<span style='color: #5AB1EF'>${obj.nickname}</span>`
+                }},
+            {field: 'email', title: '邮箱', align: "center"},
+            {field: 'content', title: '评论', align: "center", templet: (obj)=>{
+                return `<span style='color: #6CC8C1'>${obj.content}</span>`
+                }},
+            {field: 'ctime', title: '评论时间', align: "center"},
+        ]]
+    })
+}
+
 // 页面加载完毕后的动态操作
 layui.jquery(document).ready(() => {
     // 渲染紧急任务表格
@@ -203,6 +225,9 @@ layui.jquery(document).ready(() => {
 
     // 渲染日历
     initialCalendar();
+
+    // 渲染最近评论表
+    initialRecentCommentTable();
 
     // 轮播图切换时，重载charts图表
     layui.carousel.on('change(dashboardCarousel)', function (obj) {
