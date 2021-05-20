@@ -73,16 +73,30 @@
                 </li>
                 <li class="layui-nav-item">
                     <a>
-                        <i class="layui-icon layui-icon-set-sm"></i>&nbsp;
-                        系统配置
+                        <i class="layui-icon layui-icon-release"></i>&nbsp;
+                        SEO管理
                     </a>
                     <dl class="layui-nav-child">
                         <dd>
                             <a href="{% url 'system-seo-page' %}">
                                 <i class="layui-icon layui-icon-diamond"></i>&nbsp;
-                                SEO管理
+                                文章链接
                             </a>
                         </dd>
+                        <dd>
+                            <a href="{% url 'system-access-record-page' %}">
+                                <i class="layui-icon layui-icon-chart"></i>&nbsp;
+                                访问记录
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a>
+                        <i class="layui-icon layui-icon-set-sm"></i>&nbsp;
+                        系统配置
+                    </a>
+                    <dl class="layui-nav-child">
                         <dd>
                             <a href="{% url 'system-param-page' %}">
                                 <i class="layui-icon layui-icon-list"></i>&nbsp;

@@ -1,0 +1,33 @@
+{% extends 'base/mgt/basic.html' %}
+
+{% block title %}访问记录{% endblock %}
+
+{% block content %}
+    <fieldset class="layui-elem-field">
+        <div class="layui-field-box">
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="user_agent__icontains" placeholder="关键字..."
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline search-form-btn">
+                                <button type="button" class="layui-btn" lay-submit lay-filter="accessRecordSearchForm">查询</button>
+                                <button type="reset" tableID="accessRecordListTable" class="layui-btn layui-btn-normal">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-row">
+                <table id="access-record-list-table" lay-filter="accessRecordListTableFilter"></table>
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}
+
+{% block footer-scripts %}
+    <script src="/phoenix-web/app/mgt/system/seo/access_record.js" type="module"></script>
+{% endblock %}

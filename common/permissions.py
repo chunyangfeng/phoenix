@@ -30,6 +30,8 @@ PER_COMMENT = 'Comment'  # 评论接口
 
 PER_DASHBOARD = 'Dashboard'  # 仪表板接口
 
+PER_ACCESS_RECORD = 'AccessRecord'  # 访问记录接口
+
 
 RES_PERM = {
     PER_BASE: 'ROOT权限',
@@ -45,4 +47,5 @@ RES_PERM = {
     PER_HOT_ARTICLE: '热门文章',
     PER_COMMENT: '评论',
     PER_DASHBOARD: '仪表板',
+    PER_ACCESS_RECORD: '访问记录',
 }

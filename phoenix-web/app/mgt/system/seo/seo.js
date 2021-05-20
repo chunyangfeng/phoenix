@@ -3,12 +3,11 @@
 ** Date: 2021/3/4 15:38
 ** Blog: http://www.fengchunyang.com
 */
-
-
-// sitemap表格
 import {urls} from "../../../../config/urls.js";
 import {params} from "../../../../config/params.js";
 
+
+// sitemap表格
 const initialUrlListTable = ()=> {
     layui.table.render({
         elem: params.urlTableElem,

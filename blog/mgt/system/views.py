@@ -17,8 +17,13 @@ from common import permissions
 
 
 class SeoPageView(BasePageView):
-    """系统配置-seo管理页面"""
+    """seo管理页面"""
     page = 'mgt/system/seo/seo.html'
+
+
+class AccessRecordPageView(BasePageView):
+    """访问记录管理页面"""
+    page = 'mgt/system/seo/access_record.html'
 
 
 class SystemParamPageView(BasePageView):
@@ -73,4 +78,11 @@ class ProjectTaskInfoView(BasicInfoViewSet):
     """项目任务详情接口"""
     queryset = models.ProjectPlanTask.objects.all()
     serializer_class = serializers.ProjectTaskInfoSerializer
+    permission_name = permissions.PER_SYSTEM_PROJECT_MGT
+
+
+class AccessRecordListView(BasicListViewSet):
+    """项目任务详情接口"""
+    queryset = models.AccessRecord.objects.all()
+    serializer_class = serializers.AccessRecordListSerializer
     permission_name = permissions.PER_SYSTEM_PROJECT_MGT

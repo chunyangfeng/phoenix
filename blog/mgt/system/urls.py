@@ -18,7 +18,8 @@ from common.params import MODEL_UNIQUE_KEY
 from . import views
 
 urlpatterns = [
-    path('seo/page', views.SeoPageView.as_view(), name='system-seo-page'),  # seo管理页面
+    path('seo/page', views.SeoPageView.as_view(), name='system-seo-page'),  # 文章链接页面
+    path('access-record/page', views.AccessRecordPageView.as_view(), name='system-access-record-page'),  # 访问记录页面
     path('param/page', views.SystemParamPageView.as_view(), name='system-param-page'),  # 系统-参数页面
     path('flow/page', views.SystemFlowPageView.as_view(), name='system-flow-page'),  # 系统-项目流程页面
     path('project-info/add/page', views.ProjectInfoAddPageView.as_view(),
@@ -33,4 +34,6 @@ urlpatterns = [
     path('project-task/list', views.ProjectTaskListView.as_view(), name='system-project-task-list'),  # 项目任务列表接口
     path(f'project-task/info/<int:{MODEL_UNIQUE_KEY}>', views.ProjectTaskInfoView.as_view(),
          name='system-project-task-info'),  # 项目任务详情接口
+
+    path('access-record/list', views.AccessRecordListView.as_view(), name='access-record-list'),  # 访问记录列表接口
 ]

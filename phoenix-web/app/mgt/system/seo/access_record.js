@@ -1,0 +1,42 @@
+import {params} from "../../../../config/params.js";
+import {urls} from "../../../../config/urls.js";
+import {layTableReload} from "../../../../common/utils.js";
+
+const initialAccessRecordTable = () => {
+    layui.table.render({
+        elem: '#access-record-list-table',
+        url: urls.accessRecordListApi,
+        id: 'access-record-list-table',
+        page: true,
+        limit: 10,
+        limits: [10, 20, 40, 80, 100],
+        text: {
+            none: "暂无相关数据",
+        },
+        toolbar: true,
+        defaultToolbar: ['filter',],
+        width: params.tableWidth,
+        cellMinWidth: 100,
+        cols: [[
+            { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
+            {field: 'atime', title: '访问时间', align: "center", width: 200},
+            {field: 'path', title: '目标地址', align: "center"},
+            {field: 'user_agent', title: 'UserAgent', align: "center", width: 600},
+            {field: 'address', title: 'IP地址', align: "center", width: 140},
+            {field: 'query_str', title: '查询字符串', align: "center"},
+            {field: 'referer', title: '关联页面', align: "center"},
+        ]]
+    })
+}
+
+// 页面加载时的动态操作
+layui.jquery(document).ready(function () {
+    // 初始化表格
+    initialAccessRecordTable();
+
+    // 监听搜索表单提交事件
+    layui.form.on('submit(accessRecordSearchForm)', function (data) {
+        layTableReload('access-record-list-table', data.field);
+        return false
+    });
+});

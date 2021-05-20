@@ -49,6 +49,8 @@ export const urls = {
 
     commentListApi: "/blog/comment/list",
 
+    accessRecordListApi: "/blog/mgt/system/access-record/list",
+
     authForbidden: "/errors/401",
     noPermission: "/errors/403",
 };

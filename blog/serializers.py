@@ -352,3 +352,11 @@ class SubscribeRecordListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.SubscribeRecord
         fields = '__all__'
+
+
+class AccessRecordListSerializer(serializers.ModelSerializer):
+    """访问记录列表序列化器"""
+
+    class Meta:
+        model = models.AccessRecord
+        fields = '__all__'
