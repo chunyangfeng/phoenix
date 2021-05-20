@@ -31,7 +31,7 @@ const initialCarousel = () => {
         width: '100%',
         autoplay: false,
         height: '350px',
-        indicator: 'outside',
+        // indicator: 'outside',
         trigger: 'hover',
         arrow: 'none',
     })
