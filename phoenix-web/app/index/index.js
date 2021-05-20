@@ -144,7 +144,7 @@ const getHotArticle = () => {
             const html = `<div class="hot-article-elem">
                             <span class="layui-badge ${hotBadge}">${index + 1}</span>
                             <a href="${value.link}">${value.title}</a>
-                          </div>`
+                          </div><hr>`
             hotArticleElem.append(html);
         });
     };
