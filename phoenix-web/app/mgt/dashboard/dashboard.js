@@ -158,10 +158,33 @@ const initialProcess = () => {
     layui.element.init()
 }
 
+const initialPlanTaskTable = () => {
+    layui.table.render({
+        elem: '#emergencyTaskTable',
+        url: urls.projectTaskListApi,
+        where: {
+            status: 'plan',
+            priority: '1',
+        },
+        id: 'emergencyTaskTable',
+        limit: 10,
+        text: {
+            none: "暂无相关数据",
+        },
+        cols: [[
+            {field: 'project_name', title: '所属项目', align: "center", width: 90},
+            {field: 'name', title: '任务名称', align: "center"},
+            {field: 'ctime', title: '创建时间', align: "center", width: 110, templet: (obj)=> {
+                return obj.ctime.split(' ')[0]
+                }},
+        ]]
+    })
+}
+
 // 页面加载完毕后的动态操作
 layui.jquery(document).ready(() => {
-    // 渲染日历  TODO 考虑将日历替换为收录数据，用echarts仪表盘进行展示
-    initialCalendar();
+    // 渲染紧急任务表格
+    initialPlanTaskTable();
 
     // 加载统计数据
     initialStatisticData();
