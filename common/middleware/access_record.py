@@ -17,6 +17,7 @@ from django.utils import timezone
 from django.utils.deprecation import MiddlewareMixin
 
 from blog.models import AccessRecord
+from common.utils.network import get_ip_info
 
 
 class AccessRecordMiddleware(MiddlewareMixin):
@@ -37,13 +38,17 @@ class AccessRecordMiddleware(MiddlewareMixin):
 
         for allowed in self.allow_record:
             if re.match(allowed, path) is not None:
+                address = meta.get('REMOTE_ADDR', 'unknown')
+                ip_info = get_ip_info(address)
+                region = [ip_info.get("country", ""), ip_info.get("regionName", "")]
                 data = {
                     "path": path,
                     'query_str': meta.get('QUERY_STRING', ''),
-                    'address': meta.get('REMOTE_ADDR', 'unknown'),
+                    'address': address,
                     'user_agent': meta.get('HTTP_USER_AGENT', 'unknown'),
                     'referer': meta.get('HTTP_REFERER', ''),
                     'atime': now,
+                    'source': '-'.join(list(set(region)))
                 }
                 AccessRecord.objects.create(**data)
                 break

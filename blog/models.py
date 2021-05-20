@@ -155,6 +155,7 @@ class AccessRecord(models.Model):
     address = models.CharField(verbose_name="IP地址", max_length=256, help_text='访问对象的ip地址')
     query_str = models.CharField(verbose_name="查询字符串", max_length=256, blank=True, null=True)
     referer = models.CharField(verbose_name="上一个页面", max_length=256, blank=True, null=True)
+    source = models.CharField(verbose_name="地址来源", max_length=128, blank=True, null=True)
 
     class Meta:
         ordering = ('-id', )

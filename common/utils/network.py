@@ -11,6 +11,7 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+import requests
 import socket
 
 
@@ -25,3 +26,19 @@ def ip_connect_check(fqdn, port):
     sock.settimeout(3)
     result = sock.connect_ex((fqdn, int(port)))
     return result == 0
+
+
+def get_ip_info(ipaddr):
+    """获取IP地址相关信息
+
+    Args:
+        ipaddr(str): ip地址
+
+    Returns:
+        data(dict): IP地址相关信息
+    """
+    _api = "http://ip-api.com/json"
+    url = f'{_api}/{ipaddr}?lang=zh-CN'
+    response = requests.get(url)
+    return response.json() if response.status_code == '200' else dict()
+
