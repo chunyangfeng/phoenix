@@ -201,6 +201,9 @@ layui.jquery(document).ready(() => {
     // 加载事件进度
     initialProcess();
 
+    // 渲染日历
+    initialCalendar();
+
     // 轮播图切换时，重载charts图表
     layui.carousel.on('change(dashboardCarousel)', function (obj) {
         resizeCharts(obj.item.attr('id'))
