@@ -173,7 +173,9 @@ const initialPlanTaskTable = () => {
         },
         cols: [[
             {field: 'project_name', title: '所属项目', align: "center", width: 90},
-            {field: 'name', title: '任务名称', align: "center"},
+            {field: 'name', title: '任务', align: "center", templet: (obj)=>{
+                return `<span style="color: #F4516C">${obj.name}</span>`
+                }},
             {field: 'ctime', title: '创建时间', align: "center", width: 110, templet: (obj)=> {
                 return obj.ctime.split(' ')[0]
                 }},
