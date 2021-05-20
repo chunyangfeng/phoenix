@@ -51,5 +51,11 @@ HTTP_Failed = 'Failed'
 # 数据类型
 DATA_TYPE_COMMON = 'common'
 
+# SEO相关配置
+SeoBaiduApi = 'http://data.zz.baidu.com/urls'
+SeoSite = 'https://www.fengchunyang.com'
+SeoSiteToken = 'd51oHEs9YTgb6Gdp'
+SeoIpaddressInfoApi = 'http://ip-api.com/json/'
+
 
 

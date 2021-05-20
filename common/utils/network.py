@@ -11,8 +11,12 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+import json
+
 import requests
 import socket
+
+from common import params
 
 
 def ip_connect_check(fqdn, port):
@@ -37,8 +41,31 @@ def get_ip_info(ipaddr):
     Returns:
         data(dict): IP地址相关信息
     """
-    _api = "http://ip-api.com/json"
-    url = f'{_api}/{ipaddr}?lang=zh-CN'
+    url = f'{params.SeoIpaddressInfoApi}/{ipaddr}?lang=zh-CN'
     response = requests.get(url)
     return response.json() if response.status_code == '200' else dict()
+
+
+def baidu_api_put(site, token, data):
+    """Baidu 收录推送
+
+    Args:
+        site(str): 推送网站
+        token(str): 网站token
+        data(list): 推送地址列表
+
+    Returns:
+        result(dict): 结果
+    """
+    headers = {
+        'Host': 'data.zz.baidu.com',
+        'Content - Type': 'text/plain',
+    }
+    api = f'{params.SeoBaiduApi}?site={site}&token={token}'
+    try:
+        response = requests.post(api, headers=headers, data='\n'.join(data), timeout=5)
+    except Exception as e:
+        return '400', e
+    return response.status_code, ''
+
 
