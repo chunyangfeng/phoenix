@@ -31,6 +31,7 @@ export const urls = {
     classifyInfoApi: "/blog/mgt/article/data/classify/info",
     serialListApi: "/blog/mgt/article/data/serial/list",
     articleDetailPage: "/blog/index/article",
+    articlePushApi: "/blog/mgt/system/article-push",
 
     urlListApi: "/blog/mgt/system/seo/url-list",
     showCardInfoApi: "/blog/index/show-card/info",

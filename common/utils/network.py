@@ -64,6 +64,6 @@ def baidu_api_put(site, token, data):
         response = requests.post(api, headers=headers, data='\n'.join(data), timeout=5)
     except Exception as e:
         return '400', e
-    return response.status_code, ''
+    return response.status_code, response.json()
 
 

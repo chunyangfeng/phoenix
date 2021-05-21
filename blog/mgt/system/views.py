@@ -11,9 +11,16 @@ Blog: http://www.fengchunyang.com
 
 重要说明:
 """
+from django.db.models import QuerySet
+from rest_framework.status import HTTP_201_CREATED
+
+from common.params import HTTP_SUCCESS
+from common.serializers import DoNothingSerializer
+from common.utils.network import baidu_api_put
 from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
 from blog import models, serializers
 from common import permissions
+from common import params
 
 
 class SeoPageView(BasePageView):
@@ -86,3 +93,25 @@ class AccessRecordListView(BasicListViewSet):
     queryset = models.AccessRecord.objects.all()
     serializer_class = serializers.AccessRecordListSerializer
     permission_name = permissions.PER_SYSTEM_PROJECT_MGT
+
+
+class ArticlePushApi(BasicListViewSet):
+    """文章批量推送接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_SYSTEM_SEO
+
+    def post(self, request, *args, **kwargs):
+        """批量创建资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        data = request.data.get("data", list())
+        code, res = baidu_api_put(params.SeoSite, params.SeoSiteToken, data.split('\n'))
+        return self.set_response(HTTP_SUCCESS, res, status=HTTP_201_CREATED)

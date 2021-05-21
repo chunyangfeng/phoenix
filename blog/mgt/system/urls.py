@@ -36,4 +36,5 @@ urlpatterns = [
          name='system-project-task-info'),  # 项目任务详情接口
 
     path('access-record/list', views.AccessRecordListView.as_view(), name='access-record-list'),  # 访问记录列表接口
+    path('article-push', views.ArticlePushApi.as_view(), name='article-push'),  # 文章推送接口
 ]
