@@ -360,3 +360,11 @@ class AccessRecordListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.AccessRecord
         fields = '__all__'
+
+
+class FriendlyLinkListSerializer(serializers.ModelSerializer):
+    """友链申请列表序列化器"""
+
+    class Meta:
+        model = models.FriendlyLink
+        fields = '__all__'

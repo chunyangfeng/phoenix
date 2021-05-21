@@ -115,3 +115,15 @@ class ArticlePushApi(BasicListViewSet):
         data = request.data.get("data", list())
         code, res = baidu_api_put(params.SeoSite, params.SeoSiteToken, data.split('\n'))
         return self.set_response(HTTP_SUCCESS, res, status=HTTP_201_CREATED)
+
+
+class FlinkListView(BasicListViewSet):
+    """友链申请列表接口"""
+    queryset = models.FriendlyLink.objects.all()
+    serializer_class = serializers.FriendlyLinkListSerializer
+    permission_name = permissions.PER_SYSTEM_SEO
+
+
+class FlinkPageView(BasePageView):
+    """友链申请页面"""
+    page = 'mgt/system/seo/flink.html'

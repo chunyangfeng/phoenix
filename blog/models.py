@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2021/2/26 新增文件。
@@ -188,3 +188,15 @@ class InnerMessage(BasicModel):
         verbose_name = '私信消息表'
 
 
+class FriendlyLink(BasicModel):
+    """友链申请表"""
+    site = models.CharField(verbose_name="网站地址", max_length=256, unique=True)
+    logo = models.CharField(verbose_name="网站Logo地址", max_length=256, blank=True, null=True)
+    name = models.CharField(verbose_name="网站名称", max_length=256)
+    enable = models.BooleanField(verbose_name="是否同意申请", default=False)
+    link = models.CharField(verbose_name="挂载本站的地址", max_length=256)
+
+    class Meta:
+        ordering = ('-id', )
+        db_table = 'blog_friendly_link'
+        verbose_name = '友链申请表'

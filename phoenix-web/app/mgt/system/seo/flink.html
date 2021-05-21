@@ -1,0 +1,18 @@
+{% extends 'base/mgt/basic.html' %}
+
+{% block title %}友链申请{% endblock %}
+
+{% block content %}
+    <fieldset class="layui-elem-field">
+        <legend class="layui-field-title">友链申请</legend>
+        <div class="layui-field-box">
+            <div class="layui-row">
+                <table id="friendly-link-list-table" lay-filter="friendlyLinkListTableFilter"></table>
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}
+
+{% block footer-scripts %}
+    <script src="/phoenix-web/app/mgt/system/seo/flink.js" type="module"></script>
+{% endblock %}
