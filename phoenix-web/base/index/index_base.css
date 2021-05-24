@@ -78,3 +78,14 @@
     margin: 5px auto;
     font-weight: 500;
 }
+
+.index-motto {
+    display: inline-block;
+    margin: auto 30px;
+    background-image:-webkit-linear-gradient(bottom,red,#fd8403,yellow);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    font-size: 19px;
+    letter-spacing: 3px;
+    font-family: "Brush Script MT", "Copperplate", "Times New Roman", cursive;
+}
