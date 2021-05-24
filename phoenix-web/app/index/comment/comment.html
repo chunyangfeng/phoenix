@@ -1,0 +1,81 @@
+{% extends 'base/index/index_base.html' %}
+
+{% block title %}凤鸣华夏耀九州,凰出东方震四海{% endblock %}
+
+{% block header-css %}
+    <link rel="stylesheet" href="/phoenix-web/app/index/comment/comment.css">
+    <link rel="stylesheet" href="/phoenix-web/app/index/detail/detail.css">
+    <link rel="stylesheet" href="/phoenix-web/assets/icons/iconfont.css">
+{% endblock %}
+
+{% block header-meta %}
+    <!-- 优先使用 IE 最新版本和 Chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!-- 描述 -->
+    <meta name="description" content="却邪水心-留言板"/>
+    <!-- 关键词 -->
+    <meta name="keywords" content="却邪水心,留言板"/>
+    <!-- 作者 -->
+    <meta name="author" content="却邪水心"/>
+    <!-- 搜索引擎抓取 -->
+    <meta name="robots" content="all"/>
+    <!-- 版权 -->
+    <meta name="copyright" content="却邪水心">
+    <!-- 站点标识 -->
+    <meta name="applicable-device" content="pc">
+{% endblock %}
+
+{% block body-middle %}
+    <div id="articleCardElem"></div>
+    <div id="articlePageElem"></div>
+{% endblock %}
+
+{% block main-body %}
+    <div id="commentBody">
+        <div class="comment-tips">
+            <p>欢迎给我留言~~~</p>
+        </div>
+        <div class="comment-form">
+            <div class="layui-form layui-form-pane" lay-filter="commentFormFilter">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"> <span class="form-require-field">*</span>昵称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="nickname" required lay-verify="required" placeholder="请输入昵称..."
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="form-require-field">*</span>邮箱</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email" required lay-verify="required|email" placeholder="请输入邮箱地址..."
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span class="form-require-field">*</span>评论</label>
+                    <div class="layui-input-block">
+                            <textarea name="content" required lay-verify="required" placeholder="互动..."
+                                      class="layui-textarea" rows="7"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="commentSubmit">评论</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </div>
+            <div class="article-body-comment-count" id="commentCount">
+                <div class="article-body-comment-count-nums">评论总数</div>
+            </div>
+            <div class="article-body-comment-show" id="commentList"></div>
+            <hr>
+            <div class="article-body-comment-pagination" id="commentPagination"></div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block footer-js %}
+    <script src="/phoenix-web/app/index/comment/comment.js" type="module"></script>
+{% endblock %}

@@ -11,7 +11,7 @@ Desc:
 """
 from blog.comment.models import Comment
 from blog.comment.serializers import CommentListSerializer
-from common.views import BasicListViewSet
+from common.views import BasicListViewSet, BasePageView
 from common import permissions
 
 
@@ -25,6 +25,11 @@ class ArticleCommentListView(BasicListViewSet):
 
 class CommentListView(BasicListViewSet):
     """评论列表接口"""
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.filter(article_id=None).order_by('-id')
     serializer_class = CommentListSerializer
     permission_name = permissions.PER_COMMENT
+
+
+class CommentPageView(BasePageView):
+    """评论页面"""
+    page = 'index/comment/comment.html'
