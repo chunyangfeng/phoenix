@@ -40,7 +40,10 @@ def get_ip_info(ipaddr):
         data(dict): IP地址相关信息
     """
     url = f'{params.SeoIpaddressInfoApi}/{ipaddr}?lang=zh-CN'
-    response = requests.get(url)
+    try:
+        response = requests.get(url)
+    except Exception:
+        return dict()
     return response.json() if response.status_code == 200 else dict()
 
 
