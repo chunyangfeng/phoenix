@@ -21,10 +21,10 @@ const initialAccessRecordTable = () => {
             { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
             {field: 'atime', title: '访问时间', align: "center", width: 200},
             {field: 'path', title: '目标地址', align: "center"},
-            {field: 'user_agent', title: 'UserAgent', align: "center", width: 600},
-            {field: 'address', title: 'IP地址', align: "center", width: 140},
+            {field: 'user_agent', title: 'UserAgent', align: "center"},
+            {field: 'address', title: 'IP地址', align: "center", width: 180},
             {field: 'source', title: '地址来源', align: "center"},
-            {field: 'query_str', title: '查询字符串', align: "center"},
+            // {field: 'query_str', title: '查询字符串', align: "center"},
             {field: 'referer', title: '关联页面', align: "center"},
         ]]
     })
