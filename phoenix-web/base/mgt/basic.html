@@ -17,7 +17,14 @@
         <!-- 头部导航 -->
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item">
-                <a href="{% url 'article-info-page' %}">写文章</a>
+                <a href="{% url 'article-info-page' %}">
+                    <i class="layui-icon layui-icon-template"></i>  写文章
+                </a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="{% url 'system-flow-page' %}">
+                    <i class="layui-icon layui-icon-survey"></i>  新任务
+                </a>
             </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
