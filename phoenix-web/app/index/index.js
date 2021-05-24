@@ -144,6 +144,19 @@ const initialUtils = () => {
     })
 }
 
+const initialFriendlyLink = () => {
+    const queryString = "enable=true"
+    asyncApiResolve(`${urls.flinkListApi}?${queryString}`, null, 'get', (res) => {
+        const elem = layui.jquery('#friendlyLinkList')
+        let data = "<div class='layui-row layui-col-spacing30'>"
+        layui.each(res.data, function (index, value) {
+            data += `<div class="layui-col-md6"><a href="${value.site}" target="_blank">${value.name}</a></div>`
+        })
+        data += '</div>'
+        elem.empty().append(data)
+    });
+}
+
 // 页面加载时的动态操作
 layui.jquery(document).ready(function () {
     // 获取博客文章数据
@@ -154,6 +167,9 @@ layui.jquery(document).ready(function () {
 
     // 获取热门文章数据
     getHotArticle();
+
+    // 获取友链数据
+    initialFriendlyLink()
 
     // 初始化返回顶部工具
     initialUtils();

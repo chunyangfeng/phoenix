@@ -201,3 +201,14 @@
 .hot-article-elem a {
     margin-left: 10px !important;
 }
+
+.friendly-link {
+    /*position: fixed;*/
+    display: block;
+    border: 2px solid #eee;
+    margin: 30px 40px;
+    padding: 0 15px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    width: 25rem;
+    /*top: 370px*/
+}

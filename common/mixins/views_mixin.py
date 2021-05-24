@@ -1324,14 +1324,14 @@ class BasicCommonViewMixin:
         Returns:
             value(str): 清洗完毕后的值
         """
+        value = value.rstrip(' ')
+        value = value.lstrip(' ')
         if value in ('undefined', 'null'):
             value = None
         if value == 'true':
             value = True
         if value == 'false':
             value = False
-        value = value.rstrip(' ')
-        value = value.lstrip(' ')
         return value
 
     def initial_query_params(self):
@@ -1343,6 +1343,9 @@ class BasicCommonViewMixin:
         for key, value in self.request.query_params.items():
             # 清洗value
             value = self._clear_query_params(value)
+
+            if isinstance(value, bool):
+                continue
 
             if value is None or len(value) == 0:
                 _pop_key.append(key)
