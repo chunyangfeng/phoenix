@@ -11,33 +11,22 @@ import {params} from "../../config/params.js";
 
 
 const getBlogData = (page=1, limit=10) => {
-    const successCallback = (response) => {
-        let card = '';
-
-        layui.jquery.each(response.data, (index, value) => {
-            card += generateArticleCard(value);
-        });
-
-        layui.jquery(params.articleCardElem).empty().append(card);
-
-        layui.laypage.render({
-            elem: params.articlePageElem,
-            count: response.count,
-            limit: limit,
-            curr: page,
-            groups: limit,
-            layout: ['prev', 'page', 'next', 'count', 'skip'],
-            jump: (obj, first) => {
-                if (!first) {
-                    getBlogData(obj.curr, obj.limit);
-                }
-            },
-        });
-    };
-
-    const queryString = `page=${page}&limit=${limit}`;
-
-    asyncApiResolve(`${urls.indexArticleListApi}?${queryString}`, null, 'get', successCallback);
+    layui.flow.load({
+        elem: '#articleCardElem',
+        isAuto: true,
+        end: '已经到底啦...',
+        mb: 30,
+        done: function (page, next) {
+            let articleCard = []
+            const queryString = `page=${page}&limit=${limit}`;
+            asyncApiResolve(`${urls.indexArticleListApi}?${queryString}`, null, 'get', (res)=> {
+                layui.jquery.each(res.data, (index, value) => {
+                    articleCard.push(generateArticleCard(value));
+                });
+                next(articleCard.join(""), page < (res.count/limit));
+            });
+        }
+    });
 };
 
 const getShowCardData = () => {
@@ -138,9 +127,7 @@ const getHotArticle = () => {
             } else {
                 hotBadge = "layui-bg-green"
             }
-            // const html = `<a class="hot-article-elem" href="${value.link}">
-            //                   <span class="layui-badge ${hotBadge}">${index + 1}</span> ${value.title}
-            //               </a><hr>`;
+
             const html = `<div class="hot-article-elem">
                             <span class="layui-badge ${hotBadge}">${index + 1}</span>
                             <a href="${value.link}">${value.title}</a>
@@ -150,6 +137,12 @@ const getHotArticle = () => {
     };
     asyncApiResolve(`${urls.hotArticleInfoApi}`, null, 'get', successCallback);
 };
+
+const initialUtils = () => {
+    layui.util.fixbar({
+        showHeight: 200,
+    })
+}
 
 // 页面加载时的动态操作
 layui.jquery(document).ready(function () {
@@ -161,6 +154,9 @@ layui.jquery(document).ready(function () {
 
     // 获取热门文章数据
     getHotArticle();
+
+    // 初始化返回顶部工具
+    initialUtils();
 
     // 私信操作
     layui.jquery('#message').on('click', () => {
