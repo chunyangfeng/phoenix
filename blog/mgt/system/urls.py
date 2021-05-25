@@ -39,4 +39,5 @@ urlpatterns = [
     path('article-push', views.ArticlePushApi.as_view(), name='article-push'),  # 文章推送接口
     path('flink/page', views.FlinkPageView.as_view(), name='flink-page'),  # 友链申请页面接口
     path('flink/list', views.FlinkListView.as_view(), name='flink-list'),  # 友链申请列表接口
+    path(f'flink/info/<int:{MODEL_UNIQUE_KEY}>', views.FlinkInfoView.as_view(), name='flink-info'),  # 友链详情接口
 ]

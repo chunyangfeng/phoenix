@@ -368,3 +368,11 @@ class FriendlyLinkListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.FriendlyLink
         fields = '__all__'
+
+
+class FriendlyLinkInfoSerializer(serializers.ModelSerializer):
+    """友链申请详情序列化器"""
+
+    class Meta:
+        model = models.FriendlyLink
+        fields = '__all__'

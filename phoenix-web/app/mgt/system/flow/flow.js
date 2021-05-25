@@ -151,7 +151,7 @@ const projectTaskUpdateEvent = (obj) => {
     };
 
     // 执行批量更新
-    layer.confirm('确定更新?', {icon: 1, title: '更新确认'}, function (index) {
+    layui.layer.confirm('确定更新?', {icon: 1, title: '更新确认'}, function (index) {
         const response = syncApiResolve(urls.projectTaskListApi, putData, 'put');
         if (response.result === params.resSuccessTip) {
             parent.layui.table.reload(params.projectTaskTableID);  // 重载表格

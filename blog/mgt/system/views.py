@@ -124,6 +124,13 @@ class FlinkListView(BasicListViewSet):
     permission_name = permissions.PER_SYSTEM_SEO
 
 
+class FlinkInfoView(BasicInfoViewSet):
+    """友链详情接口"""
+    queryset = models.FriendlyLink.objects.all()
+    serializer_class = serializers.FriendlyLinkInfoSerializer
+    permission_name = permissions.PER_SYSTEM_SEO
+
+
 class FlinkPageView(BasePageView):
     """友链申请页面"""
     page = 'mgt/system/seo/flink.html'
