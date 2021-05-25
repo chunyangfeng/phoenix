@@ -148,8 +148,8 @@ class DashboardStatisticView(BasicInfoViewSet):
             "tags_count": models.ArticleTag.objects.count(),
             "comment_count": adapt_get_comment_count(),
             "access_count": models.AccessRecord.objects.count(),
-            "flink_apply": 0,
-            "fans_count": models.SubscribeRecord.objects.filter(enable=True).count()
+            "flink_apply": models.FriendlyLink.objects.filter(enable=False).count(),
+            "fans_count": models.SubscribeRecord.objects.all().count()
         }
         return self.set_response(result='Success', data=[data, ])
 
