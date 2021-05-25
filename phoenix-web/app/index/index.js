@@ -148,7 +148,7 @@ const initialFriendlyLink = () => {
     const queryString = "enable=true"
     asyncApiResolve(`${urls.flinkListApi}?${queryString}`, null, 'get', (res) => {
         const elem = layui.jquery('#friendlyLinkList')
-        let data = "<div class='layui-row layui-col-spacing30'>"
+        let data = "<div class='layui-row layui-col-space10 flink-card'>"
         layui.each(res.data, function (index, value) {
             data += `<div class="layui-col-md6"><a href="${value.site}" target="_blank">${value.name}</a></div>`
         })

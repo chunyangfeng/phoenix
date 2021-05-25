@@ -212,3 +212,8 @@
     width: 25rem;
     /*top: 370px*/
 }
+
+.flink-card {
+    text-align: center;
+    font-size: 16px;
+}
