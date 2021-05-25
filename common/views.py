@@ -259,7 +259,7 @@ class BasePageView(views_mixin.BasicAuthPermissionViewMixin, View):
         """
         pk = kwargs.get(params.MODEL_UNIQUE_KEY)
         if not pk:
-            return 'No id', '无效的文章ID', None
+            return 'No id', '无效的ID', None
 
         # 获取实例数据
         model = self.get_model_class()

@@ -31,5 +31,6 @@ class CommentListView(BasicListViewSet):
 
 
 class CommentPageView(BasePageView):
-    """评论页面"""
+    """留言板页面"""
+    authentication_enable = False
     page = 'index/comment/comment.html'

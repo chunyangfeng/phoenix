@@ -1,0 +1,105 @@
+{% extends 'base/index/index_base.html' %}
+
+{% block title %}友情链接{% endblock %}
+
+{% block header-css %}
+    <link rel="stylesheet" href="/phoenix-web/app/index/flinks/flinks.css">
+{% endblock %}
+
+{% block header-meta %}
+    <!-- 优先使用 IE 最新版本和 Chrome -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!-- 描述 -->
+    <meta name="description" content="却邪水心-友情链接"/>
+    <!-- 关键词 -->
+    <meta name="keywords" content="却邪水心,友情链接"/>
+    <!-- 作者 -->
+    <meta name="author" content="却邪水心"/>
+    <!-- 搜索引擎抓取 -->
+    <meta name="robots" content="all"/>
+    <!-- 版权 -->
+    <meta name="copyright" content="却邪水心">
+    <!-- 站点标识 -->
+    <meta name="applicable-device" content="pc">
+{% endblock %}
+
+{% block main-body %}
+    <div id="flink">
+        <div class="layui-row">
+            <h2 class="flink-title">友情链接</h2>
+        </div>
+        <div class="layui-row layui-col-space20">
+            {% for flink in data %}
+                <div class="layui-col-md3">
+                    <div class="layui-card flink-card">
+                        <div class="layui-card-header">
+                            <a href="{{ flink.site }}" target="_blank" class="flink-href">
+                                <img src="{{ flink.logo }}" width="30" height="30">
+                                {{ flink.name }}
+                            </a>
+                        </div>
+                        <div class="layui-card-body flin-site-desc">
+                            <span class="flink-site-desc">{{ flink.desc }}</span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="flink-apply">
+            <div class="layui-row flink-desc">
+                <p>本站为技术类博客，优先接受同类型优质博客申请友链。</p>
+                <p>申请本站友链之前，请确保本站已加入贵站友链。</p>
+                <p>友链申请会在1~2天生成结果，如果有异常或者未同意，请在留言板留言或者直接私信我。</p>
+            </div>
+            <hr>
+            <div class="layui-form layui-form-pane flink-form" lay-filter="flinksFormFilter">
+                <div class="layui-form-item">
+                    <label for="name" class="layui-form-label"><span class="form-require-field">*</span>网站名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" required lay-verify="required" placeholder="请输入网站名称..."
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="site" class="layui-form-label"><span class="form-require-field">*</span>网站地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="site" required lay-verify="required" placeholder="请输入网站地址(http://或https://)..."
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="logo" class="layui-form-label"><span class="form-require-field">*</span>Logo</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="logo" required lay-verify="required" placeholder="请输入网站logo..."
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="link" class="layui-form-label"><span class="form-require-field">*</span>反访地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="link" required lay-verify="required" placeholder="请输入贵站友链地址..."
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="desc" class="layui-form-label"><span class="form-require-field">*</span>网站描述</label>
+                    <div class="layui-input-block">
+                        <textarea name="desc" required lay-verify="required" placeholder="请输入网站描述..."
+                                  class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block layui-btn-container">
+                        <button lay-submit class="layui-btn" lay-filter="flinksFormSubmit">申请友链</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置输入</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block footer-js %}
+    <script src="/phoenix-web/app/index/flinks/flinks.js" type="module"></script>
+{% endblock %}

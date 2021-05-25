@@ -1,0 +1,54 @@
+/*body {*/
+/*    background-color: #FAFAFA;*/
+/*}*/
+
+#flink {
+    margin: 100px 150px;
+}
+
+.flink-title {
+    text-align: center;
+    letter-spacing: 3px;
+    margin: 50px auto;
+}
+
+.flink-desc {
+    /*border: 2px solid #F5F5F5;*/
+    /*box-shadow: 5px 5px 5px #eee;*/
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 20px;
+}
+
+.flink-card {
+    margin: 10px 20px auto auto;
+    border: 2px solid #F5F5F5;
+}
+
+.flink-href {
+    font-size: 15px;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.flin-site-desc {
+    height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 15px;
+    letter-spacing: 2px;
+}
+
+.layui-form-item {
+    width: 600px;
+}
+
+.flink-apply {
+    border: 1px solid #f2f2f2;
+    margin: 20px auto;
+}
+
+.flink-form {
+    margin: 40px;
+}

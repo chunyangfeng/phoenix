@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2021/2/18 新增文件。
@@ -36,4 +36,5 @@ urlpatterns = [
     path('visitor/message/list', views.IndexVisitorMessageListView.as_view(), name='index-visitor-message-list'),
     path('visitor/subscribe/list', views.IndexVisitorScribeListView.as_view(), name='index-visitor-scribe-list'),
     path('hot-article/info', views.IndexHotArticleInfoView.as_view(), name='index-hot-article-info'),
+    path('flinks/page', views.FlinksPageView.as_view(), name='flinks-page'),
 ]

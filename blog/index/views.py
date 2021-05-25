@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2021/3/2 新增文件。
@@ -15,9 +15,9 @@ from django.db.models import QuerySet
 from django.urls import reverse
 
 from blog.index.adapt import adapt_get_comment_count
-from blog.models import Article, ArticleClassify, AccessRecord, SubscribeRecord, InnerMessage
+from blog.models import Article, ArticleClassify, AccessRecord, SubscribeRecord, InnerMessage, FriendlyLink
 from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer, \
-    InnerMessageListSerializer, SubscribeRecordListSerializer
+    InnerMessageListSerializer, SubscribeRecordListSerializer, FriendlyLinkListSerializer
 from common import permissions
 from common.params import MODEL_UNIQUE_KEY
 from common.serializers import DoNothingSerializer
@@ -242,3 +242,24 @@ class IndexHotArticleInfoView(BasicInfoViewSet):
             'link': self._get_link(article.id)
         } for article in articles]
         return self.set_response(result='Success', data=data)
+
+
+class FlinksPageView(BasePageView):
+    """友情链接页面"""
+    authentication_enable = False
+    page = 'index/flinks/flinks.html'
+
+    def _perform_get(self, request, *args, **kwargs):
+        """渲染页面内容
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应主体
+        """
+        obj = FriendlyLink.objects.filter(enable=True)
+        self.data["data"] = FriendlyLinkListSerializer(obj, many=True).data
+        return super()._perform_get(request, *args, **kwargs)
