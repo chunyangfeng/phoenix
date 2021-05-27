@@ -263,3 +263,12 @@ class FlinksPageView(BasePageView):
         obj = FriendlyLink.objects.filter(enable=True)
         self.data["data"] = FriendlyLinkListSerializer(obj, many=True).data
         return super()._perform_get(request, *args, **kwargs)
+
+
+class FlinksListView(BasicListViewSet):
+    """友链申请列表接口"""
+    queryset = FriendlyLink.objects.all()
+    serializer_class = FriendlyLinkListSerializer
+    permission_name = permissions.PER_SYSTEM_SEO
+    authentication_enable = False
+    http_method_names = ('get', 'post')

@@ -35,6 +35,7 @@ export const urls = {
 
     urlListApi: "/blog/mgt/system/seo/url-list",
     flinkListApi: "/blog/mgt/system/flink/list",
+    flinksListApi: "/blog/index/flinks/list",
     flinkInfoApi: "/blog/mgt/system/flink/info",
     showCardInfoApi: "/blog/index/show-card/info",
     visitorInfoPage: "/blog/index/visitor/info/page",

@@ -37,4 +37,5 @@ urlpatterns = [
     path('visitor/subscribe/list', views.IndexVisitorScribeListView.as_view(), name='index-visitor-scribe-list'),
     path('hot-article/info', views.IndexHotArticleInfoView.as_view(), name='index-hot-article-info'),
     path('flinks/page', views.FlinksPageView.as_view(), name='flinks-page'),
+    path('flinks/list', views.FlinksListView.as_view(), name='flinks-list'),
 ]

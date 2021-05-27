@@ -306,7 +306,8 @@ class BasicBulkCreateModelMixin(mixins.CreateModelMixin, BasicResponseMixin):
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
         """
-        self.set_default_data(request, *args, **kwargs)
+        if self.authentication_enable:
+            self.set_default_data(request, *args, **kwargs)
         return None, ''
 
     def _pre_validate_create(self, request, *args, **kwargs):
@@ -1356,8 +1357,7 @@ class BasicCommonViewMixin:
 
         self.request.query_params._mutable = False
 
-    @staticmethod
-    def set_default_data(request, *args, **kwargs):
+    def set_default_data(self, request, *args, **kwargs):
         """设置系统级别的内置数据
 
         Args:
@@ -1367,7 +1367,10 @@ class BasicCommonViewMixin:
         """
         # 设置默认参数
         request.data._mutable = True
-        login_user = request.session.get(params.SESSION_USER_KEY).get('username')
+        if self.authentication_enable:
+            login_user = request.session.get(params.SESSION_USER_KEY).get('username')
+        else:
+            login_user = 'anonymous'
         request.data['creator'] = login_user
         request.data['owner'] = login_user
         request.data._mutable = False
