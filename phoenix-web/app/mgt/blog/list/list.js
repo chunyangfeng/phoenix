@@ -123,7 +123,12 @@ layui.jquery(document).ready(function () {
             window.location.href = `${urls.articleInfoPage}?articleID=${obj.data.id}`
         };
 
-        tableRowEventHandle(obj, urls.articleInfoApi, null, articleEditEvent);
+        const articleDetailEvent = (obj) => {
+            // 跳转到文章详情页
+            window.location.href = `${urls.articleDetailPage}/${obj.data.id}`
+        }
+
+        tableRowEventHandle(obj, urls.articleInfoApi, articleDetailEvent, articleEditEvent);
     });
 });
 
