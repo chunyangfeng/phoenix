@@ -28,6 +28,7 @@ class CommentListView(BasicListViewSet):
     queryset = Comment.objects.filter(article_id=None).order_by('-id')
     serializer_class = CommentListSerializer
     permission_name = permissions.PER_COMMENT
+    authentication_enable = False
 
 
 class CommentPageView(BasePageView):
