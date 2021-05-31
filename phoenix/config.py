@@ -25,9 +25,10 @@ if DEBUG is True:
         'PASSWORD': 'nishengri',
         'NAME': 'phoenix_test',
     }
+    CELERY_BROKER_URL = 'redis://:123456@192.168.137.100:6379/0'
 else:
     ALLOWED_HOSTS = ['www.fengchunyang.com', '127.0.0.1']
-    SYSTEM_DOMAIN = 'http://www.fengchunyang.com'
+    SYSTEM_DOMAIN = 'https://www.fengchunyang.com'
     BACKEND_DB = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': '192.168.1.103',
@@ -35,3 +36,4 @@ else:
         'PASSWORD': 'nishengri',
         'NAME': 'phoenix_test',
     }
+    CELERY_BROKER_URL = 'redis://:123456@127.0.0.1:6379/0'
