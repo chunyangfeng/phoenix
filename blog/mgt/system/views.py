@@ -122,6 +122,8 @@ class FlinkListView(BasicListViewSet):
     queryset = models.FriendlyLink.objects.all()
     serializer_class = serializers.FriendlyLinkListSerializer
     permission_name = permissions.PER_SYSTEM_SEO
+    http_method_names = ('get', 'post')
+    authentication_enable = False
 
 
 class FlinkInfoView(BasicInfoViewSet):
