@@ -15,8 +15,9 @@ from django.db.models import QuerySet
 from django.urls import reverse
 
 from blog.index.adapt import adapt_get_comment_count
+from blog import tasks
 from blog.models import Article, ArticleClassify, AccessRecord, SubscribeRecord, InnerMessage, FriendlyLink
-from blog.serializers import ArticleDetailSerializer, ArticleSiteMapSerializer, ArticleSerializer, \
+from blog.serializers import ArticleDetailSerializer, ArticleSerializer, \
     InnerMessageListSerializer, SubscribeRecordListSerializer, FriendlyLinkListSerializer
 from common import permissions
 from common.params import MODEL_UNIQUE_KEY
@@ -97,6 +98,10 @@ class ArticleDetailPageView(BasePageView):
         if instance.is_publish is True:
             instance.read_count += 1
             instance.save()
+
+        # 访问成功后添加访问记录
+        data = tasks.get_access_record_data(request)
+        tasks.access_record.delay(data)
         return None, '', response
 
 
@@ -263,6 +268,25 @@ class FlinksPageView(BasePageView):
         obj = FriendlyLink.objects.filter(enable=True)
         self.data["data"] = FriendlyLinkListSerializer(obj, many=True).data
         return super()._perform_get(request, *args, **kwargs)
+
+    def _post_get(self, request, response, *args, **kwargs):
+        """响应页面之后的操作
+
+        Args:
+            request(Request): http request
+            response(Response): 响应主体
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            error(str): 错误信息，None为没有错误
+            reason(str): 错误原因，为''则没有错误
+            response(Response): 响应主体
+        """
+        # 访问成功后添加访问记录
+        data = tasks.get_access_record_data(request)
+        tasks.access_record.delay(data)
+        return None, '', response
 
 
 class FlinksListView(BasicListViewSet):
