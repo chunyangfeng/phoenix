@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2021/2/18 新增文件。
@@ -15,15 +15,15 @@ import datetime
 
 from django.db.models import QuerySet
 
+from blog import models
+from blog import serializers
 from blog.index.adapt import adapt_get_comment_count
 from blog.params import TASK_STATUS_PLAN
+from blog.tasks import push_article
 from common.serializers import DoNothingSerializer
-from common.utils.network import baidu_api_put
 from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
 from common import permissions
 from common import params
-from blog import models
-from blog import serializers
 
 
 class DashboardPageView(BasePageView):
@@ -67,7 +67,7 @@ class ArticleListApiView(BasicListViewSet):
 
         Args:
             request(Request): DRF Request
-            instances (list): 保存数据后的实例列表
+            instances (any): 保存数据后的实例列表
             *args(list): 可变参数
             **kwargs(dict): 可变关键字参数
 
@@ -75,9 +75,14 @@ class ArticleListApiView(BasicListViewSet):
             error(str): 错误信息，没有错误为None
             reason(str): 错误原因，没有错误为''
         """
+        # 发表的文章推送到百度收录API
         abs_url = f'{params.SeoSite}{instances.get_absolute_url()}'
-        status, error = baidu_api_put(params.SeoSite, params.SeoSiteToken, [abs_url, ])
-        # TODO 推送日志记录
+        if instances.is_publish:
+            push_article.delay({
+                "site": params.SeoSite,
+                "token": params.SeoSiteToken,
+                "data": [abs_url, ]
+            })
         return None, ''
 
 

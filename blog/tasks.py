@@ -13,7 +13,7 @@ from django.utils import timezone
 from celery import shared_task
 
 from blog.models import AccessRecord
-from common.utils.network import get_ip_info
+from common.utils.network import get_ip_info, baidu_api_put
 
 
 def get_access_record_data(request):
@@ -55,3 +55,17 @@ def access_record(data):
     """
     AccessRecord.objects.create(**data)
     return "访问记录添加成功"
+
+
+@shared_task
+def push_article(data):
+    """推送文章
+
+    Args:
+        data(dict): 数据集
+
+    Returns:
+        status(any): 结果状态
+        error(any): 异常
+    """
+    return baidu_api_put(**data)
