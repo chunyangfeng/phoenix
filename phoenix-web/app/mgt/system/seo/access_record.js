@@ -30,10 +30,20 @@ const initialAccessRecordTable = () => {
     })
 }
 
+const initialAccessTimePicker = () => {
+    layui.laydate.render({
+        elem: '#accessTime',
+        trigger: 'click',
+    })
+}
+
 // 页面加载时的动态操作
 layui.jquery(document).ready(function () {
     // 初始化表格
     initialAccessRecordTable();
+
+    // 初始化日期控件
+    initialAccessTimePicker();
 
     // 监听搜索表单提交事件
     layui.form.on('submit(accessRecordSearchForm)', function (data) {

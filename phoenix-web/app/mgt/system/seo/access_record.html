@@ -10,12 +10,16 @@
                     <form class="layui-form">
                         <div class="layui-form-item">
                             <div class="layui-input-inline">
-                                <input type="text" name="user_agent__icontains" placeholder="关键字..."
+                                <input type="text" name="user_agent__icontains" placeholder="Agent关键字..."
                                        autocomplete="off" class="layui-input">
                             </div>
                             <div class="layui-input-inline">
-                                <input type="text" name="source__icontains" placeholder="来源..."
+                                <input type="text" name="address__icontains" placeholder="IP地址..."
                                        autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline">
+                                <input type="text" name="atime__icontains" placeholder="访问时间..."
+                                       autocomplete="off" class="layui-input" id="accessTime">
                             </div>
                             <div class="layui-input-inline search-form-btn">
                                 <button type="button" class="layui-btn" lay-submit lay-filter="accessRecordSearchForm">查询</button>
