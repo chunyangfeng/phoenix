@@ -18,6 +18,20 @@
                                        autocomplete="off" class="layui-input">
                             </div>
                             <div class="layui-input-inline">
+                                <select name="is_publish">
+                                    <option value="">--选择发表状态--</option>
+                                    <option value="1">已发表</option>
+                                    <option value="0">未发表</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="is_top">
+                                    <option value="">--选择置顶状态--</option>
+                                    <option value="1">已置顶</option>
+                                    <option value="0">未置顶</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
                                 <select name="classify__id" id="classifySelectElem" lay-filter="classify" lay-search="">
                                     <option value="">--选择分类--</option>
                                 </select>
