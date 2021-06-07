@@ -71,8 +71,8 @@ const initialProjectTaskTable = ()=> {
         url: urls.projectTaskListApi,
         id: params.projectTaskTableID,
         page: true,
-        limit: 10,
-        limits: [10, 20, 40, 80, 100],
+        limit: 15,
+        limits: [15, 30, 45, 60, 100],
         text: {
             none: "暂无相关数据",
         },
