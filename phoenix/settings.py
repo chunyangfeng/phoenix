@@ -14,6 +14,7 @@ from pathlib import Path
 
 from common.params import DATETIME_STANDARD
 from . import config
+from . import schedule
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -152,3 +153,6 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # celery配置
 CELERY_BROKER_URL = config.CELERY_BROKER_URL
+CELERY_CELERYBEAT_SCHEDULE = schedule.CELERY_BEAT_SCHEDULE
+CELERY_TIMEZONE = 'Asia/Shanghai'
+CELERY_ENABLE_UTC = False

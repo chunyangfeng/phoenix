@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2021/3/4 新增文件。
@@ -19,6 +19,7 @@ from common.serializers import DoNothingSerializer
 from common.utils.network import baidu_api_put
 from common.views import BasePageView, BasicListViewSet, BasicInfoViewSet
 from blog import models, serializers
+from blog.tasks import bulk_push_article
 from common import permissions
 from common import params
 
@@ -115,6 +116,27 @@ class ArticlePushApi(BasicListViewSet):
         data = request.data.get("data", list())
         code, res = baidu_api_put(params.SeoSite, params.SeoSiteToken, data.split('\n'))
         return self.set_response(HTTP_SUCCESS, res, status=HTTP_201_CREATED)
+
+
+class ArticleBulkPushApi(BasicListViewSet):
+    """文章一键推送接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_SYSTEM_SEO
+
+    def get(self, request, *args, **kwargs):
+        """批量获取资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        bulk_push_article.delay()
+        return self.set_response(HTTP_SUCCESS, "ok")
 
 
 class FlinkListView(BasicListViewSet):

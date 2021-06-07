@@ -7,13 +7,13 @@ Date: 2021/5/28 18:40
 Desc:
     2021/5/28 18:40 add file.
 """
-import re
-
+from django.conf import settings
 from django.utils import timezone
 from celery import shared_task
 
-from blog.models import AccessRecord
+from blog.models import AccessRecord, Article
 from common.utils.network import get_ip_info, baidu_api_put
+from common import params
 
 
 def get_access_record_data(request):
@@ -69,3 +69,15 @@ def push_article(data):
         error(any): 异常
     """
     return baidu_api_put(**data)
+
+
+@shared_task
+def bulk_push_article():
+    """一键推送所有已发表文章至百度api
+
+    Returns:
+        result(str): 推送结果
+    """
+    articles = Article.objects.filter(is_publish=True)
+    article_links = [f'{settings.SYSTEM_DOMAIN}{article.get_absolute_url()}' for article in articles]
+    return baidu_api_put(params.SeoSite, params.SeoSiteToken, article_links)

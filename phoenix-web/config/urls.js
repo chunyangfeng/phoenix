@@ -32,6 +32,7 @@ export const urls = {
     serialListApi: "/blog/mgt/article/data/serial/list",
     articleDetailPage: "/blog/index/article",
     articlePushApi: "/blog/mgt/system/article-push",
+    articleBulkPushApi: "/blog/mgt/system/article-push/bulk",
 
     urlListApi: "/blog/mgt/system/seo/url-list",
     flinkListApi: "/blog/mgt/system/flink/list",

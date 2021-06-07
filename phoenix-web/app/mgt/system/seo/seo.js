@@ -21,7 +21,7 @@ const initialUrlListTable = ()=> {
             none: "暂无相关数据",
         },
         toolbar: true,
-        defaultToolbar: ['filter', layTableToolBar.add],
+        defaultToolbar: ['filter', layTableToolBar.add, layTableToolBar.update],
         width: params.tableWidth,
         cellMinWidth: 100,
         cols: [[
@@ -58,6 +58,19 @@ const pushApi = (obj) => {
     }
 }
 
+const bulkPushArticle = () => {
+    // 一键推送所有已发表文章
+    layui.layer.confirm("是否推送所有文章？", {
+        icon: 3,
+        title: '确认提示'
+    }, function (index) {
+        asyncApiResolve(urls.articleBulkPushApi, null, 'get', (res) => {
+            layui.layer.msg("已调用一键推送接口！")
+        })
+        layui.layer.close(index)
+    })
+}
+
 // 页面加载时的动态操作
 layui.jquery(document).ready(function () {
     // 初始化表格
@@ -65,7 +78,14 @@ layui.jquery(document).ready(function () {
 
     // 监听表格头部工具事件
     layui.table.on('toolbar(urlListTableFilter)', function (obj) {
-        pushApi(obj);
+        switch (obj.event) {
+            case 'TABLE_UPDATE':
+                bulkPushArticle();
+                break;
+            case 'TABLE_ADD':
+                pushApi(obj);
+                break;
+        }
     });
 });
 

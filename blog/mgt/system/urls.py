@@ -37,6 +37,7 @@ urlpatterns = [
 
     path('access-record/list', views.AccessRecordListView.as_view(), name='access-record-list'),  # 访问记录列表接口
     path('article-push', views.ArticlePushApi.as_view(), name='article-push'),  # 文章推送接口
+    path('article-push/bulk', views.ArticleBulkPushApi.as_view(), name='article-bulk-push'),  # 文章一键推送接口
     path('flink/page', views.FlinkPageView.as_view(), name='flink-page'),  # 友链申请页面接口
     path('flink/list', views.FlinkListView.as_view(), name='flink-list'),  # 友链申请列表接口
     path(f'flink/info/<int:{MODEL_UNIQUE_KEY}>', views.FlinkInfoView.as_view(), name='flink-info'),  # 友链详情接口
