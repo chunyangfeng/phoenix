@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2020/12/5 新增文件。
@@ -42,7 +42,7 @@ def strptime(time, formatter=DATETIME_STANDARD):
     return datetime.datetime.strptime(time, formatter) if time else time
 
 
-def output_formatter(message, color="green", bgcolor="black", display=u"高亮"):
+def output_formatter(message, color="green", bgcolor="black", display="高亮"):
     """将指定字符串格式化为对应颜色文本输出
 
     :param message: 文本消息
@@ -72,17 +72,22 @@ def output_formatter(message, color="green", bgcolor="black", display=u"高亮")
         "white": 47,
     }
     displays = {
-        u"终端默认": 0,
-        u"高亮": 1,
-        u"非高亮": 22,
-        u"下划线": 4,
-        u"去下划线": 24,
-        u"闪烁": 5,
-        u"去闪烁": 25,
-        u"反白": 7,
-        u"非反白": 27,
-        u"不可见": 8,
-        u"可见": 28,
+        "终端默认": 0,
+        "高亮": 1,
+        "非高亮": 22,
+        "下划线": 4,
+        "去下划线": 24,
+        "闪烁": 5,
+        "去闪烁": 25,
+        "反白": 7,
+        "非反白": 27,
+        "不可见": 8,
+        "可见": 28,
     }
     formatter = "\033[{0};{1};{2}m{3}\033[0m"
-    return formatter.format(displays.get(display), colors.get(color), bgcolors.get(bgcolor), message)
+    return formatter.format(
+        displays.get(display, "终端默认"),
+        colors.get(color, "green"),
+        bgcolors.get(bgcolor, "black"),
+        message
+    )
