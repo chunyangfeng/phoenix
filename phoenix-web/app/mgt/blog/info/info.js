@@ -73,14 +73,16 @@ const editActionInitial = () => {
 };
 
 // 文章提交事件
-const articleCommitEvent = (postData, edit_data) => {
+const articleCommitEvent = (postData, edit_data, multiSelect) => {
     // editor.md自动生成的html格式的文章内容，字段为editor-html-code，转换为后端使用的字段
     postData.html_content = postData['editor-html-code'];
     delete postData['editor-html-code'];
 
     // 手动获取复选框选中的数据
     delete postData.tags;
-    postData.tags_id = getCheckboxCheckedData();
+    postData.tags_id = multiSelect.getValue().map(obj => {
+        return obj.value
+    });
 
     // 发布时间字段,当且仅当不为编辑模式时设置
     let now = getCurrentDate('-', '-', '');
@@ -93,7 +95,6 @@ const articleCommitEvent = (postData, edit_data) => {
             window.location.href = urls.articleListPage;  // 创建成功后跳转至列表页
         }
     };
-
     // 如果formData不为{}，则当前为编辑页面，调用put接口进行更新，否则为新增
     if (Object.keys(edit_data).length > 0) {
         postData['etime'] = now;  // 当为编辑模式时，设置编辑时间
@@ -103,6 +104,26 @@ const articleCommitEvent = (postData, edit_data) => {
         asyncApiResolve(urls.articleListApi, postData, 'post', commitSuccessCallback);
     }
 };
+
+const initialTags = () => {
+    // 初始化标签多选选择下拉框
+    const response = syncApiResolve(urls.tagListApi, null, 'get');
+    let tagsSelect = xmSelect.render({
+        el: "#tagCheckboxElem",
+        language: "zn",
+        filterable: true,
+        theme: {
+            color: '#8dc63f',
+        },
+        data: response.data.map(obj => {
+            return {
+                name: obj.name,
+                value: obj.id,
+            }
+        })
+    });
+    return tagsSelect
+}
 
 // 页面加载后的动态操作
 layui.jquery(document).ready(function () {
@@ -116,11 +137,13 @@ layui.jquery(document).ready(function () {
     getLaySelectItem(urls.classifyListApi, params.classifySelectElem, 'id', 'name', formData.classify_id);
 
     // 动态加载博客标签数据
-    getLayCheckboxItem(urls.tagListApi, params.tagCheckboxElem, 'id', 'name', 'tags', formData.tags_id);
+    // getLayCheckboxItem(urls.tagListApi, params.tagCheckboxElem, 'id', 'name', 'tags', formData.tags_id);
+
+    const tagsSelect = initialTags();
 
     // 监听文章提交事件
     layui.form.on(`submit(${params.articleFormSubmit})`, function (data) {
-        articleCommitEvent(data.field, formData);
+        articleCommitEvent(data.field, formData, tagsSelect);
         return false
     });
 });

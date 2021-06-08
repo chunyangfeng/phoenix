@@ -43,7 +43,7 @@ const initialArticleListTable = ()=> {
         width: params.tableWidth,
         cellMinWidth: 100,
         cols: [[
-            { fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
+            {fixed: 'left', title: '选中', align: "center", type: 'checkbox'},
             {field: 'id', title: 'ID', align: "center", sort: true, hide: true},
             {field: 'classify', title: '分类', align: "center"},
             {field: 'tags', title: '标签', align: "center", templet: (d) => {return tagsResolve(d)}},
