@@ -1,7 +1,7 @@
 /*
 ** Author: Fengchunyang
 ** Date: 2021/3/1 8:41
-** Blog: http://www.fengchunyang.com
+** Blog: https://www.fengchunyang.com
 */
 import {urls} from "../../../../config/urls.js";
 import {params} from "../../../../config/params.js";
@@ -28,6 +28,16 @@ const tag_c_callback = (response) => {
     }
 };
 
+// 博客专栏 post成功后回调
+const serial_c_callback = (response) => {
+    const status = response.responseJSON.result;
+    if (status === params.resSuccessTip) {
+        // 如果执行成功，则关闭当前iframe，同时刷新table
+        closeIframe();
+        parent.layui.table.reload("articleSerialTable");
+    }
+};
+
 
 // 页面加载后的动态操作
 layui.jquery(document).ready(function () {
@@ -36,6 +46,9 @@ layui.jquery(document).ready(function () {
 
     // 编辑时表单赋值
     const tagData = formAssignment(params.tagFormFilter);
+
+    // 编辑时表单赋值
+    const serialData = formAssignment("serialFormFilter");
 
     // 监听博客分类提交事件
     layui.form.on(`submit(${params.classifyAddSubmit})`, function (data) {
@@ -56,6 +69,16 @@ layui.jquery(document).ready(function () {
             asyncApiResolve(urls.tagListApi, data.field, 'post', null, tag_c_callback);
         }
 
+        return false
+    });
+
+    // 监听博客专栏提交事件
+    layui.form.on('submit(serialAddSubmit)', function (data) {
+        if (serialData) {
+            asyncApiResolve(`${urls.serialInfoApi}/${serialData.id}`, data.field, 'put', null, serial_c_callback);
+        } else {
+            asyncApiResolve(urls.serialListApi, data.field, 'post', null, serial_c_callback);
+        }
         return false
     });
 });

@@ -46,9 +46,9 @@ class ArticleTag(CommonDataModel):
 class ArticleSerial(CommonDataModel):
     """博客文章系列集合"""
     name = models.CharField(verbose_name="系列名称", max_length=255, unique=True)
-    classify = models.ForeignKey("ArticleClassify", verbose_name="系列分类", on_delete=models.SET_NULL,
-                                 null=True, related_name='serial')
-    tags = models.ManyToManyField("ArticleTag", verbose_name="系列标签", related_name='serial')
+    # classify = models.ForeignKey("ArticleClassify", verbose_name="系列分类", on_delete=models.SET_NULL,
+    #                              null=True, related_name='serial')
+    # tags = models.ManyToManyField("ArticleTag", verbose_name="系列标签", related_name='serial')
 
     class Meta:
         db_table = "blog_article_serial"

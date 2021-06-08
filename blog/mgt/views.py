@@ -51,6 +51,11 @@ class ArticleDataTagPageView(BasePageView):
     page = 'mgt/blog/data/tag/add.html'
 
 
+class ArticleDataSerialPageView(BasePageView):
+    """博客文章数据管理-博客专栏新增页面"""
+    page = 'mgt/blog/data/serial/add.html'
+
+
 class ArticleInfoPageView(BasePageView):
     """博客文章增页面"""
     page = 'mgt/blog/info/info.html'
@@ -123,6 +128,13 @@ class ArticleTagInfoApiView(BasicInfoViewSet):
 
 class ArticleSerialListApiView(BasicListViewSet):
     """文章系列列表接口"""
+    queryset = models.ArticleSerial.objects.all()
+    serializer_class = serializers.ArticleSerialSerializer
+    permission_name = permissions.PER_ARTICLE_SERIAL
+
+
+class ArticleSerialInfoApiView(BasicInfoViewSet):
+    """文章专栏详情接口"""
     queryset = models.ArticleSerial.objects.all()
     serializer_class = serializers.ArticleSerialSerializer
     permission_name = permissions.PER_ARTICLE_SERIAL

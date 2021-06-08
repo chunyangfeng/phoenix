@@ -75,6 +75,7 @@ export const generateLaySwitch = (name, text, value, event, filter, pk) => {
 
 // layui table重载
 export const layTableReload = (tableID, query=null) => {
+    console.log(tableID)
     if (tableID) {
         layui.table.reload(tableID, {
             where: query, //设定异步数据接口的额外参数

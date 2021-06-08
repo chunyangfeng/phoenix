@@ -32,6 +32,7 @@ urlpatterns = [
     path('article/data/page', views.ArticleDataPageView.as_view(), name='article-data-page'),
     path('article/data/classify/page', views.ArticleDataClassifyPageView.as_view(), name='article-data-classify-page'),
     path('article/data/tag/page', views.ArticleDataTagPageView.as_view(), name='article-data-tag-page'),
+    path('article/data/serial/page', views.ArticleDataSerialPageView.as_view(), name='article-data-serial-page'),
     path('article/info/page', views.ArticleInfoPageView.as_view(), name='article-info-page'),
 
     path('article/list', views.ArticleListApiView.as_view(), name='article-list-api'),  # 文章列表接口
@@ -46,6 +47,8 @@ urlpatterns = [
          name='article-tag-info-api'),  # 文章标详情表接口
     path('article/data/serial/list', views.ArticleSerialListApiView.as_view(),
          name='article-serial-list-api'),  # 文章系列列表接口
+    path(f'article/data/serial/info/<int:{params.MODEL_UNIQUE_KEY}>', views.ArticleSerialInfoApiView.as_view(),
+         name='article-serial-info-api'),  # 文章标详情表接口
 
     path('system/', include(system_urls)),  # 系统配置路由入口
 ]

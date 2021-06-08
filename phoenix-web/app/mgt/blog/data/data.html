@@ -5,10 +5,11 @@
 {% block content %}
     <fieldset class="layui-elem-field">
         <div class="layui-field-box">
-            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <div class="layui-tab layui-tab-brief">
                 <ul class="layui-tab-title">
                     <li class="layui-this">博客分类</li>
                     <li>博客标签</li>
+                    <li>博客专栏</li>
                 </ul>
                 <div class="layui-tab-content">
                     <div class="layui-tab-item layui-show">
@@ -51,6 +52,27 @@
                         </div>
                         <div class="layui-row">
                             <table id="article-tag-table" lay-filter="articleTagTableFilter"></table>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="layui-row">
+                            <div class="layui-col-md12">
+                                <form class="layui-form">
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-inline">
+                                            <input type="text" name="name__icontains" placeholder="专栏名称..."
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                        <div class="layui-input-inline search-form-btn">
+                                            <button type="button" class="layui-btn" lay-submit lay-filter="articleSerialSearchForm">查询</button>
+                                            <button type="reset" tableID="articleSerialTable" class="layui-btn layui-btn-normal">重置</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="layui-row">
+                            <table id="article-serial-table" lay-filter="articleSerialTableFilter"></table>
                         </div>
                     </div>
                 </div>

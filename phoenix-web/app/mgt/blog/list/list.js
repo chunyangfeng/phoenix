@@ -49,12 +49,13 @@ const initialArticleListTable = ()=> {
             {field: 'tags', title: '标签', align: "center", templet: (d) => {return tagsResolve(d)}},
             {field: 'title', title: '标题', align: "center"},
             {field: 'desc', title: '简介', align: "center"},
-            // {field: 'content', title: '正文', align: "center"},
-            {field: 'creator', title: '作者', align: "center"},
+            {field: 'content', title: '正文', align: "center", hide: true},
+            {field: 'creator', title: '作者', align: "center", hide: true},
             {field: 'ctime', title: '创建时间', align: "center"},
-            // {field: 'mtime', title: '修改时间', align: "center"},
+            {field: 'mtime', title: '修改时间', align: "center", hide: true},
             {field: 'etime', title: '编辑时间', align: "center"},
-            {field: 'ptime', title: '发布时间', align: "center"},
+            {field: 'ptime', title: '发布时间', align: "center", hide: true},
+            {field: 'serial', title: '专栏', align: "center", hide: true},
             {field: 'is_publish', title: '发布', align: "center",
                 templet: (d) => {return isPublishResolve(d)}, width: 80},
             {field: 'is_top', title: '置顶', align: "center",
@@ -99,6 +100,9 @@ layui.jquery(document).ready(function () {
 
     // 动态加载博客标签数据
     getLaySelectItem(urls.tagListApi, params.tagSelectElem, 'id', 'name');
+
+    // 动态加载博客专栏数据
+    getLaySelectItem(urls.serialListApi, '#serialSelectElem', 'id', 'name');
 
     // 监听table表格switch切换事件
     layui.form.on(`switch(${params.isPublish})`, function (data) {

@@ -41,8 +41,6 @@ class ArticleTagSerializer(serializers.ModelSerializer):
 
 class ArticleSerialSerializer(serializers.ModelSerializer):
     """博客文章系列序列化器"""
-    classify = serializers.CharField(source='classify.name', read_only=True)
-    tags = ArticleTagSerializer(many=True)
 
     class Meta:
         model = models.ArticleSerial
@@ -71,7 +69,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         Returns:
             name(str): serial name
         """
-        return obj.serial or ''
+        return obj.serial.name if obj.serial else ''
 
     def get_comment_count(self, obj):
         """获取评论数
