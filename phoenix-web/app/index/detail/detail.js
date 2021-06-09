@@ -114,7 +114,8 @@ const submitComment = (data) => {
         initialCommentData();
         layui.form.val('articleCommentFormFilter', {
             content: ""
-        })
+        });
+        layui.layer.msg("评论已提交，鉴于网站安全，您的评论需要通过审核之后才能展示，感谢您的理解。");
     }
     let formData = data.field;
     formData.article_id = getArticleId();

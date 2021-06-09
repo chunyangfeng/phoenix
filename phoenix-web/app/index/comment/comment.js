@@ -83,7 +83,8 @@ const submitComment = (data) => {
         initialCommentData();
         layui.form.val('commentFormFilter', {
             content: ""
-        })
+        });
+        layui.layer.msg("留言已提交，鉴于网站安全，您的留言需要通过审核之后才能展示，感谢您的理解。");
     }
     let formData = data.field;
     asyncApiResolve(`${urls.commentListApi}`, formData, 'post', sCallback)
