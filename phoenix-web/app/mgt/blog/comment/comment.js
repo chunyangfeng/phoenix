@@ -45,8 +45,8 @@ const initialCommentListTable = ()=> {
             {field: 'email', title: '邮箱', align: "center"},
             {field: 'content', title: '留言', align: "center"},
             {field: 'ctime', title: '创建时间', align: "center"},
-            {field: 'is_examine', title: '是否审核', align: "center", templet: (d) => {return isExamine(d)}, width: 80},
-            {field: 'is_reply', title: '是否回复', align: "center", templet: (d) => {return isReply(d)}, width: 80},
+            {field: 'is_examine', title: '是否审核', align: "center", templet: (d) => {return isExamine(d)}},
+            {field: 'is_reply', title: '是否回复', align: "center", templet: (d) => {return isReply(d)}},
             {fixed: 'right', title: '操作', align: 'center', toolbar: '#actionBar'}
         ]]
     })
