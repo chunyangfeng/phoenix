@@ -34,7 +34,7 @@ class CommentListView(BasicListViewSet):
 
 class CommentMgtListView(BasicListViewSet):
     """留言管理列表接口"""
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.all().order_by('-id')
     serializer_class = CommentMgtListSerializer
     permission_name = permissions.PER_COMMENT
 
