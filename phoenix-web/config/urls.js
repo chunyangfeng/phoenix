@@ -11,7 +11,8 @@ export const urls = {
     publicKey: "/blog/auth/public-key",
     loginModule: "/blog/auth/login",
     logoutModule: "/blog/auth/logout",
-    userInfoApi: "/blog/auth/user/info",
+    userInfoApi: "/blog/auth/users/info",
+    userListApi: "/blog/auth/users/list",
 
     dashboardPage: "/blog/mgt/dashboard/page",
     dashboardStatistic: "/blog/mgt/dashboard/statistic/info",

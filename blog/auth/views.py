@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2021/3/26 新增文件。
@@ -17,17 +17,24 @@ from django.utils import timezone
 from rest_framework import status as drf_status
 from rest_framework.response import Response
 
+from blog.auth.serializers import UserListSerializer, UserInfoSerializer
 from common.serializers import DoNothingSerializer
-from common.views import BasicInfoViewSet, BasePageView
+from common.views import BasicInfoViewSet, BasePageView, BasicListViewSet
 from blog.auth.models import User, UserToken
 from common import params
 from common.utils import sington, encryption
+from common import permissions
 
 
 class UserLoginPageView(BasePageView):
     """用户登录主页"""
     authentication_enable = False
     page = "auth/login.html"
+
+
+class UsersPageView(BasePageView):
+    """用户管理页"""
+    page = "mgt/system/users/users.html"
 
 
 class UserLoginView(BasicInfoViewSet):
@@ -146,3 +153,19 @@ class LogoutView(BasicInfoViewSet):
         del request.session[params.SESSION_TOKEN_KEY]
         del request.session[params.SESSION_USER_KEY]
         return self.set_response('Success', '退出成功')
+
+
+class UsersListApiView(BasicListViewSet):
+    """用户管理列表接口"""
+    queryset = User.objects.all()
+    serializer_class = UserListSerializer
+    permission_name = permissions.PER_USERS
+    http_method_names = ("get", "patch", "delete")
+
+
+class UsersInfoApiView(BasicInfoViewSet):
+    """用户管理详情接口"""
+    queryset = User.objects.all()
+    serializer_class = UserInfoSerializer
+    permission_name = permissions.PER_USERS
+    http_method_names = ("get", "patch", "delete")

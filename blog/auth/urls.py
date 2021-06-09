@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2021/3/26 新增文件。
@@ -13,6 +13,7 @@ Blog: http://www.fengchunyang.com
 """
 from django.urls import path
 
+from common import params
 from . import views
 
 urlpatterns = [
@@ -20,4 +21,7 @@ urlpatterns = [
     path('login', views.UserLoginView.as_view(), name='login'),  # 用户登录
     path('public-key', views.AuthPublicKeyView.as_view(), name='pubkey'),  # 获取RSA公钥
     path('logout', views.LogoutView.as_view(), name='logout'),  # 退出登录
+    path('users/page', views.UsersPageView.as_view(), name='users-page'),  # 用户管理页面
+    path('users/list', views.UsersListApiView.as_view(), name='users-list'),  # 用户管理列表
+    path(f'users/info/<int:{params.MODEL_UNIQUE_KEY}>', views.UsersInfoApiView.as_view(), name='users-list'),  # 用户管理列表
 ]

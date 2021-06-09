@@ -32,6 +32,8 @@ PER_DASHBOARD = 'Dashboard'  # 仪表板接口
 
 PER_ACCESS_RECORD = 'AccessRecord'  # 访问记录接口
 
+PER_USERS = 'Users'  # 用户管理接口
+
 
 RES_PERM = {
     PER_BASE: 'ROOT权限',
@@ -48,4 +50,5 @@ RES_PERM = {
     PER_COMMENT: '评论',
     PER_DASHBOARD: '仪表板',
     PER_ACCESS_RECORD: '访问记录',
+    PER_USERS: '用户管理',
 }

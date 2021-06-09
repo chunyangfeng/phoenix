@@ -1,0 +1,47 @@
+{% extends 'base/mgt/basic.html' %}
+
+{% block title %}用户管理{% endblock %}
+
+{% block content %}
+    <fieldset class="layui-elem-field">
+        <div class="layui-field-box">
+            <div class="layui-row">
+                <div class="layui-col-md12">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <div class="layui-input-inline">
+                                <input type="text" name="username__icontains" placeholder="用户名..."
+                                       autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="allow_login" lay-search="">
+                                    <option value="">--选择登录状态--</option>
+                                    <option value="1">允许登录</option>
+                                    <option value="0">禁止登录</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline">
+                                <select name="is_builtin" lay-search="">
+                                    <option value="">--选择账号类型--</option>
+                                    <option value="1">内置用户</option>
+                                    <option value="0">新增用户</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline search-form-btn">
+                                <button type="button" class="layui-btn" lay-submit lay-filter="usersSearchForm">查询</button>
+                                <button type="reset" tableID="usersListTable" class="layui-btn layui-btn-normal">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="layui-row">
+                <table id="users-list-table" lay-filter="usersListTableFilter"></table>
+            </div>
+        </div>
+    </fieldset>
+{% endblock %}
+
+{% block footer-scripts %}
+    <script src="/phoenix-web/app/mgt/system/users/users.js" type="module"></script>
+{% endblock %}

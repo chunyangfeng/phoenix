@@ -4,7 +4,7 @@
 
 作者: Fengchunyang
 
-Blog: http://www.fengchunyang.com
+Blog: https://www.fengchunyang.com
 
 更改记录:
     2021/3/26 新增文件。
@@ -18,6 +18,14 @@ from blog.auth.models import User
 
 class UserInfoSerializer(serializers.ModelSerializer):
     """用户信息序列化器"""
+
+    class Meta:
+        model = User
+        fields = "__all__"
+
+
+class UserListSerializer(serializers.ModelSerializer):
+    """用户列表序列化器"""
 
     class Meta:
         model = User
