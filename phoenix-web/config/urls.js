@@ -55,6 +55,8 @@ export const urls = {
     projectTaskAddPage: "/blog/mgt/system/project-task/add/page",
 
     commentListApi: "/blog/comment/list",
+    commentMgtListApi: "/blog/comment/mgt/list",
+    commentMgtInfoApi: "/blog/comment/mgt/info",
 
     accessRecordListApi: "/blog/mgt/system/access-record/list",
 

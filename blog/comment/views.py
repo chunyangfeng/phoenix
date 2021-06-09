@@ -11,14 +11,14 @@ Desc:
 """
 from blog import tasks
 from blog.comment.models import Comment
-from blog.comment.serializers import CommentListSerializer
-from common.views import BasicListViewSet, BasePageView
+from blog.comment.serializers import CommentListSerializer, CommentMgtListSerializer, CommentMgtInfoSerializer
+from common.views import BasicListViewSet, BasePageView, BasicInfoViewSet
 from common import permissions
 
 
 class ArticleCommentListView(BasicListViewSet):
     """文章评论列表接口"""
-    queryset = Comment.objects.filter(comment=None)
+    queryset = Comment.objects.filter(comment=None, is_examine=True)
     serializer_class = CommentListSerializer
     permission_name = permissions.PER_COMMENT
     authentication_enable = False
@@ -26,10 +26,24 @@ class ArticleCommentListView(BasicListViewSet):
 
 class CommentListView(BasicListViewSet):
     """评论列表接口"""
-    queryset = Comment.objects.filter(article_id=None).order_by('-id')
+    queryset = Comment.objects.filter(article_id=None, is_examine=True).order_by('-id')
     serializer_class = CommentListSerializer
     permission_name = permissions.PER_COMMENT
     authentication_enable = False
+
+
+class CommentMgtListView(BasicListViewSet):
+    """留言管理列表接口"""
+    queryset = Comment.objects.all()
+    serializer_class = CommentMgtListSerializer
+    permission_name = permissions.PER_COMMENT
+
+
+class CommentMgtInfoView(BasicInfoViewSet):
+    """文章详情接口"""
+    queryset = Comment.objects.all()
+    serializer_class = CommentMgtInfoSerializer
+    permission_name = permissions.PER_COMMENT
 
 
 class CommentPageView(BasePageView):
@@ -55,3 +69,8 @@ class CommentPageView(BasePageView):
         data = tasks.get_access_record_data(request)
         tasks.access_record.delay(data)
         return None, '', response
+
+
+class CommentMgtPageView(BasePageView):
+    """留言管理页面"""
+    page = 'mgt/blog/comment/comment.html'

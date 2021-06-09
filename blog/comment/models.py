@@ -13,6 +13,8 @@ class Comment(BasicModel):
     email = models.CharField(verbose_name="", max_length=64)
     content = models.TextField(verbose_name="评论内容")
     # liked = models.IntegerField(verbose_name="点赞数", default=0)
+    is_examine = models.BooleanField(verbose_name="是否通过审核", default=False)
+    is_reply = models.BooleanField(verbose_name="是否回复", default=False)
 
     class Meta:
         # ordering = ('-id', )
