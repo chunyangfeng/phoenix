@@ -49,7 +49,7 @@ const initialArticleListTable = ()=> {
             {field: 'tags', title: '标签', align: "center", templet: (d) => {return tagsResolve(d)}},
             {field: 'title', title: '标题', align: "center"},
             {field: 'desc', title: '简介', align: "center"},
-            {field: 'content', title: '正文', align: "center", hide: true},
+            // {field: 'content', title: '正文', align: "center", hide: true},
             {field: 'creator', title: '作者', align: "center", hide: true},
             {field: 'ctime', title: '创建时间', align: "center"},
             {field: 'mtime', title: '修改时间', align: "center", hide: true},
