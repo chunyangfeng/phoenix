@@ -58,6 +58,7 @@ export const urls = {
     commentListApi: "/blog/comment/list",
     commentMgtListApi: "/blog/comment/mgt/list",
     commentMgtInfoApi: "/blog/comment/mgt/info",
+    commentCountApi: "/blog/comment/mgt/count",
 
     accessRecordListApi: "/blog/mgt/system/access-record/list",
 

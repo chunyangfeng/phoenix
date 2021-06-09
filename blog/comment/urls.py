@@ -22,4 +22,5 @@ urlpatterns = [
          name='comment-mgt-info'),  # 留言管理详情数据
     path('page', views.CommentPageView.as_view(), name='comment-page'),  # 评论页面
     path('mgt/page', views.CommentMgtPageView.as_view(), name='comment-mgt-page'),  # 评论管理页面
+    path('mgt/count', views.CommentCountView.as_view(), name='comment-count'),  # 评论统计数据
 ]

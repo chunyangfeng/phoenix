@@ -9,9 +9,12 @@ Date: 2021/5/11 11:03
 Desc:
     2021/5/11 11:03 add file.
 """
+from django.db.models import QuerySet
+
 from blog import tasks
 from blog.comment.models import Comment
 from blog.comment.serializers import CommentListSerializer, CommentMgtListSerializer, CommentMgtInfoSerializer
+from common.serializers import DoNothingSerializer
 from common.views import BasicListViewSet, BasePageView, BasicInfoViewSet
 from common import permissions
 
@@ -74,3 +77,28 @@ class CommentPageView(BasePageView):
 class CommentMgtPageView(BasePageView):
     """留言管理页面"""
     page = 'mgt/blog/comment/comment.html'
+
+
+class CommentCountView(BasicInfoViewSet):
+    """评论统计数据接口"""
+    queryset = QuerySet()
+    serializer_class = DoNothingSerializer
+    permission_name = permissions.PER_COMMENT
+    http_method_names = ('get', )
+
+    def get(self, request, *args, **kwargs):
+        """获取资源数据
+
+        Args:
+            request(Request): http request
+            *args(list): 可变参数
+            **kwargs(dict): 可变关键字参数
+
+        Returns:
+            response(Response): 响应数据
+        """
+        data = {
+            "not_examine": Comment.objects.filter(is_examine=False).count(),
+            "not_reply": Comment.objects.filter(is_reply=False).count(),
+        }
+        return self.set_response(result='Success', data=[data, ])

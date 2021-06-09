@@ -47,6 +47,17 @@ const initialClock = () => {
     }, 1000);
 };
 
+const initialCommentTips = () => {
+    asyncApiResolve(urls.commentCountApi, null, 'get', (res) => {
+        const count = res.data[0].not_examine;
+        if (count > 0) {
+            layui.jquery("#comment-tips i").empty().html(`<span class="layui-badge">${res.data[0].not_examine}</span>`)
+        }
+    })
+};
+
+const initialMsgTips = () => {};
+
 // 页面加载时执行初始化操作
 layui.jquery(document).ready(function () {
     initialNavStatus();
@@ -54,6 +65,10 @@ layui.jquery(document).ready(function () {
     initialUserInfo();
 
     initialClock();
+
+    initialCommentTips();
+
+    initialMsgTips();
 
     // 当reset按钮被点击时，如果是表格的搜索表单，则重载表格
     layui.jquery(':reset').click(function () {
