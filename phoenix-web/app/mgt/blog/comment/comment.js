@@ -53,33 +53,37 @@ const initialCommentListTable = ()=> {
 };
 
 const replyComment = (obj) => {
-    layui.layer.prompt({
-        formType: 2,
-        title: '回复评论',
-        area: ['500px', '250px']
-    }, function(value, index, elem){
-        let postData = {
-            article_id: obj.data.article_id,
-            comment: obj.data.id,
-            nickname: "却邪水心",
-            email: "admin@fengchunyang.com",
-            content: value,
-            is_examine: true,
-            is_reply: true,
-        };
-        const response = syncApiResolve(urls.commentMgtListApi, postData, 'post');
-        if (response.result === params.resSuccessTip) {
-            layui.layer.msg("回复成功");
-            // 回复成功后，将回复标记更新为已回复
-            const url = `${urls.commentMgtInfoApi}/${obj.data.id}`;
-            const response = syncApiResolve(url, {is_reply: 1}, 'patch');
-
+    if (!obj.data.is_reply) {
+        layui.layer.prompt({
+            formType: 2,
+            title: '回复评论',
+            area: ['500px', '250px']
+        }, function(value, index, elem){
+            let postData = {
+                article_id: obj.data.article_id,
+                comment: obj.data.id,
+                nickname: "却邪水心",
+                email: "admin@fengchunyang.com",
+                content: value,
+                is_examine: true,
+                is_reply: true,
+            };
+            const response = syncApiResolve(urls.commentMgtListApi, postData, 'post');
             if (response.result === params.resSuccessTip) {
-                layTableReload("commentListTable");
+                layui.layer.msg("回复成功");
+                // 回复成功后，将回复标记更新为已回复
+                const url = `${urls.commentMgtInfoApi}/${obj.data.id}`;
+                const response = syncApiResolve(url, {is_reply: 1}, 'patch');
+
+                if (response.result === params.resSuccessTip) {
+                    layTableReload("commentListTable");
+                }
+                layui.layer.close(index);
             }
-            layui.layer.close(index);
-        }
-    });
+        });
+    } else {
+        layui.layer.msg("该评论/留言已回复，无法再次回复！");
+    }
 }
 
 // 监听表格switch切换事件
