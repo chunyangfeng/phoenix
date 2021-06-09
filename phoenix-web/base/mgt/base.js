@@ -51,7 +51,7 @@ const initialCommentTips = () => {
     asyncApiResolve(urls.commentCountApi, null, 'get', (res) => {
         const count = res.data[0].not_examine;
         if (count > 0) {
-            layui.jquery("#comment-tips i").empty().html(`<span class="layui-badge">${res.data[0].not_examine}</span>`)
+            layui.jquery("#comment-tips i").empty().html('<span class="layui-badge-dot"></span>')
         }
     })
 };
