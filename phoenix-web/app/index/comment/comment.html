@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/phoenix-web/app/index/comment/comment.css">
     <link rel="stylesheet" href="/phoenix-web/app/index/detail/detail.css">
     <link rel="stylesheet" href="/phoenix-web/assets/icons/iconfont.css">
+    <link rel="stylesheet" href="/phoenix-web/plugin/editormd/css/editormd.min.css" />
 {% endblock %}
 
 {% block header-meta %}
@@ -48,9 +49,13 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label"><span class="form-require-field">*</span>评论</label>
-                    <div class="layui-input-block">
-                            <textarea name="content" required lay-verify="required" placeholder="互动..."
-                                      class="layui-textarea" rows="7"></textarea>
+{#                    <div class="layui-input-block">#}
+{#                            <textarea name="content" required lay-verify="required" placeholder="互动..."#}
+{#                                      class="layui-textarea" rows="7"></textarea>#}
+{#                    </div>#}
+                    <div class="layui-input-block" id="commentEditor">
+                        <textarea name="content" placeholder="欢迎留下神评..." class="layui-textarea"
+                                  lay-verify="required"></textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -72,5 +77,7 @@
 
 
 {% block footer-js %}
+    <script src="/phoenix-web/plugin/others/jquery.min.js"></script>
+    <script src="/phoenix-web/plugin/editormd/editormd.min.js"></script>
     <script src="/phoenix-web/app/index/comment/comment.js" type="module"></script>
 {% endblock %}

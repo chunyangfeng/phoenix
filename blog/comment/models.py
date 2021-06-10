@@ -15,6 +15,7 @@ class Comment(BasicModel):
     # liked = models.IntegerField(verbose_name="点赞数", default=0)
     is_examine = models.BooleanField(verbose_name="是否通过审核", default=False)
     is_reply = models.BooleanField(verbose_name="是否回复", default=False)
+    html_content = models.TextField(verbose_name="html格式评论内容", blank=True, null=True)
 
     class Meta:
         # ordering = ('-id', )

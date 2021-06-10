@@ -2,6 +2,36 @@ import {asyncApiResolve, randomColor} from "../../../common/utils.js";
 import {urls} from "../../../config/urls.js";
 import {params} from "../../../config/params.js";
 
+$(function () {
+    const editor = editormd("commentEditor", {
+        width: "90%",
+        height: 240,
+        path: "/phoenix-web/plugin/editormd/lib/",
+        theme: "default",  // 主题设置
+        previewTheme: "default",  // 主题设置
+        editorTheme: "default",  // 主题设置
+        markdown: "",
+        codeFold: true,
+        saveHTMLToTextarea: true,    // 保存 HTML 到 Textarea
+        searchReplace: true,
+        watch : false,                // 关闭实时预览
+        // htmlDecode: "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
+        previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
+        emoji: true,
+        taskList: true,
+        tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+        toolbarIcons : function() {
+            return [
+                "undo", "redo", "|",
+                "bold", "del", "italic", "quote", "uppercase", "lowercase", "|",
+                "h1", "h2", "h3", "h4", "h5", "h6", "|",
+                "list-ul", "list-ol", "hr", "|",
+                "help", "info"
+            ]
+        },
+    });
+});
+
 const initialCommentData = (page=1, limit=10) => {
     const successCallback = (response) => {
         let data = response.data;
@@ -41,7 +71,9 @@ const initialCommentData = (page=1, limit=10) => {
                                     </div>
                                     <div class="article-body-comment-show-card-body layui-col-md9">
                                         <div class="article-body-comment-show-card-body-nickname">${value.comment[0].nickname}</div>
-                                        <div class="article-body-comment-show-card-body-comment">${value.comment[0].content}</div>
+                                        <div class="article-body-comment-show-card-body-comment">
+                                            ${value.comment[0].html_content}
+                                        </div>
                                         <div class="article-body-comment-show-card-body-ctime">${value.comment[0].ctime}</div>
                                     </div>
                                 </div>
@@ -55,7 +87,7 @@ const initialCommentData = (page=1, limit=10) => {
                     </div>
                     <div class="article-body-comment-show-card-body layui-col-md9">
                         <div class="article-body-comment-show-card-body-nickname">${value.nickname}</div>
-                        <div class="article-body-comment-show-card-body-comment">${value.content}</div>
+                        <div class="article-body-comment-show-card-body-comment">${value.html_content}</div>
                         <div class="article-body-comment-show-card-body-ctime">${value.ctime}</div>
                         ${childHtml}
                     </div>
@@ -87,6 +119,9 @@ const submitComment = (data) => {
         layui.layer.msg("留言已提交，鉴于网站安全，您的留言需要通过审核之后才能展示，感谢您的理解。");
     }
     let formData = data.field;
+    formData.html_content = formData['commentEditor-html-code'];
+    delete formData['commentEditor-html-code'];
+
     asyncApiResolve(`${urls.commentListApi}`, formData, 'post', sCallback)
 }
 
