@@ -112,6 +112,11 @@ const initialTags = () => {
         el: "#tagCheckboxElem",
         language: "zn",
         filterable: true,
+        delay: 1000,  // 搜索延迟(ms)
+        filterMethod: function(val, item, index, prop){
+            // 重定义搜索算法，搜索内容忽略大小写
+            return item.name.toLowerCase().indexOf(val.toLowerCase()) !== -1;
+        },
         tips: "--请选择标签--",
         theme: {
             color: '#8dc63f',

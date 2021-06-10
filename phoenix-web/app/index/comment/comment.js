@@ -4,7 +4,7 @@ import {params} from "../../../config/params.js";
 
 $(function () {
     const editor = editormd("commentEditor", {
-        width: "92%",
+        width: "90%",
         height: 240,
         path: "/phoenix-web/plugin/editormd/lib/",
         theme: "default",  // 主题设置
