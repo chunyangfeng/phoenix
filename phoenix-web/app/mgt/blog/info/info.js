@@ -6,7 +6,7 @@
 
 import {
     getLaySelectItem, getLayCheckboxItem, getCheckboxCheckedData, asyncApiResolve, formAssignment, getQueryString,
-    syncApiResolve, getCurrentDate,
+    syncApiResolve, getCurrentDate, layerIframe,
 } from "../../../../common/utils.js";
 import {urls} from "../../../../config/urls.js";
 import {params} from "../../../../config/params.js";
@@ -108,10 +108,11 @@ const articleCommitEvent = (postData, edit_data, multiSelect) => {
 const initialTags = () => {
     // 初始化标签多选选择下拉框
     const response = syncApiResolve(urls.tagListApi, null, 'get');
-    let tagsSelect = xmSelect.render({
+    return xmSelect.render({
         el: "#tagCheckboxElem",
         language: "zn",
         filterable: true,
+        tips: "--请选择标签--",
         theme: {
             color: '#8dc63f',
         },
@@ -121,8 +122,23 @@ const initialTags = () => {
                 value: obj.id,
             }
         })
+    })
+};
+
+const tagsAddEvent = () => {
+    layui.layer.open({
+        type: 2,
+        title: '新增博客标签',
+        id: 'tagIframe',
+        skin: 'layui-layer-lan',
+        area: ['30rem', '17rem'],
+        content: urls.articleTagPage,
+        width: 1000,
+        end: function (dom, index) {
+            layui.layer.msg("标签新增成功");
+            const tagsSelect = initialTags();
+        }
     });
-    return tagsSelect
 }
 
 // 页面加载后的动态操作
@@ -146,5 +162,10 @@ layui.jquery(document).ready(function () {
         articleCommitEvent(data.field, formData, tagsSelect);
         return false
     });
+
+    // 标签新增事件
+    layui.jquery("#articleTagAdd").on('click', function () {
+        tagsAddEvent();
+    })
 });
 
