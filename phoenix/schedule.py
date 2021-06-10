@@ -12,6 +12,6 @@ from celery.schedules import timedelta, crontab
 CELERY_BEAT_SCHEDULE = {
     'bulk_push_article': {  # 一键推送所有文章
         'task': 'blog.tasks.bulk_push_article',
-        'schedule': crontab(hour=21, minute=0),
+        'schedule': crontab(hour=8, minute=0),
     },
 }
