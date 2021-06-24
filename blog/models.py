@@ -156,6 +156,7 @@ class AccessRecord(models.Model):
     query_str = models.CharField(verbose_name="查询字符串", max_length=256, blank=True, null=True)
     referer = models.CharField(verbose_name="上一个页面", max_length=256, blank=True, null=True)
     source = models.CharField(verbose_name="地址来源", max_length=128, blank=True, null=True)
+    spider = models.CharField(verbose_name="爬虫类型", max_length=255, blank=True, null=True)
 
     class Meta:
         ordering = ('-id', )

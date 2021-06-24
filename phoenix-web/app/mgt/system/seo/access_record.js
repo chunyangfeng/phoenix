@@ -24,6 +24,7 @@ const initialAccessRecordTable = () => {
             {field: 'user_agent', title: 'UserAgent', align: "center"},
             {field: 'address', title: 'IP地址', align: "center", width: 180},
             {field: 'source', title: '地址来源', align: "center"},
+            {field: 'spider', title: '蜘蛛类型', align: "center"},
             // {field: 'query_str', title: '查询字符串', align: "center"},
             {field: 'referer', title: '关联页面', align: "center"},
         ]]

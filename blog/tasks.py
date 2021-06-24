@@ -7,6 +7,8 @@ Date: 2021/5/28 18:40
 Desc:
     2021/5/28 18:40 add file.
 """
+import re
+
 from django.conf import settings
 from django.utils import timezone
 from celery import shared_task
@@ -30,15 +32,18 @@ def get_access_record_data(request):
     address = request.META.get('REMOTE_ADDR', 'unknown')
     ip_info = get_ip_info(address)
     region = [ip_info.get("country", ""), ip_info.get("regionName", ""), ip_info.get("city", "")]
+    user_agent = request.META.get('HTTP_USER_AGENT', 'unknown')
+    spider = re.findall(r'compatible; (.+);', user_agent)
 
     data = {
         "path": request.META.get('PATH_INFO', ''),
         'query_str': request.META.get('QUERY_STRING', ''),
         'address': address,
-        'user_agent': request.META.get('HTTP_USER_AGENT', 'unknown'),
+        'user_agent': user_agent,
         'referer': request.META.get('HTTP_REFERER', ''),
         'atime': timezone.now(),
         'source': '-'.join(region) if ip_info else '',
+        'spider': spider[0] if spider else '',
     }
     return data
 
