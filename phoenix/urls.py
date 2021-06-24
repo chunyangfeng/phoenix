@@ -36,3 +36,6 @@ urlpatterns = [
 
     path('blog/', include(blog_urls)),
 ]
+
+handler404 = 'blog.views.handler_404'
+handler500 = 'blog.views.handler_500'
