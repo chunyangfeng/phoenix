@@ -44,6 +44,7 @@ $(function () {
         imageUpload: true,
         imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
         imageUploadURL: "/Center/RichTextUpload",
+        autoFocus: false,       // 取消自动聚焦编辑器输入框
         onload: function () {
             //console.log('onload', this);
             //this.fullscreen();

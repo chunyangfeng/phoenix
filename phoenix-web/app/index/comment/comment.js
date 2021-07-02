@@ -20,6 +20,8 @@ $(function () {
         emoji: true,
         taskList: true,
         tex: true,                   // 开启科学公式TeX语言支持，默认关闭
+        autoFocus: false,       // 取消自动聚焦编辑器输入框
+        placeholder: "欢迎留下神评~",
         toolbarIcons : function() {
             return [
                 "undo", "redo", "|",
